@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<!-- السطر ده بيقول للمتصفح إن ده ملف HTML5 (أحدث إصدار) -->
+<html lang="ar" dir="rtl">
+<!-- lang="ar" = اللغة عربي ، dir="rtl" = الكتابة من اليمين للشمال -->
+
+<head>
+  <!-- الـ head فيه معلومات عن الصفحة مش بتظهر جوّاها -->
+  <meta charset="UTF-8">
+  <!-- UTF-8 عشان الحروف العربي تظهر صح -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- السطر ده بيخلي الصفحة تظبط على شاشة الموبايل -->
+  <title>أهلاً بيك في موقعي</title>
+  <!-- العنوان اللي بيظهر فوق في التاب -->
+
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+  <!-- خط "Cairo" من Google Fonts — مجاني وشكله حلو بالعربي -->
+
+  <style>
+    /* ===== CSS: ده اللي بيتحكم في الشكل والألوان ===== */
+
+    /* المتغيرات (Variables): بنحط الألوان في مكان واحد عشان نغيّرها بسهولة */
+    :root {
+      --bg: #0f172a;        /* لون الخلفية (كحلي غامق) */
+      --card: #1e293b;      /* لون الكروت */
+      --text: #f1f5f9;      /* لون الكلام */
+      --muted: #94a3b8;     /* لون الكلام الباهت */
+      --accent: #38bdf8;    /* اللون المميز (لبني) */
+      --accent2: #a78bfa;   /* لون مميز تاني (بنفسجي) */
+    }
+
+    /* بنلغي المسافات الافتراضية اللي المتصفح بيحطها */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;               /* الصفحة تاخد طول الشاشة كله على الأقل */
+      display: flex;                   /* Flexbox: طريقة لترتيب العناصر */
+      flex-direction: column;
+      align-items: center;             /* في النص بالعرض */
+      justify-content: center;         /* في النص بالطول */
+      padding: 24px 16px;
+      text-align: center;
+    }
+
+    /* الدايرة اللي فيها الإيموجي */
+    .logo {
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;              /* 50% بتخلي المربع دايرة */
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      display: grid;
+      place-items: center;
+      font-size: 44px;
+      margin-bottom: 24px;
+      animation: float 3s ease-in-out infinite;  /* حركة طلوع ونزول */
+    }
+
+    /* تعريف حركة الـ float */
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50%      { transform: translateY(-10px); }
+    }
+
+    h1 {
+      font-size: clamp(2rem, 6vw, 3.5rem);  /* clamp: الحجم بيكبر ويصغر مع الشاشة */
+      font-weight: 900;
+      margin-bottom: 12px;
+    }
+
+    /* الكلمة الملوّنة جوّه العنوان */
+    h1 span {
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 1.15rem;
+      max-width: 520px;
+      line-height: 1.9;
+      margin-bottom: 36px;
+    }
+
+    /* شبكة الكروت (Grid) */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      width: 100%;
+      max-width: 720px;
+      margin-bottom: 36px;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 24px 16px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      transition: transform 0.2s, border-color 0.2s;
+    }
+
+    /* لما الماوس يقف على الكارت */
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent);
+    }
+
+    .card .icon { font-size: 32px; margin-bottom: 8px; }
+    .card h3    { font-size: 1.1rem; margin-bottom: 4px; }
+    .card p     { color: var(--muted); font-size: 0.95rem; }
+
+    /* الزرار */
+    .btn {
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      color: #0f172a;
+      border: none;
+      padding: 14px 32px;
+      border-radius: 999px;
+      font-family: inherit;
+      font-size: 1.05rem;
+      font-weight: 700;
+      cursor: pointer;                 /* شكل الإيد لما الماوس يقف عليه */
+      transition: transform 0.15s;
+    }
+    .btn:hover  { transform: scale(1.05); }
+    .btn:active { transform: scale(0.97); }
+
+    /* الرسالة اللي بتظهر لما تدوس الزرار */
+    #message {
+      margin-top: 20px;
+      min-height: 28px;
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    footer {
+      margin-top: 48px;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- الـ body: كل اللي هنا بيظهر في الصفحة -->
+
+  <div class="logo">👋</div>
+
+  <h1>أهلاً بيك في <span>موقعي</span></h1>
+
+  <p class="subtitle">
+    ده أول موقع ليا! بتعلّم البرمجة خطوة بخطوة، وهبني هنا مشاريعي وأشاركها معاكم.
+  </p>
+
+  <!-- 3 كروت بتعرّف بالمجالات -->
+  <div class="cards">
+    <div class="card">
+      <div class="icon">💻</div>
+      <h3>برمجة المواقع</h3>
+      <p>مواقع ومتاجر وتطبيقات</p>
+    </div>
+    <div class="card">
+      <div class="icon">🎬</div>
+      <h3>محتوى رقمي</h3>
+      <p>فيديوهات ومنتجات رقمية</p>
+    </div>
+    <div class="card">
+      <div class="icon">🤖</div>
+      <h3>أتمتة</h3>
+      <p>وكلاء ذكاء اصطناعي وأدوات</p>
+    </div>
+  </div>
+
+  <!-- onclick: لما تدوس، شغّل الدالة sayHello -->
+  <button class="btn" onclick="sayHello()">دوس هنا 🚀</button>
+  <p id="message"></p>
+
+  <footer>
+    اتعمل بحب ❤️ — <span id="year"></span>
+  </footer>
+
+  <script>
+    // ===== JavaScript: ده اللي بيخلي الصفحة "تتفاعل" =====
+
+    // رسايل عشوائية بتظهر كل ما تدوس الزرار
+    const messages = [
+      'أهلاً بيك! 🎉',
+      'كل خطوة صغيرة بتفرق 💪',
+      'أول موقع… والجاي أحلى 🚀',
+      'شكرًا إنك زرتني ❤️'
+    ];
+
+    function sayHello() {
+      // بنختار رسالة عشوائية من القايمة
+      const random = Math.floor(Math.random() * messages.length);
+      // وبنحطها جوّه العنصر اللي الـ id بتاعه "message"
+      document.getElementById('message').textContent = messages[random];
+    }
+
+    // بنكتب السنة الحالية في الفوتر أوتوماتيك
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
