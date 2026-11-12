@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>أنماط تصميم البورتفوليو</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Tajawal:wght@400;700;900&family=IBM+Plex+Sans+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Cairo',sans-serif;background:#eef1f4;color:#111;padding:24px 16px 60px}
+  .page-title{max-width:1100px;margin:0 auto 8px;font-size:1.6rem;font-weight:900}
+  .page-sub{max-width:1100px;margin:0 auto 28px;color:#555}
+  .option{max-width:1100px;margin:0 auto 36px}
+  .label{display:flex;align-items:baseline;gap:12px;margin-bottom:10px;flex-wrap:wrap}
+  .label b{font-size:1.25rem}
+  .label span{color:#555;font-size:.95rem}
+  .num{background:#111;color:#fff;border-radius:8px;padding:2px 10px;font-weight:900}
+  .frame{border-radius:16px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.12);min-height:420px}
+  .photo{background:url('images/me.jpg') center/cover,linear-gradient(160deg,#9aa,#566);display:grid;place-items:center;font-size:3rem;font-weight:900;color:rgba(255,255,255,.35)}
+  a{color:inherit;text-decoration:none}
+
+  /* ===== 1) Bento ===== */
+  .bento{background:#0b0b0f;color:#f5f5f7;padding:22px;display:grid;gap:12px;
+    grid-template-columns:repeat(4,1fr);grid-auto-rows:120px}
+  .b{background:#17171d;border:1px solid #26262e;border-radius:20px;padding:16px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden}
+  .b small{color:#8e8e99}
+  .b h3{font-size:1rem}
+  .b.hero{grid-column:span 2;grid-row:span 2;background:linear-gradient(135deg,#1d1d27,#121218)}
+  .b.hero h2{font-size:1.7rem;line-height:1.4;font-weight:900}
+  .b.hero h2 em{font-style:normal;background:linear-gradient(90deg,#7dd3fc,#c4b5fd);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .b.pic{grid-row:span 2;padding:0}
+  .b.pic .photo{height:100%}
+  .b.yt{background:#e11d48;border:none}
+  .b.wa{background:#25d366;color:#052e16;border:none;font-weight:900}
+  .b.brq{grid-column:span 2;background:#14261f;border-color:#1f3d31}
+  .b.stack span{display:inline-block;background:#26262e;border-radius:999px;padding:2px 10px;font-size:.75rem;margin:2px}
+
+  /* ===== 2) Split / Resume (developer) ===== */
+  .split{background:#0a192f;color:#a8b2d1;display:grid;grid-template-columns:.9fr 1.1fr;font-family:'IBM Plex Sans Arabic',sans-serif}
+  .split .side{padding:40px 36px;display:flex;flex-direction:column;gap:14px;border-left:1px solid #172a45}
+  .split h2{color:#e6f1ff;font-size:2.2rem;font-weight:700}
+  .split .role{color:#ccd6f6;font-size:1.1rem}
+  .split .nav{margin-top:18px;display:flex;flex-direction:column;gap:10px;font-size:.85rem;letter-spacing:.5px}
+  .split .nav a{display:flex;align-items:center;gap:10px}
+  .split .nav a::before{content:"";width:28px;height:1px;background:#4a5a7a}
+  .split .nav a.on{color:#e6f1ff}.split .nav a.on::before{width:56px;background:#64ffda}
+  .split .main{padding:40px 36px;display:flex;flex-direction:column;gap:16px}
+  .split .job{display:grid;grid-template-columns:90px 1fr;gap:12px;padding:12px;border-radius:10px}
+  .split .job:hover{background:#112240}
+  .split .job small{color:#64ffda;font-family:monospace}
+  .split .job b{color:#e6f1ff}
+  .split .tags span{color:#64ffda;background:rgba(100,255,218,.1);border-radius:999px;padding:2px 10px;font-size:.75rem;margin-left:4px}
+
+  /* ===== 3) Blueprint (engineering) ===== */
+  .bp{background-color:#0d2a4a;color:#e8f1ff;padding:40px;position:relative;
+    background-image:linear-gradient(rgba(255,255,255,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.07) 1px,transparent 1px),
+    linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+    background-size:80px 80px,80px 80px,16px 16px,16px 16px;font-family:'Tajawal',sans-serif}
+  .bp-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:36px;align-items:center}
+  .bp .tag{font-family:monospace;font-size:.8rem;color:#7cc4ff;border:1px dashed #7cc4ff;display:inline-block;padding:2px 10px;margin-bottom:14px}
+  .bp h2{font-size:2.3rem;font-weight:900;line-height:1.35}
+  .bp p{color:#b8cce6;margin:12px 0 20px}
+  .bp .btn{display:inline-block;border:2px solid #e8f1ff;padding:8px 22px;font-weight:700}
+  .bp .frame-pic{position:relative;border:2px solid #7cc4ff;padding:10px;max-width:300px;width:100%;margin-inline-start:auto}
+  .bp .frame-pic .photo{aspect-ratio:4/5}
+  .bp .dim{position:absolute;font-family:monospace;font-size:.7rem;color:#7cc4ff}
+  .bp .dim.t{top:-22px;right:0;left:0;text-align:center;border-bottom:1px solid #7cc4ff}
+  .bp .dim.s{left:-46px;top:0;bottom:0;writing-mode:vertical-rl;text-align:center;border-left:1px solid #7cc4ff}
+  .bp .specs{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap}
+  .bp .specs div{border:1px solid rgba(124,196,255,.5);padding:6px 12px;font-size:.8rem}
+  .bp .specs b{display:block;color:#7cc4ff;font-family:monospace;font-size:.7rem}
+
+  /* ===== 4) Editorial Minimal ===== */
+  .ed{background:#f7f5f0;color:#111;padding:48px 44px;font-family:'Tajawal',sans-serif}
+  .ed .top{display:flex;justify-content:space-between;font-size:.85rem;border-bottom:1px solid #111;padding-bottom:10px}
+  .ed h2{font-size:clamp(2.4rem,6vw,4.6rem);font-weight:900;line-height:1.15;margin:34px 0 18px;letter-spacing:-1px}
+  .ed h2 .o{color:transparent;-webkit-text-stroke:1.5px #111}
+  .ed .row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;border-top:1px solid #111;padding-top:16px}
+  .ed .row small{display:block;color:#777}
+  .ed .row b{font-size:1rem}
+  .ed .cta{margin-top:26px;display:inline-block;background:#111;color:#f7f5f0;padding:10px 26px;border-radius:999px;font-weight:700}
+
+  /* ===== 5) Current (teal corporate) ===== */
+  .cur{background:radial-gradient(circle at 20% 30%,#13615a 0%,#0b3d3a 60%);color:#fff;padding:44px;display:grid;grid-template-columns:1.1fr .9fr;gap:30px;align-items:center}
+  .cur h2{font-size:2.2rem;font-weight:900;line-height:1.4}
+  .cur p{color:rgba(255,255,255,.75);margin:12px 0 22px}
+  .cur .btn{background:#0f9d8a;padding:10px 24px;border-radius:999px;font-weight:700;display:inline-block}
+  .cur .photo{aspect-ratio:4/5;border-radius:18px;max-width:280px;margin-inline-start:auto;width:100%}
+
+  @media (max-width:760px){
+    .bento{grid-template-columns:repeat(2,1fr)}
+    .b.hero,.b.brq{grid-column:span 2}
+    .split,.bp-grid,.cur{grid-template-columns:1fr}
+    .split .side{border-left:none;border-bottom:1px solid #172a45}
+    .bp{padding:28px 20px}.bp .dim.s{display:none}
+    .ed{padding:32px 20px}.ed .row{grid-template-columns:1fr}
+    .cur{padding:28px 20px}.cur .photo{margin:0 auto}
+  }
+</style>
+</head>
+<body>
+<h1 class="page-title">5 أنماط تصميم لموقعك — اختار اللي يشبهك</h1>
+<p class="page-sub">كل نمط معروض بمحتواك إنت. ده شكل أول الصفحة بس، والباقي بيمشي على نفس الروح.</p>
+
+<!-- 1 -->
+<div class="option">
+  <div class="label"><span class="num">1</span><b>بينتو (Bento Grid)</b><span>كروت بأحجام مختلفة زي علبة الأكل اليابانية. أشهر ترند في المواقع الشخصية حاليًا، وأبل بتستخدمه في عروضها.</span></div>
+  <div class="frame bento">
+    <div class="b hero"><small>👋 أهلًا، أنا عمار</small><h2>مهندس يصنع المحتوى<br><em>ويبني بالذكاء الاصطناعي</em></h2></div>
+    <div class="b pic"><div class="photo">ع</div></div>
+    <div class="b yt"><small style="color:#ffe4e6">يوتيوب</small><h3>▶ تابع رحلتي</h3></div>
+    <div class="b"><small>الشركة</small><h3>مطلوب للتجارة والخدمات</h3></div>
+    <div class="b brq"><small>مشروعي</small><h3>🛵 براق — كل احتياجات بيتك لحد باب البيت</h3></div>
+    <div class="b stack"><small>بشتغل بـ</small><div><span>Python</span><span>AI</span><span>IoT</span><span>أتمتة</span></div></div>
+    <div class="b wa"><small style="color:#14532d">تواصل</small>💬 كلّمني واتساب</div>
+  </div>
+</div>
+
+<!-- 2 -->
+<div class="option">
+  <div class="label"><span class="num">2</span><b>سيرة المطوّر (Split Resume)</b><span>عمود ثابت فيه اسمك والقايمة، والمحتوى بيتحرك جنبه. مستوحى من بورتفوليوهات مطورين اتنسخت آلاف المرات على GitHub.</span></div>
+  <div class="frame split">
+    <div class="side">
+      <h2>عمار المهدي</h2>
+      <div class="role">مهندس مدني • مؤسس مطلوب • صانع محتوى</div>
+      <p>أبني حلولًا هندسية وبرمجية، وأشارك رحلتي في تعلّم الذكاء الاصطناعي.</p>
+      <div class="nav"><a class="on">من أنا</a><a>الخبرات</a><a>المشاريع</a><a>تواصل</a></div>
+    </div>
+    <div class="main">
+      <div class="job"><small>الآن</small><div><b>مؤسس — مطلوب للتجارة والخدمات</b><p>استشارات هندسية وتراخيص وإشراف، وخدمات برمجية.</p><div class="tags"><span>هندسة</span><span>إدارة</span></div></div></div>
+      <div class="job"><small>تجريبي</small><div><b>براق — تطبيق توصيل</b><p>توصيل احتياجات البيت، وقريبًا الخدمات الفنية.</p><div class="tags"><span>تطبيق</span><span>منتج</span></div></div></div>
+      <div class="job"><small>مستمر</small><div><b>صانع محتوى على يوتيوب</b><p>برمجة وذكاء اصطناعي وتوثيق رحلتي.</p><div class="tags"><span>محتوى</span><span>AI</span></div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- 3 -->
+<div class="option">
+  <div class="label"><span class="num">3</span><b>المخطط الهندسي (Blueprint)</b><span>خلفية زي ورق الرسم الهندسي، وأبعاد وخطوط قياس. ده نمط اقترحته مخصوص ليك، بيجمع بين الهندسة المدنية والتقنية، ونادر تلاقيه.</span></div>
+  <div class="frame bp">
+    <div class="bp-grid">
+      <div>
+        <span class="tag">// PROJECT: AMMAR_MAHDY — REV.01</span>
+        <h2>مهندس يصنع المحتوى<br>ويبني بالذكاء الاصطناعي</h2>
+        <p>من المخطط الهندسي على الورق، إلى تطبيق ذكي في جيبك.</p>
+        <a class="btn">احجز استشارة ←</a>
+        <div class="specs">
+          <div><b>CIVIL</b>استشارات وتراخيص</div>
+          <div><b>CODE</b>تطبيقات ومواقع</div>
+          <div><b>MEDIA</b>محتوى مرئي ومسموع</div>
+        </div>
+      </div>
+      <div class="frame-pic"><span class="dim t">4000 mm</span><span class="dim s">5000 mm</span><div class="photo">ع</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- 4 -->
+<div class="option">
+  <div class="label"><span class="num">4</span><b>تحريري بسيط (Editorial Minimal)</b><span>خطوط ضخمة، ومساحات فاضية كتير، وأبيض وأسود. شكل فخم وهادي، زي مجلة.</span></div>
+  <div class="frame ed">
+    <div class="top"><b>عمار المهدي</b><span>من أنا — الأعمال — تواصل</span></div>
+    <h2>مهندس.<br><span class="o">صانع محتوى.</span><br>بنّاء بالذكاء الاصطناعي.</h2>
+    <div class="row">
+      <div><small>01</small><b>استشارات وخدمات هندسية</b></div>
+      <div><small>02</small><b>محتوى مرئي ومسموع</b></div>
+      <div><small>03</small><b>برمجة وأتمتة</b></div>
+    </div>
+    <a class="cta">ابدأ المحادثة ←</a>
+  </div>
+</div>
+
+<!-- 5 -->
+<div class="option">
+  <div class="label"><span class="num">5</span><b>الحالي (شركات — أخضر)</b><span>التصميم اللي عملناه، للمقارنة.</span></div>
+  <div class="frame cur">
+    <div><h2>مهندس يصنع المحتوى<br>ويبني بالذكاء الاصطناعي</h2><p>أساعدك باستشارة هندسية، أو محتوى مرئي ومسموع، أو أداة ذكية تُؤتمت شغلك.</p><a class="btn">احجز استشارة مجانية ←</a></div>
+    <div class="photo">ع</div>
+  </div>
+</div>
+</body>
+</html>

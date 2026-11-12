@@ -1,193 +1,430 @@
 <!DOCTYPE html>
-<!-- السطر ده بيقول للمتصفح إن ده ملف HTML5 (أحدث إصدار) -->
 <html lang="ar" dir="rtl">
-<!-- lang="ar" = اللغة عربي ، dir="rtl" = الكتابة من اليمين للشمال -->
-
 <head>
-  <!-- الـ head فيه معلومات عن الصفحة مش بتظهر جوّاها -->
   <meta charset="UTF-8">
-  <!-- UTF-8 عشان الحروف العربي تظهر صح -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- السطر ده بيخلي الصفحة تظبط على شاشة الموبايل -->
-  <title>أهلاً بيك في موقعي</title>
-  <!-- العنوان اللي بيظهر فوق في التاب -->
-
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
-  <!-- خط "Cairo" من Google Fonts — مجاني وشكله حلو بالعربي -->
+  <title>عمار المهدي | أفكار تُبنى بدقّة وشغف</title>
+  <meta name="description" content="عمار المهدي — مهندس مدني ومؤسس شركة مطلوب. استشارات وخدمات هندسية، تطبيقات ومواقع، محتوى مرئي ومسموع، وأتمتة بالذكاء الاصطناعي.">
+  <meta name="theme-color" content="#0b3d3a">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 
   <style>
-    /* ===== CSS: ده اللي بيتحكم في الشكل والألوان ===== */
-
-    /* المتغيرات (Variables): بنحط الألوان في مكان واحد عشان نغيّرها بسهولة */
+    /* ================================================================
+       الألوان والمقاسات (Variables) — غيّر --brand وكل الموقع يتغيّر
+       ================================================================ */
     :root {
-      --bg: #0f172a;        /* لون الخلفية (كحلي غامق) */
-      --card: #1e293b;      /* لون الكروت */
-      --text: #f1f5f9;      /* لون الكلام */
-      --muted: #94a3b8;     /* لون الكلام الباهت */
-      --accent: #38bdf8;    /* اللون المميز (لبني) */
-      --accent2: #a78bfa;   /* لون مميز تاني (بنفسجي) */
+      --brand: #0f9d8a;          /* الأخضر المزرق الأساسي */
+      --brand-dark: #0b3d3a;     /* الخلفية الغامقة */
+      --brand-mid: #13615a;
+      --brand-soft: #e8f6f3;     /* خلفية فاتحة */
+      --text: #10201e;
+      --muted: #5b6b69;
+      --card: #f4f7f6;
+      --line: #e3ebe9;
+      --white: #ffffff;
+      --whatsapp: #25d366;
+      --radius: 18px;
     }
 
-    /* بنلغي المسافات الافتراضية اللي المتصفح بيحطها */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Cairo', sans-serif; color: var(--text); background: var(--white); line-height: 1.8; }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
 
-    body {
-      font-family: 'Cairo', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;               /* الصفحة تاخد طول الشاشة كله على الأقل */
-      display: flex;                   /* Flexbox: طريقة لترتيب العناصر */
-      flex-direction: column;
-      align-items: center;             /* في النص بالعرض */
-      justify-content: center;         /* في النص بالطول */
-      padding: 24px 16px;
-      text-align: center;
-    }
+    .container { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
+    section { padding: 88px 0; }
 
-    /* الدايرة اللي فيها الإيموجي */
-    .logo {
-      width: 96px;
-      height: 96px;
-      border-radius: 50%;              /* 50% بتخلي المربع دايرة */
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      display: grid;
-      place-items: center;
-      font-size: 44px;
-      margin-bottom: 24px;
-      animation: float 3s ease-in-out infinite;  /* حركة طلوع ونزول */
-    }
+    /* العنوان الصغير فوق كل قسم: ✦ الخدمات */
+    .eyebrow { display: inline-flex; gap: 6px; align-items: center; font-size: 0.85rem; font-weight: 700; color: var(--muted); }
+    .eyebrow::before { content: "✦"; color: var(--brand); }
+    h2 { font-size: clamp(1.8rem, 4vw, 2.5rem); font-weight: 900; line-height: 1.35; margin: 6px 0 10px; }
+    h2 .hl { color: var(--brand); }
+    .lead { color: var(--muted); max-width: 520px; }
 
-    /* تعريف حركة الـ float */
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50%      { transform: translateY(-10px); }
-    }
-
-    h1 {
-      font-size: clamp(2rem, 6vw, 3.5rem);  /* clamp: الحجم بيكبر ويصغر مع الشاشة */
-      font-weight: 900;
-      margin-bottom: 12px;
-    }
-
-    /* الكلمة الملوّنة جوّه العنوان */
-    h1 span {
-      background: linear-gradient(90deg, var(--accent), var(--accent2));
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-
-    .subtitle {
-      color: var(--muted);
-      font-size: 1.15rem;
-      max-width: 520px;
-      line-height: 1.9;
-      margin-bottom: 36px;
-    }
-
-    /* شبكة الكروت (Grid) */
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 16px;
-      width: 100%;
-      max-width: 720px;
-      margin-bottom: 36px;
-    }
-
-    .card {
-      background: var(--card);
-      border-radius: 16px;
-      padding: 24px 16px;
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      transition: transform 0.2s, border-color 0.2s;
-    }
-
-    /* لما الماوس يقف على الكارت */
-    .card:hover {
-      transform: translateY(-4px);
-      border-color: var(--accent);
-    }
-
-    .card .icon { font-size: 32px; margin-bottom: 8px; }
-    .card h3    { font-size: 1.1rem; margin-bottom: 4px; }
-    .card p     { color: var(--muted); font-size: 0.95rem; }
-
-    /* الزرار */
+    /* ================= الأزرار (فيها دايرة السهم) ================= */
     .btn {
-      background: linear-gradient(90deg, var(--accent), var(--accent2));
-      color: #0f172a;
-      border: none;
-      padding: 14px 32px;
-      border-radius: 999px;
-      font-family: inherit;
-      font-size: 1.05rem;
-      font-weight: 700;
-      cursor: pointer;                 /* شكل الإيد لما الماوس يقف عليه */
-      transition: transform 0.15s;
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 8px 8px 8px 22px; border-radius: 999px; font-weight: 700; font-size: 0.95rem;
+      transition: transform 0.15s, box-shadow 0.15s;
     }
-    .btn:hover  { transform: scale(1.05); }
-    .btn:active { transform: scale(0.97); }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 22px rgba(0,0,0,0.15); }
+    .btn .arrow { width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; background: var(--white); color: var(--brand); font-size: 0.9rem; }
+    .btn-primary { background: var(--brand); color: var(--white); }
+    .btn-dark { background: rgba(255,255,255,0.12); color: var(--white); border: 1px solid rgba(255,255,255,0.25); }
 
-    /* الرسالة اللي بتظهر لما تدوس الزرار */
-    #message {
-      margin-top: 20px;
-      min-height: 28px;
-      color: var(--accent);
-      font-weight: 700;
+    /* ================= الهيدر (شفاف فوق القسم الأول) ================= */
+    header { position: absolute; top: 0; inset-inline: 0; z-index: 20; }
+    nav {
+      display: flex; justify-content: space-between; align-items: center; gap: 12px;
+      margin-top: 18px; padding: 10px 14px 10px 18px; border-radius: 999px;
+      background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.14); backdrop-filter: blur(10px);
+    }
+    .logo { color: var(--white); font-weight: 900; font-size: 1.1rem; }
+    nav ul { list-style: none; display: flex; gap: 24px; }
+    nav ul a { color: rgba(255,255,255,0.8); font-size: 0.92rem; }
+    nav ul a:hover, nav ul a.active { color: var(--white); }
+    nav ul a.active::before { content: "• "; color: var(--brand); }
+    .nav-cta { border: 1px solid rgba(255,255,255,0.35); color: var(--white); padding: 6px 16px; border-radius: 999px; font-size: 0.9rem; }
+
+    /* ================= 1) القسم الأول (Hero) ================= */
+    .hero {
+      position: relative; overflow: hidden; color: var(--white); padding: 140px 0 60px;
+      background:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px) 0 0 / 48px 48px,
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px) 0 0 / 48px 48px,
+        radial-gradient(circle at 15% 25%, #17736a 0%, var(--brand-dark) 60%);
+    }
+    .hero-grid { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 40px; align-items: center; }
+    .hero h1 { font-size: clamp(2.1rem, 5vw, 3.3rem); font-weight: 900; line-height: 1.3; }
+    .hero .desc { color: rgba(255,255,255,0.75); margin: 16px 0 28px; max-width: 470px; }
+    .hero-bottom {
+      display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; flex-wrap: wrap;
+      margin-top: 56px; padding-top: 22px; border-top: 1px solid rgba(255,255,255,0.12);
+    }
+    .hero-bottom strong { font-size: 1.2rem; display: block; }
+    .hero-bottom small { color: rgba(255,255,255,0.6); }
+    .pill { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 8px 16px; border-radius: 12px; font-size: 0.88rem; }
+
+    /* صورتك من غير خلفية خالص: images/me.webp (شفافة)
+       مفيش إطار ولا خلفية — الصورة واقفة مباشرة على خلفية القسم */
+    .photo {
+      width: 100%; aspect-ratio: 4 / 5;
+      background: url('images/me.webp?v=2') center bottom / contain no-repeat;
+      color: transparent; font-size: 0;           /* بنخفي حرف "ع" الاحتياطي */
+      filter: drop-shadow(0 18px 30px rgba(0,0,0,0.25)); /* ظل خفيف حوالين جسمك بس */
+    }
+    .hero-visual { position: relative; max-width: 380px; margin-inline-start: auto; width: 100%; }
+    .hero { padding-bottom: 40px; }
+
+    /* ================= 2) من أنا ================= */
+    .about-grid { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 56px; align-items: center; }
+    .about-text p { color: var(--muted); margin: 10px 0 22px; }
+    .info { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 32px; }
+    .info div { background: var(--card); border-radius: 14px; padding: 16px 18px; }
+    .info .i { font-size: 1.1rem; margin-bottom: 6px; display: block; }
+    .info b { display: block; font-size: 0.95rem; }
+    .info small { color: var(--muted); }
+
+    /* ================= 3) الخدمات ================= */
+    .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 40px; }
+    .card { background: var(--card); border-radius: var(--radius); padding: 26px; position: relative; transition: transform 0.2s, background 0.2s, color 0.2s; }
+    .card:hover { transform: translateY(-4px); }
+    .card .icon { width: 46px; height: 46px; border-radius: 12px; display: grid; place-items: center; background: var(--white); font-size: 1.3rem; margin-bottom: 34px; }
+    .card h3 { font-size: 1.05rem; margin-bottom: 6px; }
+    .card p { color: var(--muted); font-size: 0.92rem; }
+    .card.featured { background: var(--brand); color: var(--white); }
+    .card.featured p { color: rgba(255,255,255,0.85); }
+    .card.featured .icon { background: rgba(255,255,255,0.2); }
+    .card .more { position: absolute; top: 24px; left: 24px; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.4); border-radius: 999px; padding: 2px 4px 2px 12px; font-size: 0.78rem; display: inline-flex; gap: 6px; align-items: center; }
+    .card .more i { width: 22px; height: 22px; border-radius: 50%; background: var(--white); color: var(--brand); display: grid; place-items: center; font-style: normal; font-size: 0.7rem; }
+
+    /* ================= 4) لماذا أنا ================= */
+    .why { background: var(--brand-soft); }
+    .why-grid { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 56px; align-items: center; }
+    .points { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 26px 0; }
+    .point { background: var(--white); border-radius: 14px; padding: 18px; }
+    .point .i { color: var(--brand); font-size: 1.1rem; }
+    .point h4 { font-size: 0.98rem; margin: 6px 0 2px; }
+    .point p { color: var(--muted); font-size: 0.86rem; }
+
+    /* ================= 5) شريط المجالات (بيتحرك لوحده) ================= */
+    .industries { padding: 56px 0; text-align: center; background: linear-gradient(180deg, var(--brand-soft), var(--white)); overflow: hidden; }
+    .industries h3 { font-size: 1.5rem; font-weight: 700; margin-bottom: 24px; }
+    .marquee { display: flex; gap: 14px; width: max-content; animation: slide 30s linear infinite; }
+    .marquee:hover { animation-play-state: paused; }
+    @keyframes slide { from { transform: translateX(0); } to { transform: translateX(50%); } }
+    .chip { display: inline-flex; align-items: center; gap: 10px; background: var(--white); border: 1px solid var(--line); border-radius: 999px; padding: 6px 18px 6px 6px; font-weight: 700; color: var(--brand); white-space: nowrap; }
+    .chip i { width: 32px; height: 32px; border-radius: 50%; background: var(--brand); color: var(--white); display: grid; place-items: center; font-style: normal; font-size: 0.9rem; }
+
+    /* ================= 6) أعمالي (مكان "آراء العملاء") ================= */
+    .center { text-align: center; }
+    .center .lead { margin: 0 auto; }
+    .works { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 16px; margin-top: 40px; text-align: start; }
+    .work { background: var(--card); border-radius: var(--radius); padding: 26px; display: flex; flex-direction: column; gap: 10px; }
+    .work.big { grid-row: span 2; justify-content: space-between; }
+    .work .ic { width: 52px; height: 52px; border-radius: 14px; display: grid; place-items: center; font-size: 1.5rem; background: var(--white); }
+    .work.big .ic { width: 64px; height: 64px; font-size: 2rem; }
+    .work small { color: var(--brand); font-weight: 700; }
+    .work h3 { font-size: 1.1rem; }
+    .work.big h3 { font-size: 1.6rem; line-height: 1.4; }
+    .work p { color: var(--muted); font-size: 0.93rem; }
+    .work .link { color: var(--brand); font-weight: 700; font-size: 0.92rem; }
+    .badge { display: inline-block; background: #fff4d6; color: #8a6100; border-radius: 999px; padding: 1px 10px; font-size: 0.75rem; font-weight: 700; margin-inline-start: 6px; }
+
+    /* ================= 7) أسئلة شائعة ================= */
+    .faq { background: var(--brand-soft); }
+    .faq-grid { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 48px; }
+    details { background: var(--white); border-radius: 14px; padding: 16px 20px; margin-bottom: 12px; border: 1px solid var(--line); }
+    summary { font-weight: 700; cursor: pointer; list-style: none; display: flex; justify-content: space-between; gap: 12px; }
+    summary::-webkit-details-marker { display: none; }
+    summary::after { content: "⌄"; color: var(--brand); font-size: 1.2rem; line-height: 1; transition: transform 0.2s; }
+    details[open] summary::after { transform: rotate(180deg); }
+    details p { color: var(--muted); margin-top: 10px; font-size: 0.95rem; }
+
+    /* ================= 8) بانر الدعوة (فيه صورتك) ================= */
+    .cta-box {
+      display: grid; grid-template-columns: 1.3fr 0.7fr; align-items: end; overflow: hidden;
+      background: radial-gradient(circle at 80% 20%, var(--brand-mid), var(--brand-dark));
+      color: var(--white); border-radius: 28px;
+    }
+    .cta-box .txt { padding: 52px 44px; }
+    .cta-box h2 { color: var(--white); }
+    .cta-box p { color: rgba(255,255,255,0.75); margin-bottom: 26px; max-width: 460px; }
+    /* في البانر: صورتك طالعة من تحت، زي التصميم الأصلي */
+    .cta-box .photo { max-width: 300px; margin: 20px 0 0 auto; align-self: end; }
+
+    /* ================= الفوتر ================= */
+    footer { padding: 56px 0 26px; }
+    .foot-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 30px; }
+    footer .logo { color: var(--text); }
+    footer p { color: var(--muted); font-size: 0.92rem; margin: 10px 0 16px; max-width: 300px; }
+    footer h5 { font-size: 0.95rem; margin-bottom: 8px; }
+    footer ul { list-style: none; }
+    footer li a { color: var(--muted); font-size: 0.9rem; line-height: 2.2; }
+    footer li a:hover { color: var(--brand); }
+    .social { display: flex; gap: 8px; }
+    .social a { width: 34px; height: 34px; border-radius: 50%; background: var(--text); color: var(--white); display: grid; place-items: center; font-size: 0.85rem; }
+    .copy { border-top: 1px solid var(--line); margin-top: 36px; padding-top: 18px; color: var(--muted); font-size: 0.85rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+
+    .whatsapp-float {
+      position: fixed; bottom: 20px; left: 20px; z-index: 40; width: 56px; height: 56px; border-radius: 50%;
+      background: var(--whatsapp); display: grid; place-items: center; font-size: 26px; box-shadow: 0 8px 22px rgba(0,0,0,0.25);
     }
 
-    footer {
-      margin-top: 48px;
-      color: var(--muted);
-      font-size: 0.85rem;
+    /* ================= الموبايل ================= */
+    @media (max-width: 860px) {
+      nav ul { display: none; }
+      section { padding: 60px 0; }
+      .hero { padding-top: 120px; text-align: center; }
+      .hero-grid, .about-grid, .why-grid, .faq-grid, .works, .cta-box { grid-template-columns: 1fr; }
+      .hero .desc { margin-inline: auto; }
+      .hero-visual { margin: 10px auto 0; max-width: 280px; }
+      .hero-bottom { justify-content: center; text-align: center; }
+      .about-grid .photo, .why-grid .photo { max-width: 320px; margin: 0 auto; }
+      .cards, .points, .info { grid-template-columns: 1fr; }
+      .work.big { grid-row: auto; }
+      .cta-box .txt { padding: 40px 22px 10px; text-align: center; }
+      .cta-box p { margin-inline: auto; }
+      .cta-box .photo { margin: 0 auto; max-width: 240px; }
+      .foot-grid { grid-template-columns: 1fr 1fr; }
     }
   </style>
 </head>
 
 <body>
-  <!-- الـ body: كل اللي هنا بيظهر في الصفحة -->
 
-  <div class="logo">👋</div>
-
-  <h1>أهلاً بيك في <span>موقعي</span></h1>
-
-  <p class="subtitle">
-    ده أول موقع ليا! بتعلّم البرمجة خطوة بخطوة، وهبني هنا مشاريعي وأشاركها معاكم.
-  </p>
-
-  <!-- 3 كروت بتعرّف بالمجالات -->
-  <div class="cards">
-    <div class="card">
-      <div class="icon">💻</div>
-      <h3>برمجة المواقع</h3>
-      <p>مواقع ومتاجر وتطبيقات</p>
+  <!-- ===================== الهيدر ===================== -->
+  <header>
+    <div class="container">
+      <nav>
+        <a class="logo" href="#">عمار المهدي</a>
+        <ul>
+          <li><a class="active" href="#">الرئيسية</a></li>
+          <li><a href="#about">من أنا</a></li>
+          <li><a href="#services">الخدمات</a></li>
+          <li><a href="#works">أعمالي</a></li>
+          <li><a href="#faq">أسئلة شائعة</a></li>
+        </ul>
+        <a class="nav-cta" href="#contact">📞 تواصل</a>
+      </nav>
     </div>
-    <div class="card">
-      <div class="icon">🎬</div>
-      <h3>محتوى رقمي</h3>
-      <p>فيديوهات ومنتجات رقمية</p>
-    </div>
-    <div class="card">
-      <div class="icon">🤖</div>
-      <h3>أتمتة</h3>
-      <p>وكلاء ذكاء اصطناعي وأدوات</p>
-    </div>
-  </div>
+  </header>
 
-  <!-- onclick: لما تدوس، شغّل الدالة sayHello -->
-  <button class="btn" onclick="sayHello()">دوس هنا 🚀</button>
-  <p id="message"></p>
+  <main>
+    <!-- ===================== 1) القسم الأول ===================== -->
+    <section class="hero">
+      <div class="container">
+        <div class="hero-grid">
+          <div>
+            <h1>أفكارٌ تُبنى<br>بدقّةٍ وشغف</h1>
+            <p class="desc">لنحوّل التحديات إلى حلول هندسية وتقنية مبتكرة، توفّر الوقت والجهد.</p>
+            <a class="btn btn-primary" href="https://wa.me/201000649748" target="_blank" rel="noopener">احجز استشارة مجانية <span class="arrow">←</span></a>
+          </div>
+          <div class="hero-visual">
+            <div class="photo" role="img" aria-label="صورة عمار المهدي">ع</div>
+          </div>
+        </div>
+        <div class="hero-bottom">
+          <div>
+            <strong>عمار المهدي</strong>
+            <small>استشارات هندسية • تطبيقات ومواقع • محتوى مرئي ومسموع • أتمتة بالذكاء الاصطناعي</small>
+          </div>
+          <span class="pill">🏗️ مهندس مدني</span>
+        </div>
+      </div>
+    </section>
 
+    <!-- ===================== 2) من أنا ===================== -->
+    <section id="about">
+      <div class="container about-grid">
+        <div class="photo" role="img" aria-label="صورة عمار المهدي">ع</div>
+        <div class="about-text">
+          <span class="eyebrow">من أنا</span>
+          <h2>عمار المهدي</h2>
+          <p>
+            مهندس مدني ومؤسس شركة "مطلوب للتجارة والخدمات"، أقدّم من خلالها الاستشارات الهندسية وتراخيص البناء
+            والإشراف على المشاريع، إلى جانب تطوير التطبيقات والمواقع والأنظمة البرمجية. أبني مع فريقي تطبيق "براق"،
+            وأوثّق رحلتي في تعلّم البرمجة والذكاء الاصطناعي لأشاركها مع غيري.
+          </p>
+          <a class="btn btn-primary" href="https://www.youtube.com/@Ammar.Al-mahdy" target="_blank" rel="noopener">تابع رحلتي <span class="arrow">←</span></a>
+          <div class="info">
+            <div><span class="i">🏢</span><b>الشركة</b><small>مطلوب للتجارة والخدمات</small></div>
+            <div><span class="i">🌍</span><b>طريقة العمل</b><small>أونلاين — لكل العالم العربي</small></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== 3) الخدمات ===================== -->
+    <section id="services" style="padding-top:0">
+      <div class="container">
+        <span class="eyebrow">الخدمات</span>
+        <h2>خدمات <span class="hl">أقدّمها لك</span></h2>
+        <p class="lead">من الاستشارة الهندسية، إلى التطبيق الذكي، إلى المحتوى الذي يوصلك إلى جمهورك.</p>
+        <div class="cards">
+          <div class="card"><div class="icon">🏗️</div><h3>استشارات وخدمات هندسية</h3><p>استشارات، تراخيص بناء، وإشراف على مشاريع البناء والتشطيبات.</p></div>
+          <div class="card featured"><a class="more" href="https://wa.me/201000649748" target="_blank" rel="noopener">اعرف أكثر <i>←</i></a><div class="icon">📱</div><h3>تطبيقات ومواقع وأنظمة</h3><p>تطبيقات موبايل، مواقع، وأنظمة برمجية حسب احتياج عملك.</p></div>
+          <div class="card"><div class="icon">🎬</div><h3>محتوى مرئي ومسموع</h3><p>فيديوهات ومحتوى يشرح فكرتك ويبني ثقة جمهورك بك.</p></div>
+          <div class="card"><div class="icon">⚙️</div><h3>أتمتة المهام والعمليات</h3><p>أدوات ذكية تنجز الأعمال المتكررة تلقائيًا وتوفّر وقتك.</p></div>
+          <div class="card"><div class="icon">🎯</div><h3>بناء الهوية أونلاين</h3><p>تجهيز حضورك أو حضور شركتك على السوشيال والإنترنت.</p></div>
+          <div class="card"><div class="icon">📦</div><h3>منتجات رقمية</h3><p>كتب إلكترونية وقوالب وملفات جاهزة لجمهورك.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== 4) لماذا أنا ===================== -->
+    <section class="why">
+      <div class="container why-grid">
+        <div class="photo" role="img" aria-label="صورة عمار المهدي">ع</div>
+        <div>
+          <span class="eyebrow">لماذا أنا؟</span>
+          <h2>لماذا تعمل مع <span class="hl">عمار</span>؟</h2>
+          <p class="lead">أجمع بين عقلية المهندس وأدوات التقنية الحديثة.</p>
+          <div class="points">
+            <div class="point"><span class="i">🎯</span><h4>دقة واهتمام بالتفاصيل</h4><p>أراجع كل جزء حتى يخرج العمل كما تتوقعه.</p></div>
+            <div class="point"><span class="i">🧭</span><h4>هندسة وتقنية في مكان واحد</h4><p>الاستشارة الهندسية والحل التقني من مكان واحد.</p></div>
+            <div class="point"><span class="i">⚡</span><h4>أدوات ذكاء اصطناعي حديثة</h4><p>تنفيذ أسرع وجودة أعلى.</p></div>
+            <div class="point"><span class="i">🤝</span><h4>تواصل واضح</h4><p>تعرف في كل خطوة ماذا نفعل ولماذا.</p></div>
+          </div>
+          <a class="btn btn-primary" href="#contact">تواصل معي <span class="arrow">←</span></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== 5) المجالات ===================== -->
+    <section class="industries">
+      <h3>أعمل مع</h3>
+      <!-- القايمة متكررة مرتين عشان الحركة تبان متصلة من غير قطع -->
+      <div class="marquee">
+        <span class="chip"><i>🏪</i>المشاريع الصغيرة</span>
+        <span class="chip"><i>🏠</i>ملّاك العقارات والمباني</span>
+        <span class="chip"><i>🚀</i>رواد الأعمال</span>
+        <span class="chip"><i>🎥</i>صنّاع المحتوى</span>
+        <span class="chip"><i>🛒</i>المتاجر الإلكترونية</span>
+        <span class="chip"><i>🏗️</i>شركات المقاولات</span>
+        <span class="chip"><i>🏪</i>المشاريع الصغيرة</span>
+        <span class="chip"><i>🏠</i>ملّاك العقارات والمباني</span>
+        <span class="chip"><i>🚀</i>رواد الأعمال</span>
+        <span class="chip"><i>🎥</i>صنّاع المحتوى</span>
+        <span class="chip"><i>🛒</i>المتاجر الإلكترونية</span>
+        <span class="chip"><i>🏗️</i>شركات المقاولات</span>
+      </div>
+    </section>
+
+    <!-- ===================== 6) أعمالي =====================
+         ده مكان "آراء العملاء" في التصميم الأصلي — هنضيف الآراء لما نجمع آراء حقيقية -->
+    <section id="works" class="center">
+      <div class="container">
+        <span class="eyebrow">أعمالي</span>
+        <h2>مشاريع <span class="hl">نملكها ونبنيها</span></h2>
+        <p class="lead">منتجات حقيقية نديرها باسمنا ضمن شركة مطلوب.</p>
+        <div class="works">
+          <div class="work big">
+            <div>
+              <div class="ic">🛵</div>
+              <small style="display:block;margin-top:18px">تطبيق توصيل <span class="badge">إطلاق تجريبي</span></small>
+              <h3>براق — طلباتك، بين إيديك</h3>
+              <p>توصيل احتياجات المنزل: بقالة، مخبوزات، لحوم ودواجن، منظفات، عناية شخصية، وصيدلية. وقريبًا المطاعم والخدمات الفنية مثل السباكة والكهرباء والتكييف.</p>
+            </div>
+            <a class="link" href="https://bourraq.com" target="_blank" rel="noopener">زيارة الموقع ←</a>
+          </div>
+          <div class="work">
+            <div class="ic">🧾</div>
+            <small>نظام للمحلات</small>
+            <h3>براق كاشير</h3>
+            <p>نظام كاشير مرتبط بمنظومة براق لإدارة مبيعات المحلات.</p>
+            <a class="link" href="https://cashier.bourraq.com" target="_blank" rel="noopener">زيارة الموقع ←</a>
+          </div>
+          <div class="work">
+            <div class="ic">🏢</div>
+            <small>شركتي</small>
+            <h3>مطلوب للتجارة والخدمات</h3>
+            <p>خدمات هندسية وخدمات برمجية للأفراد والشركات.</p>
+            <a class="link" href="https://wa.me/201000649748" target="_blank" rel="noopener">اسأل عن خدماتنا ←</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== 7) أسئلة شائعة ===================== -->
+    <section id="faq" class="faq">
+      <div class="container faq-grid">
+        <div>
+          <span class="eyebrow">أسئلة شائعة</span>
+          <h2>أسئلة <span class="hl">تتكرر كثيرًا</span></h2>
+          <p class="lead">إجابات سريعة عن طريقة عملي.</p>
+        </div>
+        <div>
+          <details open><summary>ما الخدمات التي تقدّمها؟</summary><p>استشارات وخدمات هندسية (تراخيص وإشراف وتشطيبات)، تطبيقات ومواقع وأنظمة، محتوى مرئي ومسموع، أتمتة المهام، وبناء الهوية أونلاين.</p></details>
+          <details><summary>هل تعمل مع المشاريع الصغيرة؟</summary><p>نعم، نبدأ بنسخة بسيطة تناسب ميزانيتك، ثم نطوّرها مع نمو مشروعك.</p></details>
+          <details><summary>هل الاستشارة الأولى مدفوعة؟</summary><p>الاستشارة الأولى مجانية، لنفهم احتياجك ونختار الحل الأنسب.</p></details>
+          <details><summary>هل تتابع بعد التسليم؟</summary><p>نعم، أتابع معك بعد التسليم للتأكد من أن كل شيء يعمل كما ينبغي.</p></details>
+          <details><summary>كيف نبدأ؟</summary><p>أرسل لي على واتساب، وسأرد عليك بخطة واضحة وسعر مبدئي.</p></details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== 8) بانر الدعوة ===================== -->
+    <section id="contact">
+      <div class="container">
+        <div class="cta-box">
+          <div class="txt">
+            <h2>جاهز نبدأ مشروعك؟</h2>
+            <p>سواء كانت استشارة هندسية، أو تطبيقًا، أو محتوى — أرسل لي فكرتك الآن ونحوّلها معًا إلى حل حقيقي.</p>
+            <a class="btn btn-dark" href="https://wa.me/201000649748" target="_blank" rel="noopener">تواصل الآن <span class="arrow">←</span></a>
+          </div>
+          <div class="photo" role="img" aria-label="صورة عمار المهدي">ع</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===================== الفوتر ===================== -->
   <footer>
-    اتعمل بحب ❤️ — <span id="year"></span>
+    <div class="container">
+      <div class="foot-grid">
+        <div>
+          <a class="logo" href="#">عمار المهدي</a>
+          <p>هندسة • برمجة • محتوى — مهندس مدني ومؤسس شركة مطلوب.</p>
+          <div class="social">
+            <a href="https://wa.me/201000649748" target="_blank" rel="noopener" aria-label="واتساب">💬</a>
+            <a href="https://www.youtube.com/@Ammar.Al-mahdy" target="_blank" rel="noopener" aria-label="يوتيوب">▶</a>
+          </div>
+        </div>
+        <div><h5>الموقع</h5><ul><li><a href="#about">من أنا</a></li><li><a href="#services">الخدمات</a></li><li><a href="#works">أعمالي</a></li></ul></div>
+        <div><h5>مشاريعي</h5><ul><li><a href="https://bourraq.com" target="_blank" rel="noopener">براق</a></li><li><a href="https://cashier.bourraq.com" target="_blank" rel="noopener">براق كاشير</a></li></ul></div>
+        <div><h5>تواصل</h5><ul><li><a href="https://wa.me/201000649748" target="_blank" rel="noopener">واتساب</a></li><li><a href="https://www.youtube.com/@Ammar.Al-mahdy" target="_blank" rel="noopener">يوتيوب</a></li></ul></div>
+      </div>
+      <div class="copy"><span>© <span id="year"></span> عمار المهدي. جميع الحقوق محفوظة.</span><span>صُمّم وبُني بالذكاء الاصطناعي</span></div>
+    </div>
   </footer>
 
+  <a class="whatsapp-float" href="https://wa.me/201000649748" target="_blank" rel="noopener" aria-label="تواصل على واتساب">💬</a>
+
   <script>
+<<<<<<< HEAD
+=======
     // ===== JavaScript: ده اللي بيخلي الصفحة "تتفاعل" =====
 
     // رسايل عشوائية بتظهر كل ما تدوس الزرار
@@ -195,7 +432,7 @@
       'أهلاً بيك! 🎉',
       'كل خطوة صغيرة بتفرق 💪',
       'أول موقع… والجاي أحلى 🚀',
-      'شكرًا إنك زرتني ❤️'
+      'شكرًا إنك نورتني ❤️'
     ];
 
     function sayHello() {
@@ -206,6 +443,7 @@
     }
 
     // بنكتب السنة الحالية في الفوتر أوتوماتيك
+>>>>>>> 0f2cd03d548777e38f0d493ff2a3db6415d6c578
     document.getElementById('year').textContent = new Date().getFullYear();
   </script>
 </body>

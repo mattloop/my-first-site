@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>أنماط مستوحاة من مواقع مشهورة</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Tajawal:wght@400;500;700;900&family=IBM+Plex+Sans+Arabic:wght@400;600;700&family=Readex+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Cairo',sans-serif;background:#eef1f4;color:#111;padding:24px 16px 60px}
+  .page-title{max-width:1100px;margin:0 auto 6px;font-size:1.6rem;font-weight:900}
+  .page-sub{max-width:1100px;margin:0 auto 28px;color:#555}
+  .option{max-width:1100px;margin:0 auto 40px}
+  .label{margin-bottom:10px}
+  .label .top{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  .label b{font-size:1.25rem}
+  .num{background:#111;color:#fff;border-radius:8px;padding:2px 10px;font-weight:900}
+  .insp{background:#fff;border:1px solid #d5dbe1;border-radius:999px;padding:2px 12px;font-size:.8rem;color:#333}
+  .label p{color:#555;font-size:.95rem;margin-top:4px}
+  .frame{border-radius:16px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.12)}
+  .photo{background:url('images/me.jpg') center top/cover,linear-gradient(160deg,#9aa,#566);display:grid;place-items:center;font-weight:900;color:rgba(255,255,255,.35)}
+  a{color:inherit;text-decoration:none}
+
+  /* ===== A) صانع المحتوى (Ali Abdaal) ===== */
+  .A{background:#fffaf3;color:#1d1b16;padding:44px 40px;font-family:'Tajawal',sans-serif}
+  .A-hero{display:grid;grid-template-columns:1.3fr .7fr;gap:32px;align-items:center}
+  .A h2{font-size:2.3rem;font-weight:900;line-height:1.3}
+  .A h2 span{background:linear-gradient(transparent 60%,#ffd76a 60%)}
+  .A .bio{color:#5a554b;margin:12px 0 20px;font-size:1.05rem;line-height:1.9}
+  .A .btn{display:inline-block;background:#1d1b16;color:#fff;padding:12px 26px;border-radius:12px;font-weight:700}
+  .A .photo{aspect-ratio:1;border-radius:50%;border:6px solid #fff;box-shadow:0 12px 30px rgba(0,0,0,.12);font-size:3rem}
+  .A .strip{display:flex;gap:28px;justify-content:center;flex-wrap:wrap;margin:34px 0 26px;padding:14px 0;border-top:1px solid #eadfcc;border-bottom:1px solid #eadfcc;color:#8a826f;font-weight:700}
+  .A h3.sec{font-size:1.4rem;font-weight:900;margin-bottom:14px;text-align:center}
+  .A .help{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  .A .help div{background:#fff;border-radius:16px;padding:18px;box-shadow:0 4px 14px rgba(0,0,0,.05)}
+  .A .help b{display:block;margin:6px 0 4px}
+  .A .help small{color:#6b6556}
+
+  /* ===== B) المؤسس الباني (Pieter Levels) ===== */
+  .B{background:#fff;color:#111;padding:40px;font-family:'IBM Plex Sans Arabic',sans-serif;font-size:.98rem}
+  .B .head{display:flex;gap:16px;align-items:center}
+  .B .photo{width:72px;height:72px;border-radius:50%;font-size:1.4rem;flex:none}
+  .B h2{font-size:1.6rem;font-weight:700}
+  .B .intro{max-width:640px;margin:16px 0 22px;line-height:1.95;color:#333}
+  .B .intro a{text-decoration:underline;text-decoration-color:#f5a623;text-underline-offset:4px}
+  .B .sub{display:flex;gap:8px;margin-bottom:28px;flex-wrap:wrap}
+  .B .sub input{border:1px solid #ccc;border-radius:8px;padding:8px 12px;font-family:inherit;min-width:220px}
+  .B .sub button{background:#ff4742;color:#fff;border:none;border-radius:8px;padding:8px 16px;font-family:inherit;font-weight:700}
+  .B h3{font-size:.85rem;color:#999;margin:18px 0 8px;letter-spacing:.5px}
+  .B .row{display:grid;grid-template-columns:44px 1fr auto;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid #f0f0f0}
+  .B .row .ic{width:44px;height:44px;border-radius:10px;display:grid;place-items:center;font-size:1.3rem;background:#f5f5f5}
+  .B .row small{color:#888}
+  .B .row .st{font-size:.75rem;border-radius:999px;padding:2px 10px;font-weight:700}
+  .st.live{background:#e5f7ea;color:#16803c}.st.beta{background:#fff3d6;color:#8a6100}.st.wip{background:#eef1ff;color:#3b4cc0}
+  .B .log{display:grid;grid-template-columns:90px 1fr;gap:10px;padding:6px 0;color:#333}
+  .B .log span{color:#999;font-size:.85rem}
+
+  /* ===== C) المعلّم العربي (Elzero) ===== */
+  .C{background:#f6f8fb;color:#1f2937;font-family:'Readex Pro',sans-serif}
+  .C .nav{background:#fff;display:flex;justify-content:space-between;align-items:center;padding:14px 28px;box-shadow:0 2px 10px rgba(0,0,0,.04)}
+  .C .nav b{color:#2563eb;font-size:1.2rem}
+  .C .nav span{color:#6b7280;font-size:.9rem}
+  .C .hero{padding:44px 28px;text-align:center;background:linear-gradient(180deg,#fff,#f6f8fb)}
+  .C h2{font-size:2.1rem;font-weight:700}
+  .C h2 em{font-style:normal;color:#2563eb}
+  .C .hero p{color:#6b7280;margin:10px auto 20px;max-width:560px}
+  .C .btn{background:#2563eb;color:#fff;padding:10px 24px;border-radius:8px;font-weight:600;display:inline-block}
+  .C .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;padding:0 28px 32px}
+  .C .course{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 4px 14px rgba(0,0,0,.05)}
+  .C .thumb{height:110px;display:grid;place-items:center;font-size:2.2rem;color:#fff;font-weight:700}
+  .C .course div.t{padding:14px}
+  .C .course b{display:block;margin-bottom:4px}
+  .C .course small{color:#6b7280}
+  .C .meta{display:flex;justify-content:space-between;color:#2563eb;font-size:.8rem;margin-top:8px;font-weight:600}
+
+  /* ===== D) المرح التفاعلي (Josh W. Comeau) ===== */
+  .D{background:#16123a;color:#f2efff;padding:44px 40px;font-family:'Cairo',sans-serif;position:relative;overflow:hidden}
+  .D::before{content:"";position:absolute;width:320px;height:320px;border-radius:50%;background:radial-gradient(#7c5cff55,transparent 70%);top:-80px;left:-60px}
+  .D .bar{display:flex;justify-content:space-between;align-items:center;position:relative}
+  .D .toggle{display:flex;gap:8px}
+  .D .toggle span{width:36px;height:36px;border-radius:50%;background:#2a2460;display:grid;place-items:center}
+  .D-hero{display:grid;grid-template-columns:1.2fr .8fr;gap:30px;align-items:center;margin-top:30px;position:relative}
+  .D h2{font-size:2.4rem;font-weight:900;line-height:1.35}
+  .D h2 .w{display:inline-block;color:#ffd166;transform:rotate(-3deg)}
+  .D p{color:#bfb8e8;margin:12px 0 20px}
+  .D .btn{display:inline-block;background:#ff6b9d;color:#16123a;padding:12px 26px;border-radius:999px;font-weight:900;box-shadow:0 6px 0 #c94677}
+  .D .blob{aspect-ratio:1;border-radius:42% 58% 63% 37% / 41% 44% 56% 59%;overflow:hidden;border:4px solid #ffd166}
+  .D .blob .photo{width:100%;height:100%;font-size:3rem}
+  .D .posts{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:30px;position:relative}
+  .D .post{background:#211b52;border-radius:16px;padding:16px;border:1px solid #332b78}
+  .D .post b{display:block;margin:4px 0}
+  .D .post small{color:#a59de0}
+  .D .sp{color:#ffd166}
+
+  @media(max-width:760px){
+    .A,.B,.D{padding:28px 18px}
+    .A-hero,.D-hero{grid-template-columns:1fr}.A .photo{max-width:180px;margin:0 auto}
+    .A .help,.C .grid,.D .posts{grid-template-columns:1fr}
+    .B .row{grid-template-columns:44px 1fr}.B .row .st{grid-column:2}
+    .D .blob{max-width:220px;margin:0 auto}
+  }
+</style>
+</head>
+<body>
+<h1 class="page-title">4 أنماط مستوحاة من مواقع ناس مشهورين</h1>
+<p class="page-sub">أخدت من كل موقع <b>فكرة الترتيب وطريقة عرض المحتوى</b>، مش نسخة من تصميمه. والمحتوى كله بتاعك إنت.</p>
+
+<!-- A -->
+<div class="option">
+  <div class="label">
+    <div class="top"><span class="num">A</span><b>صانع المحتوى</b><span class="insp">مستوحى من: علي عبدال (Ali Abdaal) — يوتيوبر وكاتب</span></div>
+    <p>ترحيب دافي، وشريط بأهم حاجاتك، وكروت فيها "إزاي أقدر أساعدك؟". مناسب لو المحتوى هو الواجهة الأساسية بتاعتك.</p>
+  </div>
+  <div class="frame A">
+    <div class="A-hero">
+      <div>
+        <h2>أهلًا يا أصدقاء 👋<br>أنا عمار، <span>مهندس يصنع المحتوى</span></h2>
+        <p class="bio">أؤسس شركة "مطلوب"، وأبني تطبيق "براق"، وأوثّق رحلتي في تعلّم البرمجة والذكاء الاصطناعي على يوتيوب. أؤمن أن أفضل طريقة للتعلّم هي التنفيذ.</p>
+        <a class="btn">تابع رحلتي على يوتيوب ←</a>
+      </div>
+      <div class="photo">ع</div>
+    </div>
+    <div class="strip"><span>مطلوب للتجارة والخدمات</span><span>•</span><span>براق</span><span>•</span><span>براق كاشير</span><span>•</span><span>يوتيوب</span></div>
+    <h3 class="sec">كيف أستطيع مساعدتك؟</h3>
+    <div class="help">
+      <div>🏗️<b>استشارة هندسية</b><small>تراخيص، إشراف، تشطيبات.</small></div>
+      <div>📱<b>ابنِ تطبيقك</b><small>تطبيقات ومواقع وأنظمة.</small></div>
+      <div>🎬<b>اصنع محتواك</b><small>فيديو ومحتوى يوصل فكرتك.</small></div>
+      <div>⚙️<b>أتمت عملك</b><small>أدوات ذكية توفّر وقتك.</small></div>
+    </div>
+  </div>
+</div>
+
+<!-- B -->
+<div class="option">
+  <div class="label">
+    <div class="top"><span class="num">B</span><b>المؤسس الباني</b><span class="insp">مستوحى من: بيتر ليفلز (Pieter Levels) — @levelsio</span></div>
+    <p>بسيط جدًا وشبه المدوّنة: نبذة قصيرة، وقايمة المنتجات اللي بنيتها وحالة كل واحد، وسجل بتاريخ رحلتك (Build in Public). مناسب لمؤسس بيبني منتجات.</p>
+  </div>
+  <div class="frame B">
+    <div class="head"><div class="photo">ع</div><div><h2>أهلًا، أنا عمار 👋</h2><small style="color:#888">مهندس مدني • مؤسس • صانع محتوى</small></div></div>
+    <p class="intro">أبني مشاريع على الإنترنت مع فريق صغير، وأكتب عن رحلتي في <a>البرمجة</a> و<a>الذكاء الاصطناعي</a> و<a>ريادة الأعمال</a>. أسّست <a>مطلوب</a> للخدمات الهندسية والبرمجية، وأبني <a>براق</a> لتوصيل احتياجات المنزل.</p>
+    <div class="sub"><input placeholder="بريدك الإلكتروني"><button>اشترك في رحلتي</button></div>
+    <h3>ما أبنيه</h3>
+    <div class="row"><div class="ic">🛵</div><div><b>براق</b><br><small>توصيل احتياجات المنزل</small></div><span class="st beta">تجريبي</span></div>
+    <div class="row"><div class="ic">🧾</div><div><b>براق كاشير</b><br><small>نظام كاشير للمحلات</small></div><span class="st beta">تجريبي</span></div>
+    <div class="row"><div class="ic">🏢</div><div><b>مطلوب</b><br><small>خدمات هندسية وبرمجية</small></div><span class="st live">يعمل</span></div>
+    <div class="row"><div class="ic">🌐</div><div><b>هذا الموقع</b><br><small>بنيته بنفسي وأنا أتعلّم</small></div><span class="st wip">قيد البناء</span></div>
+    <h3>سجل الرحلة</h3>
+    <div class="log"><span>نوفمبر 2026</span><div>بنيت أول موقع شخصي لي بنفسي ونشرته على GitHub</div></div>
+    <div class="log"><span>2026</span><div>إطلاق تجريبي لتطبيق براق</div></div>
+  </div>
+</div>
+
+<!-- C -->
+<div class="option">
+  <div class="label">
+    <div class="top"><span class="num">C</span><b>المعلّم العربي</b><span class="insp">مستوحى من: أسامة الزيرو (Elzero Web School)</span></div>
+    <p>شكل أكاديمية: دروس ومسارات تعلّم في كروت فيها صور مصغّرة. مناسب لو هدفك الأساسي إنك تعلّم الناس.</p>
+  </div>
+  <div class="frame C">
+    <div class="nav"><b>أكاديمية عمار</b><span>الدروس • المسارات • المقالات • عنّي</span></div>
+    <div class="hero">
+      <h2>تعلّم <em>البناء بالذكاء الاصطناعي</em> بالعربي</h2>
+      <p>دروس عملية من مهندس يبني تطبيقات حقيقية — من الفكرة إلى منتج يعمل.</p>
+      <a class="btn">ابدأ التعلّم مجانًا</a>
+    </div>
+    <div class="grid">
+      <div class="course"><div class="thumb" style="background:#2563eb">🌐</div><div class="t"><b>ابنِ موقعك الأول</b><small>من الصفر إلى النشر على الإنترنت</small><div class="meta"><span>قريبًا</span><span>مبتدئ</span></div></div></div>
+      <div class="course"><div class="thumb" style="background:#0ea5a4">🔍</div><div class="t"><b>هندسة عكسية لتطبيق توصيل</b><small>كيف يعمل تطبيق مثل براق؟</small><div class="meta"><span>قريبًا</span><span>متوسط</span></div></div></div>
+      <div class="course"><div class="thumb" style="background:#7c3aed">⚙️</div><div class="t"><b>أتمتة شغلك بالـ AI</b><small>وكلاء وأدوات توفّر ساعات</small><div class="meta"><span>قريبًا</span><span>متوسط</span></div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- D -->
+<div class="option">
+  <div class="label">
+    <div class="top"><span class="num">D</span><b>المرح التفاعلي</b><span class="insp">مستوحى من: جوش كومو (Josh W. Comeau) — مطوّر ومعلّم</span></div>
+    <p>ألوان مبهجة، وأشكال ناعمة، وزرار للوضع الليلي، وحركات صغيرة. موقع ليه شخصية ويفضل في دماغ اللي يزوره.</p>
+  </div>
+  <div class="frame D">
+    <div class="bar"><b>عمار ✦</b><div class="toggle"><span>🌙</span><span>🔊</span></div></div>
+    <div class="D-hero">
+      <div>
+        <h2>أحوّل الأفكار إلى<br><span class="w">أشياء حقيقية</span> ✨</h2>
+        <p>مهندس يصنع المحتوى ويبني بالذكاء الاصطناعي — وأشارك كل ما أتعلّمه بطريقة ممتعة.</p>
+        <a class="btn">يلا نبدأ!</a>
+      </div>
+      <div class="blob"><div class="photo">ع</div></div>
+    </div>
+    <div class="posts">
+      <div class="post"><small>🎬 فيديو</small><b>بنيت موقعي بالذكاء الاصطناعي <span class="sp">✦</span></b><small>رحلة من الصفر للنشر</small></div>
+      <div class="post"><small>🔍 هندسة عكسية</small><b>كيف يعمل تطبيق توصيل؟</b><small>نفكّكه خطوة بخطوة</small></div>
+      <div class="post"><small>🏗️ هندسة</small><b>ترخيص البناء ببساطة</b><small>دليل عملي</small></div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

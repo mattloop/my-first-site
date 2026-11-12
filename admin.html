@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>لوحة التحكم | عمار المهدي</title>
+  <link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/grapesjs@0.22.9/dist/css/grapes.min.css">
+  <style>
+    /* ============================================================
+       ألوان اللوحة: كحلي "ورق المهندس" + أبيض بارد
+       المرجاني محجوز لزرار النشر بس، عشان يبقى أهم زرار واضح
+       ============================================================ */
+    :root {
+      --ink: #12304a;
+      --ink-2: #1d4566;
+      --paper: #f4f6f8;
+      --white: #ffffff;
+      --line: #d9e0e6;
+      --muted: #5f6b76;
+      --teal: #2a6f68;
+      --coral: #c2461f;
+      --danger: #b42318;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+    body { font-family: 'Readex Pro', system-ui, sans-serif; color: var(--ink); background: var(--paper); font-size: 16px; line-height: 1.6; }
+    button, input, select, textarea { font: inherit; color: inherit; }
+    [hidden] { display: none !important; }
+    :focus-visible { outline: 3px solid var(--teal); outline-offset: 2px; border-radius: 6px; }
+
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 8px 18px;
+      border-radius: 10px; border: 1.5px solid var(--line); background: var(--white); cursor: pointer; font-weight: 600; white-space: nowrap; }
+    .btn:hover { border-color: var(--ink); }
+    .btn:disabled { opacity: .5; cursor: not-allowed; }
+    .btn.primary { background: var(--ink); border-color: var(--ink); color: var(--white); }
+    .btn.publish { background: var(--coral); border-color: var(--coral); color: var(--white); }
+    .btn.ghost { background: transparent; border-color: transparent; }
+    .btn.danger { color: var(--danger); }
+    .btn.danger:hover { border-color: var(--danger); }
+    .btn.small { min-height: 38px; padding: 6px 12px; font-size: .9rem; }
+
+    /* ================= شاشة الدخول: خلفية ورق رسم هندسي ================= */
+    #login { min-height: 100%; display: grid; place-items: center; padding: 24px 16px;
+      background-color: var(--ink);
+      background-image:
+        linear-gradient(rgba(255,255,255,.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.07) 1px, transparent 1px),
+        linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
+      background-size: 96px 96px, 96px 96px, 16px 16px, 16px 16px; }
+    .login-card { width: 100%; max-width: 400px; background: var(--white); border-radius: 18px; padding: 32px 28px; box-shadow: 0 30px 60px rgba(0,0,0,.25); }
+    .login-card h1 { font-size: 1.6rem; line-height: 1.4; }
+    .login-card p.lead { color: var(--muted); margin: 4px 0 24px; }
+    label { display: block; font-weight: 600; margin-bottom: 6px; }
+    .field { margin-bottom: 16px; }
+    .field input, .field textarea, .field select { width: 100%; min-height: 46px; padding: 10px 14px; border: 1.5px solid var(--line); border-radius: 10px; background: var(--white); }
+    .field textarea { min-height: 90px; resize: vertical; }
+    .field input:focus, .field textarea:focus, .field select:focus { border-color: var(--ink); outline: none; box-shadow: 0 0 0 3px rgba(18,48,74,.15); }
+    .hint { color: var(--muted); font-size: .85rem; margin-top: 4px; }
+    .error { color: var(--danger); font-size: .92rem; margin-top: 4px; min-height: 1.4em; }
+    .login-card .btn { width: 100%; margin-top: 4px; }
+
+    /* ================= قايمة الصفحات ================= */
+    .bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 20px; background: var(--white); border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+    .brand { font-weight: 700; font-size: 1.1rem; }
+    .brand small { display: block; color: var(--muted); font-weight: 400; font-size: .85rem; }
+    .wrap { max-width: 980px; margin: 0 auto; padding: 28px 16px 60px; }
+    .wrap h2 { font-size: 1.4rem; }
+    .actions { display: flex; gap: 10px; flex-wrap: wrap; margin: 16px 0 22px; }
+    .page-row { display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: center; background: var(--white);
+      border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; margin-bottom: 10px; }
+    .page-row h3 { font-size: 1.05rem; }
+    .meta { display: flex; gap: 10px; flex-wrap: wrap; color: var(--muted); font-size: .88rem; margin-top: 2px; }
+    .meta code { direction: ltr; unicode-bidi: isolate; background: var(--paper); padding: 0 6px; border-radius: 6px; }
+    .badge { display: inline-block; padding: 0 10px; border-radius: 999px; font-size: .82rem; font-weight: 600; }
+    .badge.draft { background: #eef1f4; color: var(--muted); }
+    .badge.published { background: #e3f1ef; color: var(--teal); }
+    .row-actions { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+    .empty { text-align: center; background: var(--white); border: 2px dashed var(--line); border-radius: 16px; padding: 40px 20px; }
+    .empty p { color: var(--muted); margin: 6px 0 16px; }
+
+    /* ================= المحرر ================= */
+    #editor { height: 100%; display: flex; flex-direction: column; }
+    .ed-bar { display: flex; align-items: center; gap: 8px; padding: 8px 12px; background: var(--ink); color: var(--white); flex-wrap: wrap; }
+    .ed-bar .btn { min-height: 40px; padding: 6px 12px; background: var(--ink-2); border-color: transparent; color: var(--white); font-size: .9rem; }
+    .ed-bar .btn:hover { border-color: rgba(255,255,255,.5); }
+    .ed-bar .btn.on { background: var(--white); color: var(--ink); }
+    .ed-bar .btn.publish { background: var(--coral); }
+    .ed-bar .sep { width: 1px; align-self: stretch; background: rgba(255,255,255,.2); margin: 0 4px; }
+    .ed-title { font-weight: 600; max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .ed-status { font-size: .85rem; opacity: .85; min-width: 110px; }
+    .grow { flex: 1; }
+    .group { display: flex; gap: 4px; }
+    #gjs-wrap { flex: 1; min-height: 0; position: relative; }
+    #gjs { height: 100%; }
+    /* ألوان محرر GrapesJS نفسه عشان يمشي مع اللوحة */
+    .gjs-one-bg { background-color: var(--ink); }
+    .gjs-two-color { color: #e6edf3; }
+    .gjs-three-bg { background-color: var(--teal); color: #fff; }
+    .gjs-four-color, .gjs-four-color-h:hover { color: #7fd1c6; }
+    .gjs-block { width: 44%; min-height: 84px; font-family: 'Readex Pro', sans-serif; }
+    .gjs-block-label { font-size: .8rem; }
+    .gjs-block-category .gjs-title { font-family: 'Readex Pro', sans-serif; }
+    .ed-phone-note { display: none; background: #fff6e5; color: #7a4b00; padding: 8px 12px; font-size: .9rem; }
+    @media (max-width: 760px) { .ed-phone-note { display: block; } }
+
+    /* ================= نافذة الحوار + الإشعار ================= */
+    dialog { border: none; border-radius: 16px; padding: 0; width: min(520px, calc(100% - 32px)); box-shadow: 0 30px 60px rgba(0,0,0,.3); }
+    dialog::backdrop { background: rgba(18,48,74,.55); }
+    .dlg-body { padding: 24px; }
+    .dlg-body h3 { font-size: 1.2rem; margin-bottom: 12px; }
+    .dlg-body p { color: var(--muted); margin-bottom: 14px; }
+    .dlg-actions { display: flex; gap: 8px; justify-content: flex-start; padding: 0 24px 24px; flex-wrap: wrap; }
+    .choice { display: flex; gap: 10px; align-items: flex-start; border: 1.5px solid var(--line); border-radius: 12px; padding: 12px; margin-bottom: 8px; cursor: pointer; }
+    .choice input { margin-top: 6px; width: 18px; height: 18px; }
+    .choice small { display: block; color: var(--muted); }
+    #toast { position: fixed; bottom: 20px; inset-inline-start: 20px; z-index: 9999; background: var(--ink); color: var(--white);
+      padding: 12px 18px; border-radius: 12px; box-shadow: 0 12px 30px rgba(0,0,0,.25); max-width: min(420px, calc(100% - 40px));
+      opacity: 0; transform: translateY(8px); transition: opacity .2s, transform .2s; pointer-events: none; }
+    #toast.show { opacity: 1; transform: none; }
+    #toast.bad { background: var(--danger); }
+    #toast.good { background: var(--teal); }
+    @media (prefers-reduced-motion: reduce) { #toast { transition: none; } }
+    @media (max-width: 600px) {
+      .page-row { grid-template-columns: 1fr; }
+      .row-actions { justify-content: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ======================= 1) شاشة الدخول ======================= -->
+<main id="login">
+  <form class="login-card" id="login-form" novalidate>
+    <h1>لوحة تحكم موقعك</h1>
+    <p class="lead">سجّل دخولك عشان تعدّل صفحات الموقع.</p>
+    <div class="field">
+      <label for="email">الإيميل</label>
+      <input id="email" type="email" autocomplete="username" dir="ltr" required>
+    </div>
+    <div class="field">
+      <label for="password">الباسورد</label>
+      <input id="password" type="password" autocomplete="current-password" dir="ltr" required>
+    </div>
+    <p class="error" id="login-error" role="alert"></p>
+    <button class="btn primary" type="submit" id="login-btn">دخول</button>
+  </form>
+</main>
+
+<!-- ======================= 2) قايمة الصفحات ======================= -->
+<div id="pages" hidden>
+  <header class="bar">
+    <div class="brand">لوحة التحكم<small id="who"></small></div>
+    <button class="btn small" id="logout-btn" type="button">خروج</button>
+  </header>
+  <main class="wrap">
+    <h2>صفحات الموقع</h2>
+    <div class="actions">
+      <button class="btn primary" type="button" id="new-page-btn">صفحة جديدة</button>
+      <button class="btn" type="button" id="import-btn">استيراد التصميم الحالي كصفحة رئيسية</button>
+    </div>
+    <div id="page-list" aria-live="polite"></div>
+  </main>
+</div>
+
+<!-- ======================= 3) المحرر ======================= -->
+<div id="editor" hidden>
+  <div class="ed-bar">
+    <button class="btn" type="button" id="back-btn" title="رجوع لقايمة الصفحات">→ الصفحات</button>
+    <span class="ed-title" id="ed-title"></span>
+    <span class="ed-status" id="ed-status" aria-live="polite"></span>
+    <span class="grow"></span>
+    <div class="group" role="group" aria-label="مقاس الشاشة">
+      <button class="btn on" type="button" data-device="desktop">كمبيوتر</button>
+      <button class="btn" type="button" data-device="tablet">تابلت</button>
+      <button class="btn" type="button" data-device="mobile">موبايل</button>
+    </div>
+    <span class="sep"></span>
+    <button class="btn" type="button" id="undo-btn" title="تراجع (Ctrl+Z)">تراجع</button>
+    <button class="btn" type="button" id="redo-btn" title="إعادة (Ctrl+Shift+Z)">إعادة</button>
+    <button class="btn" type="button" id="inner-btn" title="إظهار صفحات الخدمات المخفية عشان تعدّلها">إظهار الصفحات الداخلية</button>
+    <button class="btn" type="button" id="settings-btn">إعدادات الصفحة</button>
+    <span class="sep"></span>
+    <button class="btn" type="button" id="preview-btn">معاينة</button>
+    <button class="btn" type="button" id="download-btn">تنزيل HTML</button>
+    <button class="btn" type="button" id="save-btn">حفظ</button>
+    <button class="btn publish" type="button" id="publish-btn">نشر</button>
+  </div>
+  <p class="ed-phone-note">المحرر مريح أكتر على الكمبيوتر. على الموبايل تقدر تعدّل النصوص والصور، لكن السحب والإفلات صعب.</p>
+  <div id="gjs-wrap"><div id="gjs" dir="ltr"></div></div>
+</div>
+
+<!-- ======================= نافذة حوار عامة ======================= -->
+<dialog id="dlg">
+  <form method="dialog" id="dlg-form">
+    <div class="dlg-body" id="dlg-body"></div>
+    <div class="dlg-actions" id="dlg-actions"></div>
+  </form>
+</dialog>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/grapesjs@0.22.9/dist/grapes.min.js"></script>
+<script>
+/* =====================================================================
+   الإعدادات: عنوان المشروع + المفتاح العام (آمن يتحط هنا — البوّاب RLS
+   هو اللي بيحمي البيانات، والمفتاح ده مجرد "كارت زائر")
+   ===================================================================== */
+const SB_URL = 'https://errbgvoashdwhpknvkwo.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVycmJndm9hc2hkd2hwa252a3dvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ1MDkzNTEsImV4cCI6MjExMDA4NTM1MX0.OC6ZDoG50yDTcu1uwnEF_1n8nWf2n7T3MolMY5vwnjg';
+const BUCKET = 'site-images';
+const TEMPLATE_FILE = 'binjan-style.html';   // التصميم الحالي اللي بنستورده
+const SESSION_KEY = 'ammar-admin-session';
+const MAX_IMAGE_MB = 5;
+
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+/* ============================ إشعارات ============================ */
+let toastTimer;
+function toast(msg, kind = '') {
+  const t = $('#toast');
+  t.textContent = msg; t.className = 'show ' + kind;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { t.className = kind; }, kind === 'bad' ? 6000 : 3500);
+}
+
+/* ============================ نافذة حوار ============================ */
+function dialog({ title, html = '', buttons }) {
+  return new Promise((resolve) => {
+    const d = $('#dlg');
+    $('#dlg-body').innerHTML = `<h3>${esc(title)}</h3>${html}`;
+    $('#dlg-actions').innerHTML = buttons.map((b) =>
+      `<button class="btn ${b.cls || ''}" value="${b.value}" ${b.value === 'cancel' ? 'formnovalidate' : ''}>${esc(b.label)}</button>`).join('');
+    d.onclose = () => resolve(d.returnValue || 'cancel');
+    d.returnValue = '';
+    d.showModal();
+    const first = d.querySelector('input, textarea, select'); if (first) first.focus();
+  });
+}
+
+/* =====================================================================
+   الدخول والجلسة (Session): بنكلّم Supabase Auth مباشرة
+   ===================================================================== */
+let session = null;
+function loadSession() { try { session = JSON.parse(localStorage.getItem(SESSION_KEY)); } catch { session = null; } }
+function saveSession(s) {
+  session = s ? { access_token: s.access_token, refresh_token: s.refresh_token,
+    expires_at: s.expires_at || Math.floor(Date.now() / 1000) + (s.expires_in || 3600),
+    email: s.user ? s.user.email : (session && session.email) } : null;
+  try { session ? localStorage.setItem(SESSION_KEY, JSON.stringify(session)) : localStorage.removeItem(SESSION_KEY); } catch {}
+}
+async function authCall(grant, body) {
+  const r = await fetch(`${SB_URL}/auth/v1/token?grant_type=${grant}`, {
+    method: 'POST', headers: { apikey: SB_KEY, 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+  const data = await r.json().catch(() => ({}));
+  if (!r.ok) { const e = new Error(data.error_description || data.msg || data.message || 'auth error'); e.code = data.error_code || data.error; e.status = r.status; throw e; }
+  return data;
+}
+async function refreshIfNeeded(force = false) {
+  if (!session) throw new Error('no session');
+  if (!force && session.expires_at * 1000 - Date.now() > 60000) return;
+  try { saveSession(await authCall('refresh_token', { refresh_token: session.refresh_token })); }
+  catch (e) { logout('انتهت الجلسة. سجّل دخولك تاني.'); throw e; }
+}
+
+/* ============ طلب لـ Supabase بصلاحيات المستخدم اللي داخل ============ */
+async function api(path, { method = 'GET', body, headers = {}, raw = false } = {}) {
+  await refreshIfNeeded();
+  const go = () => fetch(SB_URL + path, { method, body,
+    headers: { apikey: SB_KEY, Authorization: `Bearer ${session.access_token}`, ...headers } });
+  let r = await go();
+  if (r.status === 401) { await refreshIfNeeded(true); r = await go(); }
+  if (raw) return r;
+  const text = await r.text();
+  let data = null; try { data = text ? JSON.parse(text) : null; } catch { data = text; }
+  if (!r.ok) { const e = new Error((data && (data.message || data.error)) || `HTTP ${r.status}`); e.status = r.status; e.data = data; throw e; }
+  return data;
+}
+const json = (obj) => JSON.stringify(obj);
+const JH = { 'Content-Type': 'application/json' };
+
+/* ============================ الصفحات (Database) ============================ */
+const Pages = {
+  list: () => api('/rest/v1/pages?select=id,slug,title,status,updated_at,published_at&order=updated_at.desc'),
+  get: (id) => api(`/rest/v1/pages?id=eq.${id}&select=*`, { headers: { Accept: 'application/vnd.pgrst.object+json' } }),
+  create: (row) => api('/rest/v1/pages', { method: 'POST', body: json(row), headers: { ...JH, Prefer: 'return=representation' } }).then((r) => r[0]),
+  update: (id, patch) => api(`/rest/v1/pages?id=eq.${id}`, { method: 'PATCH', body: json(patch), headers: { ...JH, Prefer: 'return=representation' } }).then((r) => r[0]),
+  remove: (id) => api(`/rest/v1/pages?id=eq.${id}`, { method: 'DELETE' }),
+};
+function friendlyDbError(e) {
+  if (e.data && e.data.code === '23505') return 'فيه صفحة تانية بنفس الرابط. اختار رابط مختلف.';
+  if (e.data && e.data.code === '23514') return 'الرابط لازم يكون حروف إنجليزي صغيرة وأرقام وشرطة (-) بس.';
+  if (e.status === 403 || (e.data && e.data.code === '42501')) return 'مفيش صلاحية. اتأكد إن إيميلك متسجل كمسؤول (ملف 02-make-me-admin.sql).';
+  if (e instanceof TypeError) return 'مفيش اتصال بالإنترنت أو Supabase مش بيرد. جرّب تاني بعد شوية.';
+  return 'حصلت مشكلة: ' + e.message;
+}
+
+/* ============================ الصور (Storage) ============================ */
+const publicUrl = (path) => `${SB_URL}/storage/v1/object/public/${BUCKET}/${path.split('/').map(encodeURIComponent).join('/')}`;
+async function listImages() {
+  const rows = await api(`/storage/v1/object/list/${BUCKET}`, { method: 'POST', headers: JH,
+    body: json({ prefix: '', limit: 200, offset: 0, sortBy: { column: 'created_at', order: 'desc' } }) });
+  return (rows || []).filter((f) => f.id).map((f) => ({ src: publicUrl(f.name), name: f.name }));
+}
+async function uploadImage(file) {
+  if (!/^image\/(png|jpe?g|webp|gif|avif)$/.test(file.type)) throw new Error(`«${file.name}» مش صورة مدعومة (PNG / JPG / WebP / GIF / AVIF).`);
+  if (file.size > MAX_IMAGE_MB * 1024 * 1024) throw new Error(`«${file.name}» حجمها أكبر من ${MAX_IMAGE_MB} ميجا. صغّرها الأول (مثلاً من squoosh.app).`);
+  const ext = file.name.split('.').pop().toLowerCase().replace(/[^a-z0-9]/g, '') || 'img';
+  const base = file.name.replace(/\.[^.]+$/, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 40) || 'image';
+  const path = `${new Date().toISOString().slice(0, 10)}/${base}-${Math.random().toString(36).slice(2, 7)}.${ext}`;
+  await api(`/storage/v1/object/${BUCKET}/${path}`, { method: 'POST', body: file,
+    headers: { 'Content-Type': file.type, 'x-upsert': 'false', 'cache-control': '31536000' } });
+  return { src: publicUrl(path), name: path };
+}
+
+/* =====================================================================
+   التصميم الحالي (القالب): بنقراه من binjan-style.html
+   - الـ CSS بيبقى أساس أي صفحة جديدة عشان الأقسام تطلع بنفس الشكل
+   - كل قسم فيه بيتحوّل لـ "بلوك" تسحبه في أي صفحة
+   ===================================================================== */
+let templateCache = null;
+async function loadTemplate() {
+  if (templateCache) return templateCache;
+  const r = await fetch(TEMPLATE_FILE, { cache: 'no-store' });
+  if (!r.ok) throw new Error(`مش لاقي ملف ${TEMPLATE_FILE} جنب لوحة التحكم.`);
+  const doc = new DOMParser().parseFromString(await r.text(), 'text/html');
+  const css = [...doc.querySelectorAll('style')].map((s) => s.textContent).join('\n');
+  doc.querySelectorAll('script').forEach((s) => s.remove());
+  const body = doc.body;
+  const sections = [...body.children].filter((el) => /^(HEADER|SECTION|FOOTER|NAV|DIV)$/.test(el.tagName))
+    .map((el) => ({ id: el.id || el.className.split(' ')[0] || el.tagName.toLowerCase(), html: el.outerHTML, el }));
+  templateCache = { css, html: body.innerHTML, sections,
+    title: (doc.querySelector('title') || {}).textContent || '', description: (doc.querySelector('meta[name=description]') || { content: '' }).content };
+  return templateCache;
+}
+const SECTION_NAMES = { top: 'الهيدر والبداية', help: 'كيف أساعدك', exp: 'رحلتي العملية', experience: 'رحلتي العملية', works: 'أحدث أعمالي',
+  content: 'أشارك ما أتعلّمه', 'site-foot': 'الفوتر', 'svc-eng': 'صفحة: هندسة', 'svc-apps': 'صفحة: تطبيقات', 'svc-ops': 'صفحة: أنظمة', 'svc-media': 'صفحة: محتوى' };
+
+/* =====================================================================
+   الكود اللي بيشغّل الموقع المنشور (القايمة، الفلاتر، اقرأ المزيد...)
+   بيتحط تلقائيًا في كل صفحة وقت النشر — المحرر نفسه مش بيشغّل سكريبتات
+   ===================================================================== */
+const SITE_RUNTIME = `(function(){
+  var b=document.body, y=document.getElementById('year'); if(y) y.textContent=new Date().getFullYear();
+  document.querySelectorAll('.menu-btn').forEach(function(m){ m.addEventListener('click',function(){ b.classList.toggle('menu-open'); }); });
+  document.querySelectorAll('nav ul a').forEach(function(a){ a.addEventListener('click',function(){ b.classList.remove('menu-open'); }); });
+  var fb=document.querySelectorAll('.filters button');
+  fb.forEach(function(btn){ btn.addEventListener('click',function(){
+    fb.forEach(function(x){ x.classList.remove('on'); }); btn.classList.add('on'); var f=btn.getAttribute('data-f');
+    document.querySelectorAll('.wcard').forEach(function(c){ var cats=(c.getAttribute('data-cat')||'').split(' '); c.classList.toggle('hide', f!=='all' && cats.indexOf(f)===-1); });
+    var s=document.querySelector('.scroller'); if(s&&s.scrollTo) s.scrollTo({left:0,behavior:'smooth'});
+  }); });
+  var mb=document.getElementById('more-btn'), at=document.getElementById('about-text');
+  if(mb&&at){ mb.addEventListener('click',function(){ var closed=at.classList.toggle('clamp'); mb.textContent=closed?'اقرأ المزيد ↓':'اقرأ أقل ↑'; mb.setAttribute('aria-expanded',String(!closed)); }); }
+})();`;
+
+function bodyInner(html) { return html.replace(/^\s*<body[^>]*>/i, '').replace(/<\/body>\s*$/i, ''); }
+function buildDocument(page, html, css) {
+  return `<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${esc(page.title)}</title>
+  <meta name="description" content="${esc(page.description)}">
+  <meta property="og:title" content="${esc(page.title)}">
+  <meta property="og:description" content="${esc(page.description)}">
+  <link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300;400;500;600;700&family=Aref+Ruqaa:wght@700&display=swap" rel="stylesheet">
+  <style>${css}</style>
+</head>
+<body>
+${bodyInner(html)}
+<script>${SITE_RUNTIME}<\/script>
+</body>
+</html>`;
+}
+
+/* =====================================================================
+   الشاشات
+   ===================================================================== */
+function show(id) { ['login', 'pages', 'editor'].forEach((s) => { $('#' + s).hidden = s !== id; }); }
+
+$('#login-form').addEventListener('submit', async (ev) => {
+  ev.preventDefault();
+  const email = $('#email').value.trim(), password = $('#password').value;
+  const err = $('#login-error'); err.textContent = '';
+  if (!email || !password) { err.textContent = 'اكتب الإيميل والباسورد.'; return; }
+  const btn = $('#login-btn'); btn.disabled = true; btn.textContent = 'جاري الدخول...';
+  try {
+    saveSession(await authCall('password', { email, password }));
+    $('#password').value = '';
+    await enterPages();
+  } catch (e) {
+    err.textContent = (e.code === 'invalid_credentials' || e.status === 400) ? 'الإيميل أو الباسورد غلط.'
+      : (e instanceof TypeError ? 'مفيش اتصال بـ Supabase. اتأكد من النت.' : 'مش قادر أسجّل دخول: ' + e.message);
+  } finally { btn.disabled = false; btn.textContent = 'دخول'; }
+});
+
+function logout(msg) {
+  const s = session; saveSession(null);
+  if (s) fetch(`${SB_URL}/auth/v1/logout`, { method: 'POST', headers: { apikey: SB_KEY, Authorization: `Bearer ${s.access_token}` } }).catch(() => {});
+  dirty = false; show('login');
+  if (msg) $('#login-error').textContent = msg;
+}
+$('#logout-btn').addEventListener('click', () => logout());
+
+async function enterPages() {
+  show('pages');
+  $('#who').textContent = session.email || '';
+  // هل الحساب ده مسؤول؟ (جدول admins بيرجّع صفه بس لو اسمه موجود)
+  try {
+    const me = await api('/rest/v1/admins?select=user_id');
+    if (!me || !me.length) {
+      $('#page-list').innerHTML = `<div class="empty"><h3>حسابك لسه مش مسؤول</h3><p>شغّل ملف 02-make-me-admin.sql في Supabase بإيميلك، وبعدين اعمل تحديث للصفحة.</p></div>`;
+      $('#new-page-btn').disabled = $('#import-btn').disabled = true; return;
+    }
+    $('#new-page-btn').disabled = $('#import-btn').disabled = false;
+  } catch (e) { $('#page-list').innerHTML = `<div class="empty"><p>${esc(friendlyDbError(e))}</p></div>`; return; }
+  await renderList();
+}
+
+const fmtDate = (d) => d ? new Date(d).toLocaleString('ar-EG', { dateStyle: 'medium', timeStyle: 'short' }) : '';
+let pageCache = [];
+async function renderList() {
+  const box = $('#page-list');
+  try { pageCache = await Pages.list(); } catch (e) { box.innerHTML = `<div class="empty"><p>${esc(friendlyDbError(e))}</p></div>`; return; }
+  if (!pageCache.length) {
+    box.innerHTML = `<div class="empty"><h3>مفيش صفحات لسه</h3><p>ابدأ باستيراد تصميمك الحالي، وبعدها تقدر تعدّل فيه أو تعمل صفحات جديدة.</p>
+      <button class="btn primary" type="button" data-act="import">استيراد التصميم الحالي</button></div>`;
+    return;
+  }
+  box.innerHTML = pageCache.map((p) => `
+    <article class="page-row">
+      <div>
+        <h3>${esc(p.title)}</h3>
+        <div class="meta">
+          <code>${esc(p.slug === 'index' ? '/' : '/' + p.slug + '.html')}</code>
+          <span class="badge ${p.status}">${p.status === 'published' ? 'منشورة' : 'مسودة'}</span>
+          <span>آخر تعديل: ${esc(fmtDate(p.updated_at))}</span>
+        </div>
+      </div>
+      <div class="row-actions">
+        <button class="btn small primary" type="button" data-act="edit" data-id="${p.id}">تعديل</button>
+        <button class="btn small" type="button" data-act="dup" data-id="${p.id}">نسخة منها</button>
+        <button class="btn small danger" type="button" data-act="del" data-id="${p.id}">حذف</button>
+      </div>
+    </article>`).join('');
+}
+$('#page-list').addEventListener('click', async (ev) => {
+  const b = ev.target.closest('button[data-act]'); if (!b) return;
+  const id = b.dataset.id, p = pageCache.find((x) => x.id === id);
+  if (b.dataset.act === 'import') return importTemplate();
+  if (b.dataset.act === 'edit') return openEditor(id);
+  if (b.dataset.act === 'dup') return newPage(id);
+  if (b.dataset.act === 'del') {
+    const ok = await dialog({ title: `حذف «${p.title}»؟`,
+      html: `<p>الصفحة هتتمسح من لوحة التحكم ومش هينفع ترجّعها. لو كانت منشورة، النسخة المنشورة على الموقع هتفضل لحد ما تمسحها من GitHub.</p>`,
+      buttons: [{ label: 'أيوه، احذفها', value: 'ok', cls: 'danger' }, { label: 'إلغاء', value: 'cancel' }] });
+    if (ok !== 'ok') return;
+    try { await Pages.remove(id); toast('اتحذفت الصفحة.', 'good'); renderList(); } catch (e) { toast(friendlyDbError(e), 'bad'); }
+  }
+});
+
+const slugify = (s) => s.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+const RESERVED = ['admin', 'binjan-style', 'design-options', 'design-options-2'];
+function slugError(slug) {
+  if (!/^[a-z0-9][a-z0-9-]*$/.test(slug)) return 'الرابط لازم يكون حروف إنجليزي صغيرة وأرقام وشرطة (-) بس، زي: about-me';
+  if (RESERVED.includes(slug)) return 'الاسم ده محجوز لملف تاني في الموقع. اختار اسم غيره.';
+  if (pageCache.some((p) => p.slug === slug)) return 'فيه صفحة بنفس الرابط ده.';
+  return '';
+}
+
+async function newPage(copyFromId) {
+  const src = copyFromId ? pageCache.find((p) => p.id === copyFromId) : null;
+  const res = await dialog({ title: src ? `نسخة من «${src.title}»` : 'صفحة جديدة', html: `
+    <div class="field"><label for="np-title">عنوان الصفحة</label><input id="np-title" required value="${src ? esc(src.title + ' (نسخة)') : ''}" placeholder="مثلاً: خدماتي الهندسية"></div>
+    <div class="field"><label for="np-slug">رابط الصفحة</label><input id="np-slug" dir="ltr" required placeholder="engineering">
+      <p class="hint">هيبقى عنوانها: <span dir="ltr">yoursite.com/<b id="np-preview">...</b>.html</span></p></div>
+    ${src ? '' : `<p>الصفحة الجديدة هتبدأ فاضية، بس بنفس ألوان وخطوط موقعك. اسحب فيها الأقسام من «Blocks».</p>`}
+    <p class="error" id="np-err"></p>`,
+    buttons: [{ label: 'إنشاء', value: 'ok', cls: 'primary' }, { label: 'إلغاء', value: 'cancel' }] });
+  // الحوار اتقفل — بنقرا القيم اللي اتكتبت
+  const title = ($('#np-title') || {}).value || '';
+  const slug = slugify(($('#np-slug') || {}).value || '');
+  if (res !== 'ok') return;
+  const problem = !title.trim() ? 'اكتب عنوان للصفحة.' : slugError(slug);
+  if (problem) { toast(problem, 'bad'); return; }
+  try {
+    let row = { title: title.trim(), slug, status: 'draft' };
+    if (src) {
+      const full = await Pages.get(src.id);
+      Object.assign(row, { description: full.description, project: full.project, html: full.html, css: full.css });
+    } else {
+      let css = ''; try { css = (await loadTemplate()).css; } catch {}
+      Object.assign(row, { html: '', css });
+    }
+    const created = await Pages.create(row);
+    toast('اتعملت الصفحة.', 'good');
+    openEditor(created.id);
+  } catch (e) { toast(friendlyDbError(e), 'bad'); }
+}
+$('#new-page-btn').addEventListener('click', () => newPage());
+document.addEventListener('input', (ev) => {
+  if (ev.target.id === 'np-slug' || ev.target.id === 'np-title') {
+    const s = $('#np-slug'); if (ev.target.id === 'np-title' && s && !s.dataset.touched) return;
+    if (ev.target.id === 'np-slug') s.dataset.touched = '1';
+    $('#np-preview').textContent = slugify(s.value) || '...';
+  }
+});
+
+async function importTemplate() {
+  const existing = pageCache.find((p) => p.slug === 'index');
+  if (existing) {
+    const r = await dialog({ title: 'فيه صفحة رئيسية بالفعل', html: '<p>الاستيراد هيستبدل محتوى الصفحة الرئيسية الحالية بالتصميم الموجود في الملف. تعديلاتك فيها هتضيع.</p>',
+      buttons: [{ label: 'استبدلها', value: 'ok', cls: 'danger' }, { label: 'إلغاء', value: 'cancel' }] });
+    if (r !== 'ok') return;
+  }
+  try {
+    const t = await loadTemplate();
+    const row = { title: t.title || 'الرئيسية', description: t.description, html: t.html, css: t.css, project: {} };
+    const saved = existing ? await Pages.update(existing.id, row) : await Pages.create({ ...row, slug: 'index', status: 'draft' });
+    toast('اتستورد التصميم. افتحه وعدّل براحتك.', 'good');
+    await renderList(); openEditor(saved.id);
+  } catch (e) { toast(e.status ? friendlyDbError(e) : e.message, 'bad'); }
+}
+$('#import-btn').addEventListener('click', importTemplate);
+
+/* =====================================================================
+   المحرر (GrapesJS)
+   ===================================================================== */
+let editor = null, current = null, dirty = false, loading = false, showInner = false, autosaveTimer = null;
+
+function setStatus(t) { $('#ed-status').textContent = t; }
+function markDirty() { if (loading) return; dirty = true; setStatus('فيه تعديلات مش محفوظة'); }
+
+function canvasDoc() { try { return editor.Canvas.getDocument(); } catch { return null; } }
+function prepareCanvas() {
+  const d = canvasDoc(); if (!d) return;
+  d.documentElement.setAttribute('dir', 'rtl'); d.documentElement.setAttribute('lang', 'ar');
+  if (!d.getElementById('admin-fonts')) {
+    const l = d.createElement('link'); l.id = 'admin-fonts'; l.rel = 'stylesheet';
+    l.href = 'https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300;400;500;600;700&family=Aref+Ruqaa:wght@700&display=swap';
+    d.head.appendChild(l);
+  }
+  let st = d.getElementById('admin-inner-pages');
+  if (!st) { st = d.createElement('style'); st.id = 'admin-inner-pages'; d.head.appendChild(st); }
+  // صفحات الخدمات في التصميم مخفية لحد ما حد يدوس عليها — هنا بنظهرها جوه المحرر بس
+  st.textContent = showInner ? 'section.page{display:block!important;position:relative!important;inset:auto!important;z-index:auto!important;outline:3px dashed #2a6f68;margin:24px 0;}' : '';
+}
+
+function addBlocks() {
+  const bm = editor.BlockManager, C = 'أساسي';
+  const blocks = [
+    ['b-section', 'قسم فاضي', `<section style="padding:64px 0"><div class="container"><h2>عنوان القسم</h2><p>اكتب هنا وصف القسم.</p></div></section>`],
+    ['b-heading', 'عنوان', `<h2>عنوان جديد</h2>`],
+    ['b-text', 'فقرة', `<p>اكتب النص هنا. دوس مرتين عشان تعدّله.</p>`],
+    ['b-button', 'زرار', { type: 'link', content: 'كلّمني على واتساب', attributes: { href: 'https://wa.me/201000649748', target: '_blank', rel: 'noopener', class: 'btn-coral' }, style: { display: 'inline-block' } }],
+    ['b-link', 'لينك', { type: 'link', content: 'نص اللينك', attributes: { href: '#' } }],
+    ['b-image', 'صورة', { type: 'image', activate: true, style: { 'max-width': '100%', height: 'auto', 'border-radius': '16px' } }],
+    ['b-cols2', 'عمودين', `<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px;padding:16px 0"><div><h3>عنوان</h3><p>نص العمود الأول.</p></div><div><h3>عنوان</h3><p>نص العمود التاني.</p></div></div>`],
+    ['b-cols3', '3 أعمدة', `<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;padding:16px 0"><div><h3>عنوان</h3><p>نص.</p></div><div><h3>عنوان</h3><p>نص.</p></div><div><h3>عنوان</h3><p>نص.</p></div></div>`],
+    ['b-card', 'كارت', `<div style="background:#fff;border:1px solid #ece8df;border-radius:18px;padding:22px"><h3>عنوان الكارت</h3><p>وصف قصير للكارت.</p><a href="#" class="cgo">التفاصيل</a></div>`],
+    ['b-video', 'فيديو يوتيوب', { type: 'video', provider: 'yt', videoId: '', style: { width: '100%', height: '360px', 'border-radius': '16px' } }],
+    ['b-divider', 'فاصل', `<hr style="border:none;border-top:1px solid #ece8df;margin:32px 0">`],
+    ['b-space', 'مسافة', `<div style="height:48px"></div>`],
+  ];
+  blocks.forEach(([id, label, content]) => bm.add(id, { label, category: C, content }));
+  loadTemplate().then((t) => {
+    t.sections.forEach((s) => {
+      if (!s.id) return;
+      bm.add('site-' + s.id, { label: SECTION_NAMES[s.id] || s.id, category: 'أقسام موقعي', content: s.html });
+    });
+  }).catch(() => {});
+}
+
+function initEditor() {
+  if (editor) return;
+  if (!window.grapesjs) { toast('مكتبة المحرر ما اتحمّلتش. اتأكد من النت واعمل تحديث للصفحة.', 'bad'); throw new Error('grapesjs missing'); }
+  editor = grapesjs.init({
+    container: '#gjs', height: '100%', fromElement: false,
+    storageManager: false,               // الحفظ بنعمله إحنا في Supabase
+    undoManager: { trackSelection: false },
+    selectorManager: { componentFirst: true },
+    deviceManager: { devices: [
+      { id: 'desktop', name: 'Desktop', width: '' },
+      { id: 'tablet', name: 'Tablet', width: '820px', widthMedia: '900px' },
+      { id: 'mobile', name: 'Mobile', width: '390px', widthMedia: '480px' },
+    ] },
+    assetManager: {
+      embedAsBase64: false, multiUpload: true,
+      uploadText: 'اسحب الصور هنا أو دوس للاختيار (حد أقصى 5 ميجا للصورة)',
+      addBtnText: 'إضافة رابط صورة',
+      uploadFile: async (e) => {
+        const files = [...(e.dataTransfer ? e.dataTransfer.files : e.target.files)];
+        for (const f of files) {
+          try { setStatus('بيرفع ' + f.name + '...'); const a = await uploadImage(f); editor.AssetManager.add(a); toast('اترفعت الصورة.', 'good'); }
+          catch (err) { toast(err.status ? friendlyDbError(err) : err.message, 'bad'); }
+        }
+        setStatus(dirty ? 'فيه تعديلات مش محفوظة' : 'محفوظ');
+      },
+    },
+    canvas: { styles: [] },
+    parser: { optionsHtml: { allowScripts: false } },
+  });
+  addBlocks();
+  editor.on('load', prepareCanvas);
+  editor.on('canvas:frame:load', prepareCanvas);
+  editor.on('update', markDirty);
+  editor.on('component:update', markDirty);
+  editor.on('style:property:update', markDirty);
+  editor.Keymaps.add('admin:save', '⌘+s, ctrl+s', () => savePage(), { prevent: true });
+  // الصور اللي اترفعت قبل كده تظهر في مكتبة الصور
+  listImages().then((imgs) => editor.AssetManager.add(imgs)).catch(() => {});
+}
+
+async function openEditor(id) {
+  if (dirty && current && current.id !== id) { const ok = await confirmLeave(); if (!ok) return; }
+  let page;
+  try { page = await Pages.get(id); } catch (e) { toast(friendlyDbError(e), 'bad'); return; }
+  show('editor');
+  try { initEditor(); } catch { show('pages'); return; }
+  loading = true; current = page;
+  $('#ed-title').textContent = page.title;
+  try {
+    const hasProject = page.project && Array.isArray(page.project.pages) && page.project.pages.length;
+    if (hasProject) editor.loadProjectData(page.project);
+    else { editor.setComponents(page.html || ''); editor.setStyle(page.css || ''); }
+    editor.UndoManager.clear();
+  } catch (e) { toast('مش قادر أفتح الصفحة: ' + e.message, 'bad'); }
+  setTimeout(() => { loading = false; dirty = false; setStatus(page.status === 'published' ? 'منشورة' : 'مسودة محفوظة'); prepareCanvas(); editor.refresh(); }, 300);
+  clearInterval(autosaveTimer);
+  autosaveTimer = setInterval(() => { if (dirty) savePage(true); }, 60000);   // حفظ تلقائي كل دقيقة لو فيه تعديل
+}
+
+function snapshot() {
+  return { project: editor.getProjectData(), html: bodyInner(editor.getHtml()), css: editor.getCss() };
+}
+let saving = false;
+async function savePage(auto = false) {
+  if (!current || saving) return false;
+  saving = true; $('#save-btn').disabled = true; setStatus(auto ? 'حفظ تلقائي...' : 'بيحفظ...');
+  try {
+    const s = snapshot();
+    current = await Pages.update(current.id, s);
+    dirty = false; setStatus('اتحفظ ' + new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' }));
+    if (!auto) toast('اتحفظت المسودة.', 'good');
+    return true;
+  } catch (e) { setStatus('الحفظ فشل'); toast(friendlyDbError(e), 'bad'); return false; }
+  finally { saving = false; $('#save-btn').disabled = false; }
+}
+
+async function confirmLeave() {
+  const r = await dialog({ title: 'فيه تعديلات مش محفوظة', html: '<p>تحب تحفظها قبل ما تخرج؟</p>',
+    buttons: [{ label: 'احفظ واخرج', value: 'save', cls: 'primary' }, { label: 'اخرج من غير حفظ', value: 'discard', cls: 'danger' }, { label: 'إلغاء', value: 'cancel' }] });
+  if (r === 'save') return savePage();
+  return r === 'discard';
+}
+
+$('#back-btn').addEventListener('click', async () => {
+  if (dirty && !(await confirmLeave())) return;
+  dirty = false; clearInterval(autosaveTimer); show('pages'); renderList();
+});
+$('#save-btn').addEventListener('click', () => savePage());
+$('#undo-btn').addEventListener('click', () => editor && editor.UndoManager.undo());
+$('#redo-btn').addEventListener('click', () => editor && editor.UndoManager.redo());
+document.querySelectorAll('[data-device]').forEach((b) => b.addEventListener('click', () => {
+  editor.setDevice(b.dataset.device);
+  document.querySelectorAll('[data-device]').forEach((x) => x.classList.toggle('on', x === b));
+}));
+$('#inner-btn').addEventListener('click', () => {
+  showInner = !showInner; prepareCanvas();
+  $('#inner-btn').classList.toggle('on', showInner);
+  $('#inner-btn').textContent = showInner ? 'إخفاء الصفحات الداخلية' : 'إظهار الصفحات الداخلية';
+});
+$('#settings-btn').addEventListener('click', async () => {
+  const r = await dialog({ title: 'إعدادات الصفحة', html: `
+    <div class="field"><label for="ps-title">العنوان اللي بيظهر في جوجل وتاب المتصفح</label><input id="ps-title" value="${esc(current.title)}" maxlength="70"><p class="hint">الأفضل أقل من 60 حرف.</p></div>
+    <div class="field"><label for="ps-desc">وصف الصفحة في نتايج جوجل</label><textarea id="ps-desc" maxlength="200">${esc(current.description)}</textarea><p class="hint">جملة أو اتنين بين 120 و160 حرف.</p></div>
+    <div class="field"><label>رابط الصفحة</label><input value="${esc(current.slug)}" dir="ltr" disabled><p class="hint">الرابط ثابت عشان اللينكات القديمة ما تبوظش. لو عاوز رابط جديد اعمل «نسخة منها».</p></div>`,
+    buttons: [{ label: 'حفظ الإعدادات', value: 'ok', cls: 'primary' }, { label: 'إلغاء', value: 'cancel' }] });
+  if (r !== 'ok') return;
+  const title = $('#ps-title').value.trim(), description = $('#ps-desc').value.trim();
+  if (!title) { toast('العنوان مينفعش يبقى فاضي.', 'bad'); return; }
+  try { current = await Pages.update(current.id, { title, description }); $('#ed-title').textContent = title; toast('اتحفظت الإعدادات.', 'good'); }
+  catch (e) { toast(friendlyDbError(e), 'bad'); }
+});
+
+function currentDocument() { const s = snapshot(); return buildDocument(current, s.html, s.css); }
+$('#preview-btn').addEventListener('click', () => {
+  const url = URL.createObjectURL(new Blob([currentDocument()], { type: 'text/html' }));
+  const w = window.open(url, '_blank', 'noopener');
+  if (!w) toast('المتصفح منع فتح تاب جديد. اسمح بالنوافذ المنبثقة للموقع ده.', 'bad');
+  setTimeout(() => URL.revokeObjectURL(url), 60000);
+});
+$('#download-btn').addEventListener('click', () => {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([currentDocument()], { type: 'text/html' }));
+  a.download = (current.slug === 'index' ? 'index' : current.slug) + '.html';
+  document.body.appendChild(a); a.click(); a.remove();
+  toast('اتنزّل الملف. حطه في فولدر الموقع وارفعه بـ GitHub Desktop.');
+});
+
+$('#publish-btn').addEventListener('click', async () => {
+  const r = await dialog({ title: `نشر «${current.title}»؟`, html: `<p>النسخة الحالية هتتحفظ وتتنشر على موقعك، والزوار هيشوفوها خلال دقيقة أو اتنين.</p>`,
+    buttons: [{ label: 'انشر', value: 'ok', cls: 'publish' }, { label: 'إلغاء', value: 'cancel' }] });
+  if (r !== 'ok') return;
+  if (!(await savePage(true))) return;
+  const btn = $('#publish-btn'); btn.disabled = true; setStatus('بينشر...');
+  try {
+    const res = await api('/functions/v1/publish', { method: 'POST', headers: JH, raw: true,
+      body: json({ id: current.id, document: currentDocument() }) });
+    if (res.status === 404) { setStatus('مسودة محفوظة'); toast('زرار النشر هيشتغل بعد ما نعمل خطوة النشر في Supabase. لحد ما نعملها استخدم «تنزيل HTML».', 'bad'); return; }
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
+    current = await Pages.get(current.id);
+    setStatus('منشورة'); toast('اتنشرت! هتظهر على الموقع خلال دقيقة أو اتنين.', 'good');
+  } catch (e) { setStatus('النشر فشل'); toast('النشر فشل: ' + e.message, 'bad'); }
+  finally { btn.disabled = false; }
+});
+
+window.addEventListener('beforeunload', (e) => { if (dirty) { e.preventDefault(); e.returnValue = ''; } });
+
+/* ============================ البداية ============================ */
+loadSession();
+if (session) refreshIfNeeded().then(enterPages).catch(() => show('login'));
+else show('login');
+</script>
+</body>
+</html>
