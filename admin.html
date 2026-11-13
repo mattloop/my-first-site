@@ -496,8 +496,14 @@ a.b-card:hover{box-shadow:0 14px 30px rgba(18,48,74,.08)}
 .b-empty{color:var(--muted);text-align:center;padding:28px;border:2px dashed var(--line);border-radius:16px;grid-column:1/-1}
 @media(max-width:900px){.hide-mobile{display:none!important}}
 @media(min-width:901px){.hide-desktop{display:none!important}}
-/* بداية الصفحة: لما «اقرأ المزيد» يفتح، العمود التاني يفضل متجمّع بدل ما يتفرّق */
-@media(min-width:901px){.hero .col-right{justify-content:center;gap:26px}.hero .col-right .h-sub{margin-top:0}}
+/* بداية الصفحة: الأعمدة التلاتة (العنوان، الصورة، النبذة) بتبدأ من نفس الخط فوق،
+   ولما «اقرأ المزيد» يفتح محدش بيتحرك من مكانه */
+@media(min-width:901px){
+  .hero{align-items:start;min-height:0}
+  .hero .col-right,.hero .col-left{align-self:start;justify-content:flex-start;gap:26px;padding-top:48px;padding-bottom:48px}
+  .hero .center{height:auto;align-self:start;padding-top:48px}
+  .hero .col-right .h-sub{margin-top:0}
+}
 /* تحكم في سطور الفقرات */
 @media(min-width:901px){.b-nowrap-desk{white-space:nowrap}}
 .b-nowrap{white-space:nowrap}
