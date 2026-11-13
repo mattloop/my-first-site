@@ -104,6 +104,22 @@
     .chips button.swatch { width: 36px; height: 36px; border-radius: 50%; padding: 0; border: 2px solid var(--line); }
     .chips button.swatch.on { outline: 3px solid var(--ink); outline-offset: 2px; background-clip: padding-box; }
     .chips button.swatch.none { background: repeating-linear-gradient(45deg, #fff 0 6px, #f1d4cc 6px 8px); }
+    .sgroup { border: 1px solid var(--line); border-radius: 12px; margin-bottom: 8px; background: var(--white); }
+    .sgroup > summary { cursor: pointer; padding: 10px 12px; font-weight: 700; font-size: .92rem; list-style: none; display: flex; justify-content: space-between; }
+    .sgroup > summary::after { content: '+'; color: var(--teal); font-weight: 700; }
+    .sgroup[open] > summary::after { content: '−'; }
+    .sgroup > summary::-webkit-details-marker { display: none; }
+    .sg-body { padding: 4px 12px 12px; }
+    .crumbs { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; margin-bottom: 12px; font-size: .8rem; color: var(--muted); }
+    .crumbs button { border: 1px solid var(--line); background: var(--white); border-radius: 999px; padding: 3px 10px; cursor: pointer; font-size: .8rem; min-height: 30px; }
+    .crumbs button.on { background: var(--teal); border-color: var(--teal); color: #fff; }
+    .device-note.m { background: #fff4e5; color: #7a4b00; }
+    .layers, .layers ul { list-style: none; }
+    .layers button { display: block; width: 100%; text-align: start; border: none; background: none; padding: 6px 8px; border-radius: 8px; cursor: pointer; font-size: .85rem; min-height: 32px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .layers button:hover { background: var(--teal-soft); }
+    .layers button.on { background: var(--teal); color: #fff; }
+    .layers button small { color: var(--muted); font-weight: 400; }
+    .layers button.on small { color: #d6ece9; }
     .sel-info { background: var(--paper); border-radius: 10px; padding: 8px 10px; font-size: .85rem; margin-bottom: 12px; }
     .stage { background: #dfe5ea; overflow: hidden; display: flex; justify-content: center; padding: 64px 16px 16px; min-height: 0; position: relative; }
     #float-bar { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); z-index: 40; display: flex; align-items: center; gap: 6px; max-width: calc(100% - 20px);
@@ -215,10 +231,12 @@
       <nav class="tabs" id="side-tabs">
         <button type="button" data-tab="add" class="on">إضافة</button>
         <button type="button" data-tab="style">تنسيق</button>
+        <button type="button" data-tab="layers">الطبقات</button>
         <button type="button" data-tab="page">الصفحة</button>
       </nav>
       <div class="side-body" id="side-add"></div>
       <div class="side-body" id="side-style" hidden></div>
+      <div class="side-body" id="side-layers" hidden></div>
       <div class="side-body" id="side-page" hidden></div>
     </aside>
     <div class="stage" id="stage">
@@ -478,6 +496,8 @@ a.b-card:hover{box-shadow:0 14px 30px rgba(18,48,74,.08)}
 .b-empty{color:var(--muted);text-align:center;padding:28px;border:2px dashed var(--line);border-radius:16px;grid-column:1/-1}
 @media(max-width:900px){.hide-mobile{display:none!important}}
 @media(min-width:901px){.hide-desktop{display:none!important}}
+/* بداية الصفحة: لما «اقرأ المزيد» يفتح، العمود التاني يفضل متجمّع بدل ما يتفرّق */
+@media(min-width:901px){.hero .col-right{justify-content:center;gap:26px}.hero .col-right .h-sub{margin-top:0}}
 /* تحكم في سطور الفقرات */
 @media(min-width:901px){.b-nowrap-desk{white-space:nowrap}}
 .b-nowrap{white-space:nowrap}
@@ -584,7 +604,7 @@ async function loadGlobal() {
   return globalData;
 }
 async function saveGlobal() {
-  const project = { v: 2, kind: 'global', baseCss: globalData.baseCss, header: globalData.header, footer: globalData.footer };
+  const project = { v: 2, kind: 'global', baseCss: globalData.baseCss, header: globalData.header, footer: globalData.footer, spacing: globalData.spacing || '' };
   if (globalRow) globalRow = await Pages.update(globalRow.id, { project });
   else globalRow = await Pages.create({ slug: GLOBAL_SLUG, title: 'الهيدر والفوتر', status: 'draft', project });
   globalDirty = false;
@@ -640,6 +660,7 @@ function renderBodyHtml(s) {
 }
 function renderDocument(page, s) {
   const m = s.meta || {}, desc = page.description || m.excerpt || '', body = renderBodyHtml(s);
+  const mt = document.createElement('template'); mt.innerHTML = body; const mcss = mobileCssFrom(mt.content);
   return `<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -650,7 +671,7 @@ function renderDocument(page, s) {
   <meta property="og:title" content="${esc(page.title)}">
   <meta property="og:description" content="${esc(desc)}">${m.cover ? `\n  <meta property="og:image" content="${esc(m.cover)}">` : ''}
   <link href="${usedFontsHref(body + globalData.baseCss)}" rel="stylesheet">
-  <style>${globalData.baseCss}\n${BUILDER_CSS}</style>
+  <style>${globalData.baseCss}\n${BUILDER_CSS}\n${spacingCss()}${mcss ? `\n@media(max-width:900px){${mcss}}` : ''}</style>
 </head>
 <body>
 ${body}
@@ -867,6 +888,7 @@ function paintBody() {
     if (p.global) el.setAttribute('data-global', p.global); else el.setAttribute('data-sid', String(i++));
   });
   fillCollections(cdoc.body, true);
+  refreshSpacingCss(); refreshMobileCss();
   cdoc.body.classList.toggle('__show-inner', !!st.__showInner);
   selected = editing = hoverSec = null;
   w.scrollTo(0, sy);
@@ -900,7 +922,7 @@ function pushHistory() {
   undoStack.push(snap); if (undoStack.length > 80) undoStack.shift();
   redoStack = []; markDirty();
 }
-function changed() { syncFromDom(); pushHistory(); updateOverlays(); }
+function changed() { syncFromDom(); pushHistory(); updateOverlays(); refreshMobileCss(); renderLayers(); }
 function restore(snap) {
   const o = JSON.parse(snap);
   if (o.h !== globalData.header || o.f !== globalData.footer) globalDirty = true;
@@ -979,7 +1001,7 @@ function select(el) {
   if (selected) selected.classList.remove('__sel');
   selected = el || null;
   if (selected) { selected.classList.remove('__hov'); selected.classList.add('__sel'); }
-  updateOverlays(); renderStylePanel();
+  updateOverlays(); renderStylePanel(); renderLayers();
 }
 function startEditing(el) {
   if (!el) return;
@@ -1314,66 +1336,167 @@ function insertElement(html) {
   select(n); n.scrollIntoView({ block: 'center' }); changed(); closeSide();
 }
 
-/* ---------- لوحة "تنسيق" ---------- */
+/* ---------- لوحة "تنسيق": كل خصائص العنصر، ولكل جهاز لوحده ---------- */
 const COLORS = [['', 'تلقائي'], ['var(--navy)', 'كحلي'], ['var(--text)', 'رمادي غامق'], ['var(--teal)', 'أخضر'], ['var(--coral)', 'برتقالي'], ['var(--yellow)', 'أصفر'], ['#ffffff', 'أبيض'], ['var(--muted)', 'رمادي']];
 const BGS = [['', 'من غير'], ['#ffffff', 'أبيض'], ['var(--cream)', 'كريمي'], ['#e3f1ef', 'أخضر فاتح'], ['#fef3ef', 'برتقالي فاتح'], ['var(--navy)', 'كحلي'], ['var(--teal)', 'أخضر'], ['linear-gradient(135deg, #c44a22, #a03615)', 'برتقالي متدرّج']];
+const kebab = (p) => p.replace(/[A-Z]/g, (m) => '-' + m.toLowerCase());
+const camel = (p) => p.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
+const isMobileMode = () => $('#stage').classList.contains('mobile');
+/* تنسيق الموبايل بيتخزن في data-mstyle وبيتحوّل لقاعدة @media وقت العرض */
+function mGet(el) { const o = {}; (el.getAttribute('data-mstyle') || '').split(';').forEach((d) => { const i = d.indexOf(':'); if (i > 0) o[camel(d.slice(0, i).trim())] = d.slice(i + 1).trim(); }); return o; }
+function mSet(el, o) {
+  const css = Object.entries(o).filter(([, v]) => v !== '' && v != null).map(([k, v]) => `${kebab(k)}:${v}`).join(';');
+  if (css) { el.setAttribute('data-mstyle', css); if (!el.getAttribute('data-mid')) el.setAttribute('data-mid', 'm' + Math.random().toString(36).slice(2, 8)); }
+  else { el.removeAttribute('data-mstyle'); el.removeAttribute('data-mid'); }
+}
+function styleOf(el) { return isMobileMode() ? mGet(el) : el.style; }
+function setProp(el, p, v) {
+  if (isMobileMode()) { const o = mGet(el); o[p] = v; mSet(el, o); refreshMobileCss(); }
+  else el.style[p] = v;
+}
+function mobileCssFrom(root) {
+  return [...root.querySelectorAll('[data-mstyle][data-mid]')].map((el) =>
+    `[data-mid="${el.getAttribute('data-mid')}"]{${el.getAttribute('data-mstyle').split(';').filter(Boolean).map((d) => d + ' !important').join(';')}}`).join('\n');
+}
+/* المسافة بين أقسام الموقع كله (إعداد واحد بيأثر على كل الصفحات) */
+const SPACING = { '': ['الأصلية', null], s: ['صغيرة', [40, 28]], m: ['متوسطة', [64, 40]], l: ['كبيرة', [100, 56]] };
+function spacingCss() {
+  const v = SPACING[globalData.spacing || ''][1]; if (!v) return '';
+  return `section:not(.page),.b-sec{padding-top:${v[0]}px;padding-bottom:${v[0]}px}@media(max-width:900px){section:not(.page),.b-sec{padding-top:${v[1]}px;padding-bottom:${v[1]}px}}`;
+}
+function refreshSpacingCss() {
+  if (!cdoc) return;
+  let t = cdoc.getElementById('__spcss'); if (!t) { t = cdoc.createElement('style'); t.id = '__spcss'; cdoc.head.insertBefore(t, cdoc.getElementById('__mcss') || null); }
+  t.textContent = spacingCss();
+}
+function refreshMobileCss() {
+  if (!cdoc) return;
+  let t = cdoc.getElementById('__mcss'); if (!t) { t = cdoc.createElement('style'); t.id = '__mcss'; cdoc.head.appendChild(t); }
+  const css = mobileCssFrom(cdoc.body); t.textContent = css ? `@media(max-width:900px){${css}}` : '';
+}
+
+let openGroups = { text: true, box: false, space: false, size: false, layout: true, place: false, show: false };
 function renderStylePanel() {
   const box = $('#side-style'); if (!box) return;
   const el = selected;
-  if (!el || !el.isConnected || !cdoc) { box.innerHTML = '<p class="hint">دوس على أي حاجة في الصفحة (نص، صورة، كارت، قسم) عشان تنسّقها.</p>'; return; }
-  const s = el.style, cs = cdoc.defaultView.getComputedStyle(el);
-  const norm = (v) => (v || '').replace(/\s+/g, ' ').trim();
+  if (!el || !el.isConnected || !cdoc) { box.innerHTML = '<p class="hint">دوس على أي حاجة في الصفحة (نص، صورة، كارت، مجموعة، قسم) عشان تنسّقها.</p>'; return; }
+  const s = styleOf(el), cs = cdoc.defaultView.getComputedStyle(el);
+  const norm = (v) => String(v || '').replace(/\s+/g, ' ').replace(/"/g, "'").trim();
   const chips = (prop, list, cur) => `<div class="chips">${list.map(([v, l]) => `<button type="button" data-p="${prop}" data-v="${esc(v)}" class="${norm(cur) === norm(v) ? 'on' : ''}">${l}</button>`).join('')}</div>`;
   const sw = (prop, list, cur) => `<div class="chips">${list.map(([v, l]) => `<button type="button" class="swatch ${v ? '' : 'none'} ${norm(cur) === norm(v) ? 'on' : ''}" title="${l}" aria-label="${l}" data-p="${prop}" data-v="${esc(v)}" style="${v ? `background:${v}` : ''}"></button>`).join('')}<input type="color" data-p="${prop}" aria-label="لون مخصص" title="لون مخصص" style="width:36px;height:36px;border:none;background:none;padding:0;cursor:pointer"></div>`;
-  const isGrid = cs.display === 'grid';
-  const cols = (el.className.match(/b-cols-(\d)/) || [])[1] || '';
-  const names = { H1: 'عنوان رئيسي', H2: 'عنوان', H3: 'عنوان صغير', P: 'فقرة', A: 'لينك / زرار', IMG: 'صورة', SECTION: 'قسم', HEADER: 'هيدر', FOOTER: 'فوتر', LI: 'نقطة', UL: 'قايمة نقاط', BLOCKQUOTE: 'اقتباس' };
-  const name = names[el.tagName] || (el.classList.contains('b-card') ? 'كارت' : isGrid ? 'مجموعة / شبكة' : 'عنصر');
+  const num = (prop, ph) => `<input type="number" min="0" max="2000" step="1" data-num="${prop}" value="${parseInt(s[prop]) || ''}" placeholder="${ph}" style="width:90px;min-height:36px;border:1.5px solid var(--line);border-radius:8px;padding:4px 8px">`;
+  const ctl = (label, inner, hint = '') => `<div class="ctl"><span>${label}</span>${inner}${hint ? `<p class="hint">${hint}</p>` : ''}</div>`;
+  const group = (id, title, inner) => inner ? `<details class="sgroup" data-g="${id}" ${openGroups[id] ? 'open' : ''}><summary>${title}</summary><div class="sg-body">${inner}</div></details>` : '';
   const hasText = isTextish(el) || !!el.querySelector('h1,h2,h3,p,li,a,span');
+  const kids = [...el.children].filter((x) => !x.matches('.__ed,#__addbtn,#__drop,script,style'));
+  const isBox = kids.length > 0 && el.tagName !== 'SVG' && !/^(P|H\d|A|SPAN|LI|BUTTON|IMG)$/.test(el.tagName);
+  const disp = norm(s.display) || cs.display, isFlex = cs.display.includes('flex'), isGrid = cs.display.includes('grid');
+  const pDisp = el.parentElement ? cdoc.defaultView.getComputedStyle(el.parentElement).display : '';
+  const inFlow = /flex|grid/.test(pDisp);
+  const cols = (el.className.match(/b-cols-(\d)/) || [])[1] || '';
+  const curDisp = norm(s.display) === 'flex' ? (norm(s.flexDirection).startsWith('column') ? 'flex-col' : 'flex-row') : norm(s.display);
+  // مسار العنصر: القسم ← ... ← العنصر (تقدر تدوس على أي حلقة)
+  const chain = []; for (let x = el; x && x !== cdoc.body; x = x.parentElement) { chain.unshift(x); if (x.hasAttribute('data-sid') || x.hasAttribute('data-global')) break; }
+  box.__chain = chain;
   box.innerHTML = `
-    <div class="sel-info">المختار: <b>${name}</b>${el.hasAttribute('data-global') ? ' — بيظهر في كل الصفحات' : ''}</div>
-    ${hasText ? `
-    <div class="ctl"><span>نوع الخط</span><div class="chips">${[['', 'تلقائي']].concat(FONTS.map((f) => [`'${f[0]}', sans-serif`, f[1]])).map(([v, l]) => `<button type="button" data-p="fontFamily" data-v="${esc(v)}" class="${norm(s.fontFamily).replace(/"/g, "'") === norm(v) ? 'on' : ''}" style="${v ? `font-family:${esc(v)};` : ''}font-size:15px">${l}</button>`).join('')}</div></div>
-    <div class="ctl"><span>حجم الخط</span>${chips('fontSize', [['', 'تلقائي'], ['14px', '14'], ['16px', '16'], ['18px', '18'], ['22px', '22'], ['28px', '28'], ['36px', '36'], ['48px', '48']], s.fontSize)}</div>
-    <div class="ctl"><span>حجم مخصص (بكسل)</span><input type="number" min="10" max="120" step="1" data-num="fontSize" value="${parseInt(s.fontSize) || ''}" placeholder="${Math.round(parseFloat(cs.fontSize))}" style="width:100px;min-height:38px;border:1.5px solid var(--line);border-radius:8px;padding:4px 8px"></div>
-    <div class="ctl"><span>طريقة السطور</span>${chips('__wrap', [['', 'عادي'], ['b-nowrap-desk', 'سطر واحد على الكمبيوتر'], ['b-nowrap', 'سطر واحد دايمًا'], ['b-balance', 'سطور متوازنة']], ['b-nowrap-desk', 'b-nowrap', 'b-balance'].find((c) => el.classList.contains(c)) || '')}
-      <p class="hint">«سطر واحد على الكمبيوتر» بيرجع يلف عادي على الموبايل عشان مايخرجش برّه الشاشة.</p></div>
-    <div class="ctl"><span>أقصى عرض للفقرة</span>${chips('maxWidth', [['', 'تلقائي'], ['none', 'من غير حد'], ['960px', 'عريض'], ['720px', 'متوسط'], ['480px', 'ضيق']], s.maxWidth)}
-      <p class="hint">لو الفقرة بتنزل سطرين وإنت عاوزها أعرض، اختار «من غير حد» أو «عريض».</p></div>
-    <div class="ctl"><span>المسافة بين السطور</span>${chips('lineHeight', [['', 'تلقائي'], ['1.4', 'قريبة'], ['1.7', 'عادية'], ['2', 'واسعة'], ['2.4', 'واسعة جدًا']], s.lineHeight)}</div>
-    <div class="ctl"><span>سُمك الخط</span>${chips('fontWeight', [['', 'تلقائي'], ['400', 'عادي'], ['600', 'متوسط'], ['700', 'عريض']], s.fontWeight)}</div>
-    <div class="ctl"><span>لون الكلام</span>${sw('color', COLORS, s.color)}</div>
-    <div class="ctl"><span>المحاذاة</span>${chips('textAlign', [['', 'تلقائي'], ['right', 'يمين'], ['center', 'وسط'], ['left', 'شمال']], s.textAlign)}</div>` : ''}
-    <div class="ctl"><span>الخلفية</span>${sw('background', BGS, s.background)}<div class="chips" style="margin-top:6px"><button type="button" data-x="bgimg">صورة خلفية</button>${s.backgroundImage && s.backgroundImage !== 'none' && s.backgroundImage !== 'initial' ? '<button type="button" data-x="nobgimg">شيل صورة الخلفية</button>' : ''}</div></div>
-    ${isGrid || cols ? `<div class="ctl"><span>عدد الأعمدة</span>${chips('__cols', [['1', '1'], ['2', '2'], ['3', '3'], ['4', '4']], cols)}</div>` : ''}
-    <div class="ctl"><span>المسافة الداخلية</span>${chips('padding', [['', 'تلقائي'], ['0px', '0'], ['12px', 'صغيرة'], ['24px', 'متوسطة'], ['48px 24px', 'كبيرة'], ['96px 0px', 'قسم كبير']], s.padding)}</div>
-    <div class="ctl"><span>المسافة تحت العنصر</span>${chips('marginBottom', [['', 'تلقائي'], ['0px', '0'], ['12px', 'صغيرة'], ['24px', 'متوسطة'], ['48px', 'كبيرة']], s.marginBottom)}</div>
-    <div class="ctl"><span>استدارة الحواف</span>${chips('borderRadius', [['', 'تلقائي'], ['0px', 'حادة'], ['12px', 'خفيفة'], ['22px', 'واضحة'], ['999px', 'دايرية']], s.borderRadius)}</div>
-    <div class="ctl"><span>العرض</span>${chips('__width', [['', 'تلقائي'], ['100%', 'كامل'], ['75%', '¾'], ['50%', 'نص'], ['640px', 'متوسط في النص']], s.maxWidth === '640px' ? '640px' : s.width)}</div>
-    <div class="ctl"><span>الظهور</span><div class="chips"><button type="button" data-x="hm" class="${el.classList.contains('hide-mobile') ? 'on' : ''}">مخفي على الموبايل</button><button type="button" data-x="hd" class="${el.classList.contains('hide-desktop') ? 'on' : ''}">مخفي على الكمبيوتر</button></div></div>
-    <button type="button" class="btn small block" data-x="reset">مسح التنسيق الإضافي</button>`;
+    <div class="sel-info device-note ${isMobileMode() ? 'm' : ''}">${isMobileMode() ? '📱 بتعدّل <b>للموبايل بس</b> — الكمبيوتر مش هيتأثر' : '🖥️ التعديل بيطبق على <b>الكمبيوتر والموبايل</b>. اختار «موبايل» فوق عشان تعدّل للموبايل لوحده'}</div>
+    <div class="crumbs" aria-label="مكان العنصر">${chain.map((x, i) => `<button type="button" data-crumb="${i}" class="${x === el ? 'on' : ''}">${elName(x)}</button>`).join('<span>‹</span>')}</div>
+    ${group('text', 'الكلام', hasText ? `
+      ${ctl('نوع الخط', `<div class="chips">${[['', 'تلقائي']].concat(FONTS.map((f) => [`'${f[0]}', sans-serif`, f[1]])).map(([v, l]) => `<button type="button" data-p="fontFamily" data-v="${esc(v)}" class="${norm(s.fontFamily) === norm(v) ? 'on' : ''}" style="${v ? `font-family:${esc(v)};` : ''}font-size:15px">${l}</button>`).join('')}</div>`)}
+      ${ctl('حجم الخط', chips('fontSize', [['', 'تلقائي'], ['14px', '14'], ['16px', '16'], ['18px', '18'], ['22px', '22'], ['28px', '28'], ['36px', '36'], ['48px', '48']], s.fontSize) + `<div style="margin-top:6px">مخصص: ${num('fontSize', Math.round(parseFloat(cs.fontSize)))} بكسل</div>`)}
+      ${ctl('سُمك الخط', chips('fontWeight', [['', 'تلقائي'], ['400', 'عادي'], ['600', 'متوسط'], ['700', 'عريض']], s.fontWeight))}
+      ${ctl('لون الكلام', sw('color', COLORS, s.color))}
+      ${ctl('المحاذاة', chips('textAlign', [['', 'تلقائي'], ['right', 'يمين'], ['center', 'وسط'], ['left', 'شمال']], s.textAlign))}
+      ${ctl('طريقة السطور', chips('__wrap', [['', 'عادي'], ['b-nowrap-desk', 'سطر واحد على الكمبيوتر'], ['b-nowrap', 'سطر واحد دايمًا'], ['b-balance', 'سطور متوازنة']], ['b-nowrap-desk', 'b-nowrap', 'b-balance'].find((c) => el.classList.contains(c)) || ''))}
+      ${ctl('المسافة بين السطور', chips('lineHeight', [['', 'تلقائي'], ['1.3', 'قريبة'], ['1.7', 'عادية'], ['2', 'واسعة'], ['2.4', 'واسعة جدًا']], s.lineHeight))}` : '')}
+    ${group('layout', 'ترتيب العناصر اللي جواه', isBox ? `
+      ${ctl('شكل الترتيب', chips('__display', [['', 'زي التصميم'], ['block', 'تحت بعض'], ['flex-row', 'جنب بعض'], ['flex-col', 'عمود مرن'], ['grid', 'شبكة'], ['none', 'مخفي']], curDisp), 'جرّب «جنب بعض» لو عاوز العناصر في صف، و«شبكة» لكروت متساوية.')}
+      ${isFlex ? `
+        ${ctl('التوزيع على الاتجاه الأساسي', chips('justifyContent', [['', 'تلقائي'], ['flex-start', 'من البداية'], ['center', 'في النص'], ['flex-end', 'في الآخر'], ['space-between', 'موزعة للأطراف'], ['space-around', 'مسافات متساوية']], s.justifyContent))}
+        ${ctl('المحاذاة على الاتجاه التاني', chips('alignItems', [['', 'تلقائي'], ['flex-start', 'البداية'], ['center', 'النص'], ['flex-end', 'الآخر'], ['stretch', 'ممدودة']], s.alignItems))}
+        ${ctl('لو مفيش مكان', chips('flexWrap', [['', 'تلقائي'], ['wrap', 'تنزل سطر جديد'], ['nowrap', 'تفضل في سطر']], s.flexWrap))}` : ''}
+      ${isGrid ? `
+        ${ctl('عدد الأعمدة', chips('__cols', [['1', '1'], ['2', '2'], ['3', '3'], ['4', '4']], cols), isMobileMode() ? 'على الموبايل الأحسن عمود واحد.' : '')}
+        ${ctl('عرض الأعمدة', chips('gridTemplateColumns', [['', 'زي التصميم'], ['1fr', 'عمود واحد'], ['1fr 1fr', 'متساويين'], ['2fr 1fr', 'الأول أعرض'], ['1fr 2fr', 'التاني أعرض'], ['1fr 1fr 1fr', '3 متساويين'], ['1fr 1.3fr 1fr', '3 والنص أعرض']], s.gridTemplateColumns))}
+        ${ctl('المحاذاة الرأسية', chips('alignItems', [['', 'تلقائي'], ['start', 'فوق'], ['center', 'في النص'], ['end', 'تحت'], ['stretch', 'ممدودة']], s.alignItems))}` : ''}
+      ${isFlex || isGrid ? ctl('المسافة بين العناصر', chips('gap', [['', 'تلقائي'], ['0px', '0'], ['8px', 'صغيرة'], ['16px', 'متوسطة'], ['24px', 'كبيرة'], ['40px', 'أكبر'], ['64px', 'كبيرة جدًا']], s.gap)) : ''}` : '')}
+    ${group('place', 'مكانه جوه اللي حواليه', inFlow ? `
+      ${ctl('الترتيب', chips('order', [['', 'زي ما هو'], ['-1', 'الأول'], ['99', 'الأخير']], s.order), 'مفيد على الموبايل: مثلاً تخلي الصورة تيجي بعد العنوان.')}
+      ${ctl('محاذاته هو بس', chips('alignSelf', [['', 'تلقائي'], ['flex-start', 'البداية'], ['center', 'النص'], ['flex-end', 'الآخر'], ['stretch', 'ممدود']], s.alignSelf))}` : '')}
+    ${group('box', 'الخلفية والحدود', `
+      ${ctl('الخلفية', sw('background', BGS, s.background) + `<div class="chips" style="margin-top:6px"><button type="button" data-x="bgimg">صورة خلفية</button>${el.style.backgroundImage && el.style.backgroundImage !== 'none' ? '<button type="button" data-x="nobgimg">شيل صورة الخلفية</button>' : ''}</div>`)}
+      ${ctl('الإطار', chips('border', [['', 'تلقائي'], ['none', 'من غير'], ['1px solid var(--line)', 'خفيف'], ['2px solid var(--navy)', 'كحلي'], ['2px solid var(--coral)', 'برتقالي'], ['2px dashed var(--coral)', 'منقّط']], s.border))}
+      ${ctl('استدارة الحواف', chips('borderRadius', [['', 'تلقائي'], ['0px', 'حادة'], ['12px', 'خفيفة'], ['22px', 'واضحة'], ['999px', 'دايرية']], s.borderRadius))}
+      ${ctl('الظل', chips('boxShadow', [['', 'تلقائي'], ['none', 'من غير'], ['0 10px 30px rgba(18,48,74,.08)', 'خفيف'], ['0 20px 44px rgba(18,48,74,.18)', 'واضح']], s.boxShadow))}
+      ${ctl('الشفافية', chips('opacity', [['', '100%'], ['0.8', '80%'], ['0.6', '60%'], ['0.4', '40%']], s.opacity))}`)}
+    ${group('space', 'المسافات', `
+      ${ctl('المسافة الداخلية (حوالين المحتوى)', chips('padding', [['', 'تلقائي'], ['0px', '0'], ['12px', 'صغيرة'], ['24px', 'متوسطة'], ['40px 24px', 'كبيرة'], ['80px 0px', 'قسم كبير']], s.padding))}
+      ${ctl('مسافة فوق العنصر', chips('marginTop', [['', 'تلقائي'], ['0px', '0'], ['8px', '8'], ['16px', '16'], ['24px', '24'], ['40px', '40'], ['64px', '64']], s.marginTop) + `<div style="margin-top:6px">مخصص: ${num('marginTop', Math.round(parseFloat(cs.marginTop)))}</div>`)}
+      ${ctl('مسافة تحت العنصر', chips('marginBottom', [['', 'تلقائي'], ['0px', '0'], ['8px', '8'], ['16px', '16'], ['24px', '24'], ['40px', '40'], ['64px', '64']], s.marginBottom) + `<div style="margin-top:6px">مخصص: ${num('marginBottom', Math.round(parseFloat(cs.marginBottom)))}</div>`)}
+      ${ctl('مكانه أفقيًا', chips('marginInline', [['', 'تلقائي'], ['0px', 'على الطرف'], ['auto', 'في النص']], s.marginInline), '«في النص» بيشتغل لما يكون للعنصر عرض أصغر من المساحة.')}`)}
+    ${group('size', 'الحجم', `
+      ${ctl('العرض', chips('width', [['', 'تلقائي'], ['100%', 'كامل'], ['75%', '¾'], ['50%', 'نص'], ['fit-content', 'على قد المحتوى']], s.width))}
+      ${ctl('أقصى عرض', chips('maxWidth', [['', 'تلقائي'], ['none', 'من غير حد'], ['960px', 'عريض'], ['720px', 'متوسط'], ['480px', 'ضيق'], ['320px', 'صغير']], s.maxWidth))}
+      ${ctl('أقل ارتفاع', chips('minHeight', [['', 'تلقائي'], ['0px', '0'], ['200px', '200'], ['400px', '400'], ['600px', '600'], ['100vh', 'طول الشاشة']], s.minHeight))}`)}
+    ${group('show', 'الظهور', `<div class="chips"><button type="button" data-x="hm" class="${el.classList.contains('hide-mobile') ? 'on' : ''}">مخفي على الموبايل</button><button type="button" data-x="hd" class="${el.classList.contains('hide-desktop') ? 'on' : ''}">مخفي على الكمبيوتر</button></div>`)}
+    <button type="button" class="btn small block" data-x="reset">${isMobileMode() ? 'مسح تنسيق الموبايل لهذا العنصر' : 'مسح التنسيق الإضافي'}</button>`;
 }
+$('#side-style').addEventListener('toggle', (e) => { const d = e.target.closest('details[data-g]'); if (d) openGroups[d.dataset.g] = d.open; }, true);
 $('#side-style').addEventListener('click', async (e) => {
   const el = selected; const b = e.target.closest('button'); if (!el || !b) return;
+  if (b.dataset.crumb) { const t = $('#side-style').__chain[+b.dataset.crumb]; if (t) { select(t); t.scrollIntoView({ block: 'nearest' }); } return; }
   if (b.dataset.p) {
     const p = b.dataset.p, v = b.dataset.v;
-    if (p === '__wrap') { el.classList.remove('b-nowrap-desk', 'b-nowrap', 'b-balance'); if (v) el.classList.add(v); changed(); renderStylePanel(); return; }
-    if (p === '__cols') { el.classList.remove('b-cols-1', 'b-cols-2', 'b-cols-3', 'b-cols-4'); el.classList.add('b-grid', 'b-cols-' + v); el.style.gridTemplateColumns = ''; }
-    else if (p === '__width') { if (v === '640px') { el.style.width = ''; el.style.maxWidth = '640px'; el.style.marginInline = 'auto'; } else { el.style.maxWidth = ''; el.style.marginInline = ''; el.style.width = v; } }
-    else el.style[p] = v;
-  } else if (b.dataset.x === 'bgimg') { const url = await pickImage('صورة خلفية'); if (!url) return; el.style.backgroundImage = `url('${url}')`; el.style.backgroundSize = 'cover'; el.style.backgroundPosition = 'center'; }
-  else if (b.dataset.x === 'nobgimg') { el.style.backgroundImage = ''; el.style.backgroundSize = ''; el.style.backgroundPosition = ''; }
+    if (p === '__wrap') { el.classList.remove('b-nowrap-desk', 'b-nowrap', 'b-balance'); if (v) el.classList.add(v); }
+    else if (p === '__cols') { if (isMobileMode()) setProp(el, 'gridTemplateColumns', `repeat(${v},minmax(0,1fr))`); else { el.classList.remove('b-cols-1', 'b-cols-2', 'b-cols-3', 'b-cols-4'); el.classList.add('b-grid', 'b-cols-' + v); el.style.gridTemplateColumns = ''; } }
+    else if (p === '__display') {
+      if (v === 'flex-row') { setProp(el, 'display', 'flex'); setProp(el, 'flexDirection', 'row'); }
+      else if (v === 'flex-col') { setProp(el, 'display', 'flex'); setProp(el, 'flexDirection', 'column'); }
+      else { setProp(el, 'display', v); setProp(el, 'flexDirection', ''); }
+    }
+    else setProp(el, p, v);
+  } else if (b.dataset.x === 'bgimg') { const url = await pickImage('صورة خلفية'); if (!url) return; setProp(el, 'backgroundImage', `url('${url}')`); setProp(el, 'backgroundSize', 'cover'); setProp(el, 'backgroundPosition', 'center'); }
+  else if (b.dataset.x === 'nobgimg') { setProp(el, 'backgroundImage', ''); setProp(el, 'backgroundSize', ''); setProp(el, 'backgroundPosition', ''); }
   else if (b.dataset.x === 'hm') el.classList.toggle('hide-mobile');
   else if (b.dataset.x === 'hd') el.classList.toggle('hide-desktop');
-  else if (b.dataset.x === 'reset') el.removeAttribute('style');
+  else if (b.dataset.x === 'reset') { if (isMobileMode()) { mSet(el, {}); refreshMobileCss(); } else el.removeAttribute('style'); }
   else return;
   if (el.getAttribute('style') === '') el.removeAttribute('style');
   changed(); renderStylePanel();
 });
 $('#side-style').addEventListener('change', (e) => {
-  if (selected && e.target.dataset.num) { const n = parseInt(e.target.value); selected.style[e.target.dataset.num] = n ? n + 'px' : ''; changed(); renderStylePanel(); return; }
-  if (!selected || e.target.type !== 'color') return;
-  selected.style[e.target.dataset.p] = e.target.value; changed(); renderStylePanel();
+  if (!selected) return;
+  if (e.target.dataset.num) { const n = parseInt(e.target.value); setProp(selected, e.target.dataset.num, Number.isFinite(n) ? n + 'px' : ''); changed(); renderStylePanel(); return; }
+  if (e.target.type === 'color') { setProp(selected, e.target.dataset.p, e.target.value); changed(); renderStylePanel(); }
+});
+
+/* ---------- لوحة "الطبقات": هيكل الصفحة كشجرة ---------- */
+function renderLayers() {
+  const box = $('#side-layers'); if (!box || box.hidden || !cdoc) return;
+  const tops = [...cdoc.body.children].filter((x) => x.hasAttribute('data-sid') || x.hasAttribute('data-global'));
+  const focus = topOf(selected);
+  const label = (x) => { const t = (x.textContent || '').trim().replace(/\s+/g, ' ').slice(0, 26); return `<b>${elName(x)}</b>${t ? ` <small>${esc(t)}</small>` : ''}`; };
+  const branch = (x, depth) => {
+    if (depth > 7 || x.matches('svg,script,style,.__ed,#__addbtn,#__drop') || x.closest('[data-collection-items]') && !x.hasAttribute('data-collection-items')) return '';
+    const kids = [...x.children].filter((k) => !k.matches('svg,script,style,br'));
+    return `<li><button type="button" data-layer class="${x === selected ? 'on' : ''}" style="padding-inline-start:${8 + depth * 14}px">${label(x)}</button>${kids.length && (x === focus || x.contains(selected) || depth < 1) ? `<ul>${kids.map((k) => branch(k, depth + 1)).join('')}</ul>` : ''}</li>`;
+  };
+  const nodes = []; box.__nodes = nodes;
+  box.innerHTML = `<p class="hint" style="margin-bottom:8px">ده هيكل الصفحة. دوس على أي سطر عشان تختاره، حتى لو صعب توصله بالماوس جوه الصفحة.</p><ul class="layers">${tops.map((t) => branch(t, 0)).join('')}</ul>`;
+  // نربط كل زرار بالعنصر بتاعه بنفس ترتيب الرسم
+  const walk = (x, depth) => {
+    if (depth > 7 || x.matches('svg,script,style,.__ed,#__addbtn,#__drop') || x.closest('[data-collection-items]') && !x.hasAttribute('data-collection-items')) return;
+    nodes.push(x);
+    const kids = [...x.children].filter((k) => !k.matches('svg,script,style,br'));
+    if (kids.length && (x === focus || x.contains(selected) || depth < 1)) kids.forEach((k) => walk(k, depth + 1));
+  };
+  tops.forEach((t) => walk(t, 0));
+}
+$('#side-layers').addEventListener('click', (e) => {
+  const b = e.target.closest('[data-layer]'); if (!b) return;
+  const i = [...$('#side-layers').querySelectorAll('[data-layer]')].indexOf(b);
+  const el = $('#side-layers').__nodes[i]; if (!el) return;
+  select(el); el.scrollIntoView({ block: 'center' }); renderLayers();
 });
 
 /* ---------- لوحة "الصفحة" ---------- */
@@ -1389,6 +1512,9 @@ function buildPagePanel() {
       <div class="field"><label for="pg-excerpt">ملخص قصير</label><textarea id="pg-excerpt" maxlength="220">${esc(m.excerpt)}</textarea></div>
       <div class="field"><label for="pg-cat">التصنيف</label><input id="pg-cat" value="${esc(m.category)}" placeholder="${k === 'post' ? 'مثلاً: هندسة' : 'مثلاً: قوالب'}"></div>
       ${k === 'post' ? `<div class="field"><label for="pg-date">تاريخ النشر</label><input id="pg-date" type="date" value="${esc(m.date)}" dir="ltr"></div>` : `<div class="field"><label for="pg-price">السعر</label><input id="pg-price" value="${esc(m.price)}" placeholder="مثلاً: 250 جنيه أو يبدأ من 1000 جنيه"></div>`}` : ''}
+    <h4>المسافة بين الأقسام (الموقع كله)</h4>
+    <div class="chips" id="pg-spacing">${Object.entries(SPACING).map(([k, [l]]) => `<button type="button" data-sp="${k}" class="${(globalData.spacing || '') === k ? 'on' : ''}">${l}</button>`).join('')}</div>
+    <p class="hint">بتصغّر أو تكبّر المسافة فوق وتحت كل قسم في كل الصفحات مرة واحدة. ولقسم معيّن لوحده: اختاره ← تنسيق ← المسافات.</p>
     <h4>أجزاء مشتركة</h4>
     <label class="choice"><input type="checkbox" id="pg-header" ${st.showHeader !== false ? 'checked' : ''}><span><b>إظهار الهيدر المشترك</b><small>القايمة اللي فوق. تعديله من أي صفحة بيظهر في الكل</small></span></label>
     <label class="choice"><input type="checkbox" id="pg-footer" ${st.showFooter !== false ? 'checked' : ''}><span><b>إظهار الفوتر المشترك</b><small>الجزء اللي تحت. تعديله من أي صفحة بيظهر في الكل</small></span></label>`;
@@ -1404,6 +1530,10 @@ $('#side-page').addEventListener('input', (e) => {
   else return;
   markDirty();
 });
+$('#side-page').addEventListener('click', (e) => {
+  const b = e.target.closest('[data-sp]'); if (!b) return;
+  globalData.spacing = b.dataset.sp; globalDirty = true; refreshSpacingCss(); markDirty(); buildPagePanel(); updateOverlays();
+});
 $('#side-page').addEventListener('change', (e) => {
   if (e.target.id === 'pg-header' || e.target.id === 'pg-footer') {
     stopEditing(true); syncFromDom(); st[e.target.id === 'pg-header' ? 'showHeader' : 'showFooter'] = e.target.checked; paintBody(); pushHistory();
@@ -1418,8 +1548,9 @@ $('#side-page').addEventListener('click', async (e) => {
 /* ---------- الشريط العلوي ---------- */
 function setSideTab(t) {
   document.querySelectorAll('#side-tabs button').forEach((b) => b.classList.toggle('on', b.dataset.tab === t));
-  ['add', 'style', 'page'].forEach((x) => { $('#side-' + x).hidden = x !== t; });
+  ['add', 'style', 'layers', 'page'].forEach((x) => { $('#side-' + x).hidden = x !== t; });
   if (t === 'style') renderStylePanel();
+  if (t === 'layers') renderLayers();
 }
 $('#side-tabs').addEventListener('click', (e) => { const b = e.target.closest('[data-tab]'); if (b) setSideTab(b.dataset.tab); });
 const openSide = () => document.body.classList.add('side-open');
@@ -1428,7 +1559,7 @@ $('#side-toggle').addEventListener('click', () => document.body.classList.toggle
 document.querySelectorAll('[data-device]').forEach((b) => b.addEventListener('click', () => {
   $('#stage').classList.toggle('mobile', b.dataset.device === 'mobile');
   document.querySelectorAll('[data-device]').forEach((x) => x.classList.toggle('on', x === b));
-  setTimeout(updateOverlays, 80);
+  setTimeout(() => { updateOverlays(); renderStylePanel(); }, 80);
 }));
 $('#undo-btn').addEventListener('click', undo);
 $('#redo-btn').addEventListener('click', redo);
