@@ -117,6 +117,7 @@
     #fb-body button[data-s] span, #fb-body button.ic-only span { display: none; }
     #fb-body button[data-s] { padding: 7px 8px; }
     #fb-body button.fb-ok { background: var(--teal); }
+    #fb-body button.fb-sw { width: 26px; min-width: 26px; height: 26px; min-height: 26px; padding: 0; border-radius: 50%; background: var(--c); border: 2px solid #fff; }
     .fb-lbl { font-size: .8rem; color: #cfe3e0; padding: 0 6px; white-space: nowrap; flex: none; }
     .fb-sep { width: 1px; align-self: stretch; background: rgba(255,255,255,.2); margin: 2px 4px; flex: none; }
     #canvas { background: #fff; border: 0; width: 100%; height: 100%; box-shadow: 0 10px 30px rgba(0,0,0,.12); border-radius: 6px; }
@@ -477,6 +478,10 @@ a.b-card:hover{box-shadow:0 14px 30px rgba(18,48,74,.08)}
 .b-empty{color:var(--muted);text-align:center;padding:28px;border:2px dashed var(--line);border-radius:16px;grid-column:1/-1}
 @media(max-width:900px){.hide-mobile{display:none!important}}
 @media(min-width:901px){.hide-desktop{display:none!important}}
+/* تحكم في سطور الفقرات */
+@media(min-width:901px){.b-nowrap-desk{white-space:nowrap}}
+.b-nowrap{white-space:nowrap}
+.b-balance{text-wrap:balance}
 /* ===== تصميم القايمة: الزرار اللي واقف عليه بيبقى برتقالي والكلام أبيض ===== */
 nav ul{gap:6px}
 nav ul a{display:inline-block;padding:8px 16px;border-radius:999px;border:1.5px solid transparent;transition:background .15s,color .15s}
@@ -1047,7 +1052,10 @@ function renderFloatBar() {
   let h = '';
   if (editing) {
     h = `<span class="fb-lbl">بتكتب في: ${elName(editing)}</span>
-      <button type="button" data-a="b" title="عريض"><b>B</b></button><button type="button" data-a="i" title="مايل"><i>I</i></button>${tbBtn('link', 'لينك')}
+      <button type="button" data-a="b" title="عريض"><b>B</b></button><button type="button" data-a="i" title="مايل"><i>I</i></button><button type="button" data-a="u" title="تحت خط"><u>U</u></button>${tbBtn('link', 'لينك')}
+      <span class="fb-sep"></span><button type="button" data-a="al-r" title="محاذاة يمين">يمين</button><button type="button" data-a="al-c" title="في النص">وسط</button><button type="button" data-a="al-l" title="محاذاة شمال">شمال</button>
+      <span class="fb-sep"></span><button type="button" data-a="c-navy" title="لون كحلي" class="fb-sw" style="--c:#12304a"></button><button type="button" data-a="c-coral" title="لون برتقالي" class="fb-sw" style="--c:#c2461f"></button><button type="button" data-a="c-teal" title="لون أخضر" class="fb-sw" style="--c:#2a6f68"></button>
+      <button type="button" data-a="list" title="قايمة نقاط">• نقاط</button><button type="button" data-a="clear" title="شيل التنسيق من الكلام المحدد">مسح التنسيق</button>
       <span class="fb-sep"></span><button type="button" data-a="h1">عنوان كبير</button><button type="button" data-a="h2">عنوان</button><button type="button" data-a="h3">صغير</button><button type="button" data-a="p">فقرة</button>
       <span class="fb-sep"></span>${tbBtn('done', 'تم', 'fb-ok')}`;
   } else if (sel) {
@@ -1109,6 +1117,11 @@ async function act(a) {
     case 'edit': startEditing(isTextish(el) ? el : [...el.querySelectorAll('*')].find(isTextish)); return;
     case 'done': stopEditing(); return;
     case 'b': cdoc.execCommand('bold'); markDirty(); return;
+    case 'u': cdoc.execCommand('underline'); markDirty(); return;
+    case 'al-r': case 'al-c': case 'al-l': (editing || el).style.textAlign = { 'al-r': 'right', 'al-c': 'center', 'al-l': 'left' }[a]; markDirty(); renderStylePanel(); return;
+    case 'c-navy': case 'c-coral': case 'c-teal': cdoc.execCommand('styleWithCSS', false, true); cdoc.execCommand('foreColor', false, { 'c-navy': '#12304a', 'c-coral': '#c2461f', 'c-teal': '#2a6f68' }[a]); markDirty(); return;
+    case 'list': cdoc.execCommand('insertUnorderedList'); markDirty(); return;
+    case 'clear': cdoc.execCommand('removeFormat'); markDirty(); return;
     case 'i': cdoc.execCommand('italic'); markDirty(); return;
     case 'h1': case 'h2': case 'h3': case 'p': { const n = retag(editing || el, a.toUpperCase()); editing = null; select(n); changed(); return; }
     case 'link': return editLink(el);
@@ -1322,6 +1335,12 @@ function renderStylePanel() {
     ${hasText ? `
     <div class="ctl"><span>نوع الخط</span><div class="chips">${[['', 'تلقائي']].concat(FONTS.map((f) => [`'${f[0]}', sans-serif`, f[1]])).map(([v, l]) => `<button type="button" data-p="fontFamily" data-v="${esc(v)}" class="${norm(s.fontFamily).replace(/"/g, "'") === norm(v) ? 'on' : ''}" style="${v ? `font-family:${esc(v)};` : ''}font-size:15px">${l}</button>`).join('')}</div></div>
     <div class="ctl"><span>حجم الخط</span>${chips('fontSize', [['', 'تلقائي'], ['14px', '14'], ['16px', '16'], ['18px', '18'], ['22px', '22'], ['28px', '28'], ['36px', '36'], ['48px', '48']], s.fontSize)}</div>
+    <div class="ctl"><span>حجم مخصص (بكسل)</span><input type="number" min="10" max="120" step="1" data-num="fontSize" value="${parseInt(s.fontSize) || ''}" placeholder="${Math.round(parseFloat(cs.fontSize))}" style="width:100px;min-height:38px;border:1.5px solid var(--line);border-radius:8px;padding:4px 8px"></div>
+    <div class="ctl"><span>طريقة السطور</span>${chips('__wrap', [['', 'عادي'], ['b-nowrap-desk', 'سطر واحد على الكمبيوتر'], ['b-nowrap', 'سطر واحد دايمًا'], ['b-balance', 'سطور متوازنة']], ['b-nowrap-desk', 'b-nowrap', 'b-balance'].find((c) => el.classList.contains(c)) || '')}
+      <p class="hint">«سطر واحد على الكمبيوتر» بيرجع يلف عادي على الموبايل عشان مايخرجش برّه الشاشة.</p></div>
+    <div class="ctl"><span>أقصى عرض للفقرة</span>${chips('maxWidth', [['', 'تلقائي'], ['none', 'من غير حد'], ['960px', 'عريض'], ['720px', 'متوسط'], ['480px', 'ضيق']], s.maxWidth)}
+      <p class="hint">لو الفقرة بتنزل سطرين وإنت عاوزها أعرض، اختار «من غير حد» أو «عريض».</p></div>
+    <div class="ctl"><span>المسافة بين السطور</span>${chips('lineHeight', [['', 'تلقائي'], ['1.4', 'قريبة'], ['1.7', 'عادية'], ['2', 'واسعة'], ['2.4', 'واسعة جدًا']], s.lineHeight)}</div>
     <div class="ctl"><span>سُمك الخط</span>${chips('fontWeight', [['', 'تلقائي'], ['400', 'عادي'], ['600', 'متوسط'], ['700', 'عريض']], s.fontWeight)}</div>
     <div class="ctl"><span>لون الكلام</span>${sw('color', COLORS, s.color)}</div>
     <div class="ctl"><span>المحاذاة</span>${chips('textAlign', [['', 'تلقائي'], ['right', 'يمين'], ['center', 'وسط'], ['left', 'شمال']], s.textAlign)}</div>` : ''}
@@ -1338,6 +1357,7 @@ $('#side-style').addEventListener('click', async (e) => {
   const el = selected; const b = e.target.closest('button'); if (!el || !b) return;
   if (b.dataset.p) {
     const p = b.dataset.p, v = b.dataset.v;
+    if (p === '__wrap') { el.classList.remove('b-nowrap-desk', 'b-nowrap', 'b-balance'); if (v) el.classList.add(v); changed(); renderStylePanel(); return; }
     if (p === '__cols') { el.classList.remove('b-cols-1', 'b-cols-2', 'b-cols-3', 'b-cols-4'); el.classList.add('b-grid', 'b-cols-' + v); el.style.gridTemplateColumns = ''; }
     else if (p === '__width') { if (v === '640px') { el.style.width = ''; el.style.maxWidth = '640px'; el.style.marginInline = 'auto'; } else { el.style.maxWidth = ''; el.style.marginInline = ''; el.style.width = v; } }
     else el.style[p] = v;
@@ -1351,6 +1371,7 @@ $('#side-style').addEventListener('click', async (e) => {
   changed(); renderStylePanel();
 });
 $('#side-style').addEventListener('change', (e) => {
+  if (selected && e.target.dataset.num) { const n = parseInt(e.target.value); selected.style[e.target.dataset.num] = n ? n + 'px' : ''; changed(); renderStylePanel(); return; }
   if (!selected || e.target.type !== 'color') return;
   selected.style[e.target.dataset.p] = e.target.value; changed(); renderStylePanel();
 });
