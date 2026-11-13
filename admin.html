@@ -6,22 +6,15 @@
   <meta name="robots" content="noindex, nofollow">
   <title>لوحة التحكم | عمار المهدي</title>
   <link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/grapesjs@0.22.9/dist/css/grapes.min.css">
   <style>
     /* ============================================================
-       ألوان اللوحة: كحلي "ورق المهندس" + أبيض بارد
-       المرجاني محجوز لزرار النشر بس، عشان يبقى أهم زرار واضح
+       لوحة التحكم: كحلي "ورق المهندس" + أبيض بارد
+       المرجاني محجوز لزرار النشر بس
        ============================================================ */
     :root {
-      --ink: #12304a;
-      --ink-2: #1d4566;
-      --paper: #f4f6f8;
-      --white: #ffffff;
-      --line: #d9e0e6;
-      --muted: #5f6b76;
-      --teal: #2a6f68;
-      --coral: #c2461f;
-      --danger: #b42318;
+      --ink: #12304a; --ink-2: #1d4566; --paper: #f4f6f8; --white: #ffffff; --line: #d9e0e6;
+      --muted: #5f6b76; --teal: #2a6f68; --teal-soft: #e3f1ef; --coral: #c2461f; --danger: #b42318;
+      --side: 340px;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { height: 100%; }
@@ -30,33 +23,29 @@
     [hidden] { display: none !important; }
     :focus-visible { outline: 3px solid var(--teal); outline-offset: 2px; border-radius: 6px; }
 
-    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 8px 18px;
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 8px 16px;
       border-radius: 10px; border: 1.5px solid var(--line); background: var(--white); cursor: pointer; font-weight: 600; white-space: nowrap; }
     .btn:hover { border-color: var(--ink); }
     .btn:disabled { opacity: .5; cursor: not-allowed; }
     .btn.primary { background: var(--ink); border-color: var(--ink); color: var(--white); }
     .btn.publish { background: var(--coral); border-color: var(--coral); color: var(--white); }
-    .btn.ghost { background: transparent; border-color: transparent; }
     .btn.danger { color: var(--danger); }
     .btn.danger:hover { border-color: var(--danger); }
     .btn.small { min-height: 38px; padding: 6px 12px; font-size: .9rem; }
+    .btn.block { width: 100%; }
 
-    /* ================= شاشة الدخول: خلفية ورق رسم هندسي ================= */
-    #login { min-height: 100%; display: grid; place-items: center; padding: 24px 16px;
-      background-color: var(--ink);
-      background-image:
-        linear-gradient(rgba(255,255,255,.07) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.07) 1px, transparent 1px),
-        linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
+    /* ================= الدخول ================= */
+    #login { min-height: 100%; display: grid; place-items: center; padding: 24px 16px; background-color: var(--ink);
+      background-image: linear-gradient(rgba(255,255,255,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.07) 1px, transparent 1px),
+        linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
       background-size: 96px 96px, 96px 96px, 16px 16px, 16px 16px; }
     .login-card { width: 100%; max-width: 400px; background: var(--white); border-radius: 18px; padding: 32px 28px; box-shadow: 0 30px 60px rgba(0,0,0,.25); }
     .login-card h1 { font-size: 1.6rem; line-height: 1.4; }
     .login-card p.lead { color: var(--muted); margin: 4px 0 24px; }
     label { display: block; font-weight: 600; margin-bottom: 6px; }
-    .field { margin-bottom: 16px; }
-    .field input, .field textarea, .field select { width: 100%; min-height: 46px; padding: 10px 14px; border: 1.5px solid var(--line); border-radius: 10px; background: var(--white); }
-    .field textarea { min-height: 90px; resize: vertical; }
+    .field { margin-bottom: 14px; }
+    .field input, .field textarea, .field select { width: 100%; min-height: 44px; padding: 9px 12px; border: 1.5px solid var(--line); border-radius: 10px; background: var(--white); }
+    .field textarea { min-height: 84px; resize: vertical; }
     .field input:focus, .field textarea:focus, .field select:focus { border-color: var(--ink); outline: none; box-shadow: 0 0 0 3px rgba(18,48,74,.15); }
     .hint { color: var(--muted); font-size: .85rem; margin-top: 4px; }
     .error { color: var(--danger); font-size: .92rem; margin-top: 4px; min-height: 1.4em; }
@@ -66,106 +55,125 @@
     .bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 20px; background: var(--white); border-bottom: 1px solid var(--line); flex-wrap: wrap; }
     .brand { font-weight: 700; font-size: 1.1rem; }
     .brand small { display: block; color: var(--muted); font-weight: 400; font-size: .85rem; }
-    .wrap { max-width: 980px; margin: 0 auto; padding: 28px 16px 60px; }
-    .wrap h2 { font-size: 1.4rem; }
-    .actions { display: flex; gap: 10px; flex-wrap: wrap; margin: 16px 0 22px; }
+    .wrap { max-width: 980px; margin: 0 auto; padding: 24px 16px 60px; }
+    .tabs { display: flex; gap: 6px; border-bottom: 1px solid var(--line); margin-bottom: 18px; overflow-x: auto; }
+    .tabs button { border: none; background: none; padding: 10px 14px; min-height: 44px; cursor: pointer; font-weight: 600; color: var(--muted); border-bottom: 3px solid transparent; white-space: nowrap; }
+    .tabs button.on { color: var(--ink); border-bottom-color: var(--ink); }
+    .actions { display: flex; gap: 10px; flex-wrap: wrap; margin: 0 0 18px; }
     .page-row { display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: center; background: var(--white);
-      border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; margin-bottom: 10px; }
+      border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; margin-bottom: 10px; }
     .page-row h3 { font-size: 1.05rem; }
-    .meta { display: flex; gap: 10px; flex-wrap: wrap; color: var(--muted); font-size: .88rem; margin-top: 2px; }
+    .meta { display: flex; gap: 10px; flex-wrap: wrap; color: var(--muted); font-size: .88rem; margin-top: 2px; align-items: center; }
     .meta code { direction: ltr; unicode-bidi: isolate; background: var(--paper); padding: 0 6px; border-radius: 6px; }
     .badge { display: inline-block; padding: 0 10px; border-radius: 999px; font-size: .82rem; font-weight: 600; }
     .badge.draft { background: #eef1f4; color: var(--muted); }
-    .badge.published { background: #e3f1ef; color: var(--teal); }
+    .badge.published { background: var(--teal-soft); color: var(--teal); }
+    .badge.old { background: #fff1e6; color: #8a4b12; }
     .row-actions { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
-    .empty { text-align: center; background: var(--white); border: 2px dashed var(--line); border-radius: 16px; padding: 40px 20px; }
+    .empty { text-align: center; background: var(--white); border: 2px dashed var(--line); border-radius: 16px; padding: 36px 20px; }
     .empty p { color: var(--muted); margin: 6px 0 16px; }
 
     /* ================= المحرر ================= */
-    #editor { height: 100%; display: flex; flex-direction: column; }
-    .ed-bar { display: flex; align-items: center; gap: 8px; padding: 8px 12px; background: var(--ink); color: var(--white); flex-wrap: wrap; }
+    #editor { height: 100%; display: grid; grid-template-rows: auto 1fr; }
+    .ed-bar { display: flex; align-items: center; gap: 6px; padding: 8px 10px; background: var(--ink); color: var(--white); flex-wrap: wrap; }
     .ed-bar .btn { min-height: 40px; padding: 6px 12px; background: var(--ink-2); border-color: transparent; color: var(--white); font-size: .9rem; }
     .ed-bar .btn:hover { border-color: rgba(255,255,255,.5); }
     .ed-bar .btn.on { background: var(--white); color: var(--ink); }
     .ed-bar .btn.publish { background: var(--coral); }
-    .ed-bar .sep { width: 1px; align-self: stretch; background: rgba(255,255,255,.2); margin: 0 4px; }
-    .ed-title { font-weight: 600; max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .ed-status { font-size: .85rem; opacity: .85; min-width: 110px; }
+    .ed-title { font-weight: 600; max-width: 240px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .ed-status { font-size: .85rem; opacity: .85; }
     .grow { flex: 1; }
-    .group { display: flex; gap: 4px; }
-    #gjs-wrap { flex: 1; min-height: 0; position: relative; }
-    #gjs { height: 100%; }
-    /* ألوان محرر GrapesJS نفسه عشان يمشي مع اللوحة */
-    .gjs-one-bg { background-color: var(--ink); }
-    .gjs-two-color { color: #e6edf3; }
-    .gjs-three-bg { background-color: var(--teal); color: #fff; }
-    .gjs-four-color, .gjs-four-color-h:hover { color: #7fd1c6; }
-    .gjs-cv-canvas { width: 76%; }
-    .gjs-pn-views-container, .gjs-pn-views { width: 24%; }
-    .gjs-pn-options { right: 24%; }
-    .gjs-sm-sector-title, .gjs-layer-name, .gjs-trt-trait, .gjs-clm-tags { font-family: 'Readex Pro', sans-serif; font-size: .85rem; }
-    @media (max-width: 1000px) { .gjs-cv-canvas { width: 62%; } .gjs-pn-views-container, .gjs-pn-views { width: 38%; } .gjs-pn-options { right: 38%; } }
-    .gjs-block { width: 44%; min-height: 84px; font-family: 'Readex Pro', sans-serif; }
-    .gjs-block-label { font-size: .8rem; }
-    .gjs-block-category .gjs-title { font-family: 'Readex Pro', sans-serif; }
-    .ed-phone-note { display: none; background: #fff6e5; color: #7a4b00; padding: 8px 12px; font-size: .9rem; }
-    @media (max-width: 760px) { .ed-phone-note { display: block; } }
+    .ed-main { display: grid; grid-template-columns: var(--side) 1fr; min-height: 0; }
+    .side { background: var(--white); border-inline-end: 1px solid var(--line); display: flex; flex-direction: column; min-height: 0; }
+    .side .tabs { margin: 0; padding: 0 8px; flex: none; }
+    .side-body { overflow-y: auto; padding: 14px; flex: 1; }
+    .side h4 { font-size: .95rem; margin: 14px 0 8px; color: var(--ink); }
+    .side h4:first-child { margin-top: 0; }
+    .lib { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .lib button { text-align: start; border: 1.5px solid var(--line); background: var(--white); border-radius: 12px; padding: 10px; cursor: pointer; min-height: 52px; }
+    .lib button:hover { border-color: var(--teal); background: var(--teal-soft); }
+    .lib b { display: block; font-size: .92rem; }
+    .lib small { display: block; color: var(--muted); font-size: .78rem; line-height: 1.4; }
+    .lib.one { grid-template-columns: 1fr; }
+    .ctl { margin-bottom: 14px; }
+    .ctl > span { display: block; font-size: .85rem; font-weight: 600; margin-bottom: 6px; }
+    .chips { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+    .chips button { border: 1.5px solid var(--line); background: var(--white); border-radius: 8px; padding: 4px 10px; min-height: 36px; min-width: 36px; cursor: pointer; font-size: .85rem; }
+    .chips button.on { border-color: var(--ink); background: var(--ink); color: var(--white); }
+    .chips button.swatch { width: 36px; height: 36px; border-radius: 50%; padding: 0; border: 2px solid var(--line); }
+    .chips button.swatch.on { outline: 3px solid var(--ink); outline-offset: 2px; background-clip: padding-box; }
+    .chips button.swatch.none { background: repeating-linear-gradient(45deg, #fff 0 6px, #f1d4cc 6px 8px); }
+    .sel-info { background: var(--paper); border-radius: 10px; padding: 8px 10px; font-size: .85rem; margin-bottom: 12px; }
+    .stage { background: #dfe5ea; overflow: hidden; display: flex; justify-content: center; padding: 16px; min-height: 0; }
+    #canvas { background: #fff; border: 0; width: 100%; height: 100%; box-shadow: 0 10px 30px rgba(0,0,0,.12); border-radius: 6px; }
+    .stage.mobile #canvas { width: 390px; }
+    .side-toggle { display: none !important; }
+    @media (max-width: 860px) {
+      .ed-main { grid-template-columns: 1fr; }
+      .side { position: fixed; inset-inline: 0; bottom: 0; height: 58vh; z-index: 50; border-radius: 18px 18px 0 0; box-shadow: 0 -12px 30px rgba(0,0,0,.2); transform: translateY(100%); transition: transform .2s; }
+      body.side-open .side { transform: none; }
+      .side-toggle { display: inline-flex !important; }
+      .stage { padding: 0; }
+      #canvas { border-radius: 0; }
+    }
 
     /* ================= نافذة الحوار + الإشعار ================= */
-    dialog { border: none; border-radius: 16px; padding: 0; width: min(520px, calc(100% - 32px)); box-shadow: 0 30px 60px rgba(0,0,0,.3); }
+    dialog { border: none; border-radius: 16px; padding: 0; width: min(560px, calc(100% - 24px)); max-height: calc(100% - 24px); box-shadow: 0 30px 60px rgba(0,0,0,.3); }
     dialog::backdrop { background: rgba(18,48,74,.55); }
-    .dlg-body { padding: 24px; }
+    .dlg-body { padding: 22px; }
     .dlg-body h3 { font-size: 1.2rem; margin-bottom: 12px; }
-    .dlg-body p { color: var(--muted); margin-bottom: 14px; }
-    .dlg-actions { display: flex; gap: 8px; justify-content: flex-start; padding: 0 24px 24px; flex-wrap: wrap; }
-    .choice { display: flex; gap: 10px; align-items: flex-start; border: 1.5px solid var(--line); border-radius: 12px; padding: 12px; margin-bottom: 8px; cursor: pointer; }
-    .choice input { margin-top: 6px; width: 18px; height: 18px; }
+    .dlg-body h4 { font-size: .95rem; margin: 12px 0 6px; }
+    .dlg-body p { color: var(--muted); margin-bottom: 12px; }
+    .dlg-actions { display: flex; gap: 8px; justify-content: flex-start; padding: 0 22px 22px; flex-wrap: wrap; }
+    .choice { display: flex; gap: 10px; align-items: flex-start; border: 1.5px solid var(--line); border-radius: 12px; padding: 10px 12px; margin-bottom: 8px; cursor: pointer; font-weight: 400; }
+    .choice input { margin-top: 6px; width: 18px; height: 18px; flex: none; }
+    .choice b { display: block; }
     .choice small { display: block; color: var(--muted); }
+    .img-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 8px; max-height: 280px; overflow-y: auto; margin: 6px 0 12px; }
+    .img-grid button { border: 2px solid var(--line); border-radius: 10px; padding: 0; cursor: pointer; overflow: hidden; aspect-ratio: 1; background: var(--paper); }
+    .img-grid button:hover { border-color: var(--teal); }
+    .img-grid img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .drop { border: 2px dashed var(--line); border-radius: 12px; padding: 16px; text-align: center; cursor: pointer; display: block; font-weight: 600; }
+    .drop:hover { border-color: var(--teal); background: var(--teal-soft); }
+    .drop input { display: none; }
     #toast { position: fixed; bottom: 20px; inset-inline-start: 20px; z-index: 9999; background: var(--ink); color: var(--white);
-      padding: 12px 18px; border-radius: 12px; box-shadow: 0 12px 30px rgba(0,0,0,.25); max-width: min(420px, calc(100% - 40px));
+      padding: 12px 18px; border-radius: 12px; box-shadow: 0 12px 30px rgba(0,0,0,.25); max-width: min(440px, calc(100% - 40px));
       opacity: 0; transform: translateY(8px); transition: opacity .2s, transform .2s; pointer-events: none; }
     #toast.show { opacity: 1; transform: none; }
     #toast.bad { background: var(--danger); }
     #toast.good { background: var(--teal); }
-    @media (prefers-reduced-motion: reduce) { #toast { transition: none; } }
-    @media (max-width: 600px) {
-      .page-row { grid-template-columns: 1fr; }
-      .row-actions { justify-content: flex-start; }
-    }
+    @media (prefers-reduced-motion: reduce) { #toast, .side { transition: none; } }
+    @media (max-width: 600px) { .page-row { grid-template-columns: 1fr; } .row-actions { justify-content: flex-start; } }
   </style>
 </head>
 <body>
 
-<!-- ======================= 1) شاشة الدخول ======================= -->
+<!-- ======================= 1) الدخول ======================= -->
 <main id="login">
   <form class="login-card" id="login-form" novalidate>
     <h1>لوحة تحكم موقعك</h1>
     <p class="lead">سجّل دخولك عشان تعدّل صفحات الموقع.</p>
-    <div class="field">
-      <label for="email">الإيميل</label>
-      <input id="email" type="email" autocomplete="username" dir="ltr" required>
-    </div>
-    <div class="field">
-      <label for="password">الباسورد</label>
-      <input id="password" type="password" autocomplete="current-password" dir="ltr" required>
-    </div>
+    <div class="field"><label for="email">الإيميل</label><input id="email" type="email" autocomplete="username" dir="ltr" required></div>
+    <div class="field"><label for="password">الباسورد</label><input id="password" type="password" autocomplete="current-password" dir="ltr" required></div>
     <p class="error" id="login-error" role="alert"></p>
     <button class="btn primary" type="submit" id="login-btn">دخول</button>
   </form>
 </main>
 
-<!-- ======================= 2) قايمة الصفحات ======================= -->
+<!-- ======================= 2) الصفحات والمحتوى ======================= -->
 <div id="pages" hidden>
   <header class="bar">
     <div class="brand">لوحة التحكم<small id="who"></small></div>
-    <button class="btn small" id="logout-btn" type="button">خروج</button>
+    <button class="btn small" type="button" id="logout-btn">خروج</button>
   </header>
   <main class="wrap">
-    <h2>صفحات الموقع</h2>
-    <div class="actions">
-      <button class="btn primary" type="button" id="new-page-btn">صفحة جديدة</button>
-      <button class="btn" type="button" id="import-btn">استيراد التصميم الحالي كصفحة رئيسية</button>
-    </div>
+    <nav class="tabs" id="kind-tabs" aria-label="نوع المحتوى">
+      <button type="button" data-kind="page" class="on">الصفحات</button>
+      <button type="button" data-kind="post">المدونة</button>
+      <button type="button" data-kind="product">المنتجات</button>
+      <button type="button" data-kind="service">الخدمات</button>
+    </nav>
+    <div class="actions" id="list-actions"></div>
     <div id="page-list" aria-live="polite"></div>
   </main>
 </div>
@@ -173,40 +181,37 @@
 <!-- ======================= 3) المحرر ======================= -->
 <div id="editor" hidden>
   <div class="ed-bar">
-    <button class="btn" type="button" id="back-btn" title="رجوع لقايمة الصفحات">→ الصفحات</button>
+    <button class="btn" type="button" id="back-btn">→ رجوع</button>
     <span class="ed-title" id="ed-title"></span>
     <span class="ed-status" id="ed-status" aria-live="polite"></span>
     <span class="grow"></span>
-    <div class="group" role="group" aria-label="مقاس الشاشة">
-      <button class="btn on" type="button" data-device="desktop">كمبيوتر</button>
-      <button class="btn" type="button" data-device="tablet">تابلت</button>
-      <button class="btn" type="button" data-device="mobile">موبايل</button>
-    </div>
-    <span class="sep"></span>
+    <button class="btn side-toggle" type="button" id="side-toggle">الأدوات</button>
+    <button class="btn on" type="button" data-device="desktop">كمبيوتر</button>
+    <button class="btn" type="button" data-device="mobile">موبايل</button>
     <button class="btn" type="button" id="undo-btn" title="تراجع (Ctrl+Z)">تراجع</button>
-    <button class="btn" type="button" id="redo-btn" title="إعادة (Ctrl+Shift+Z)">إعادة</button>
-    <button class="btn" type="button" id="inner-btn" title="إظهار صفحات الخدمات المخفية عشان تعدّلها">إظهار الصفحات الداخلية</button>
-    <button class="btn" type="button" id="settings-btn">إعدادات الصفحة</button>
-    <span class="sep"></span>
+    <button class="btn" type="button" id="redo-btn" title="إعادة (Ctrl+Y)">إعادة</button>
     <button class="btn" type="button" id="preview-btn">معاينة</button>
-    <button class="btn" type="button" id="download-btn">تنزيل HTML</button>
     <button class="btn" type="button" id="save-btn">حفظ</button>
     <button class="btn publish" type="button" id="publish-btn">نشر</button>
   </div>
-  <p class="ed-phone-note">المحرر مريح أكتر على الكمبيوتر. على الموبايل تقدر تعدّل النصوص والصور، لكن السحب والإفلات صعب.</p>
-  <div id="gjs-wrap"><div id="gjs" dir="ltr"></div></div>
+  <div class="ed-main">
+    <aside class="side" aria-label="أدوات التعديل">
+      <nav class="tabs" id="side-tabs">
+        <button type="button" data-tab="add" class="on">إضافة</button>
+        <button type="button" data-tab="style">تنسيق</button>
+        <button type="button" data-tab="page">الصفحة</button>
+      </nav>
+      <div class="side-body" id="side-add"></div>
+      <div class="side-body" id="side-style" hidden></div>
+      <div class="side-body" id="side-page" hidden></div>
+    </aside>
+    <div class="stage" id="stage"><iframe id="canvas" title="الصفحة اللي بتعدّلها"></iframe></div>
+  </div>
 </div>
 
-<!-- ======================= نافذة حوار عامة ======================= -->
-<dialog id="dlg">
-  <form method="dialog" id="dlg-form">
-    <div class="dlg-body" id="dlg-body"></div>
-    <div class="dlg-actions" id="dlg-actions"></div>
-  </form>
-</dialog>
+<dialog id="dlg"><form method="dialog"><div class="dlg-body" id="dlg-body"></div><div class="dlg-actions" id="dlg-actions"></div></form></dialog>
 <div id="toast" role="status" aria-live="polite"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/grapesjs@0.22.9/dist/grapes.min.js"></script>
 <script>
 /* =====================================================================
    الإعدادات: عنوان المشروع + المفتاح العام (آمن يتحط هنا — البوّاب RLS
@@ -215,24 +220,26 @@
 const SB_URL = 'https://errbgvoashdwhpknvkwo.supabase.co';
 const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVycmJndm9hc2hkd2hwa252a3dvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ1MDkzNTEsImV4cCI6MjExMDA4NTM1MX0.OC6ZDoG50yDTcu1uwnEF_1n8nWf2n7T3MolMY5vwnjg';
 const BUCKET = 'site-images';
-const TEMPLATE_FILE = 'binjan-style.html';   // التصميم الحالي اللي بنستورده
+const TEMPLATE_FILE = 'binjan-style.html';
 const SESSION_KEY = 'ammar-admin-session';
 const MAX_IMAGE_MB = 5;
+const WA = 'https://wa.me/201000649748';
+const GLOBAL_SLUG = 'site-global';
+const KIND_NAMES = { page: 'صفحة', post: 'مقال', product: 'منتج', service: 'خدمة' };
+const KIND_NEW = { page: '+ صفحة جديدة', post: '+ مقال جديد', product: '+ منتج جديد', service: '+ خدمة جديدة' };
+const KIND_PLURAL = { post: 'المدونة', product: 'المنتجات', service: 'الخدمات' };
+const LIST_SLUG = { post: 'blog', product: 'products', service: 'services' };
 
 const $ = (s) => document.querySelector(s);
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
-/* ============================ إشعارات ============================ */
+/* ============================ إشعارات ونوافذ ============================ */
 let toastTimer;
 function toast(msg, kind = '') {
-  const t = $('#toast');
-  t.textContent = msg; t.className = 'show ' + kind;
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => { t.className = kind; }, kind === 'bad' ? 6000 : 3500);
+  const t = $('#toast'); t.textContent = msg; t.className = 'show ' + kind;
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => { t.className = kind; }, kind === 'bad' ? 6000 : 3200);
 }
-
-/* ============================ نافذة حوار ============================ */
-function dialog({ title, html = '', buttons }) {
+function dialog({ title, html = '', buttons, onOpen }) {
   return new Promise((resolve) => {
     const d = $('#dlg');
     $('#dlg-body').innerHTML = `<h3>${esc(title)}</h3>${html}`;
@@ -241,13 +248,12 @@ function dialog({ title, html = '', buttons }) {
     d.onclose = () => resolve(d.returnValue || 'cancel');
     d.returnValue = '';
     d.showModal();
-    const first = d.querySelector('input, textarea, select'); if (first) first.focus();
+    if (onOpen) onOpen(d);
+    const first = d.querySelector('.dlg-body input:not([type=file]):not([type=checkbox]):not([type=radio]), .dlg-body textarea'); if (first) first.focus();
   });
 }
 
-/* =====================================================================
-   الدخول والجلسة (Session): بنكلّم Supabase Auth مباشرة
-   ===================================================================== */
+/* ============================ الدخول والجلسة ============================ */
 let session = null;
 function loadSession() { try { session = JSON.parse(localStorage.getItem(SESSION_KEY)); } catch { session = null; } }
 function saveSession(s) {
@@ -257,8 +263,7 @@ function saveSession(s) {
   try { session ? localStorage.setItem(SESSION_KEY, JSON.stringify(session)) : localStorage.removeItem(SESSION_KEY); } catch {}
 }
 async function authCall(grant, body) {
-  const r = await fetch(`${SB_URL}/auth/v1/token?grant_type=${grant}`, {
-    method: 'POST', headers: { apikey: SB_KEY, 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+  const r = await fetch(`${SB_URL}/auth/v1/token?grant_type=${grant}`, { method: 'POST', headers: { apikey: SB_KEY, 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
   const data = await r.json().catch(() => ({}));
   if (!r.ok) { const e = new Error(data.error_description || data.msg || data.message || 'auth error'); e.code = data.error_code || data.error; e.status = r.status; throw e; }
   return data;
@@ -269,12 +274,9 @@ async function refreshIfNeeded(force = false) {
   try { saveSession(await authCall('refresh_token', { refresh_token: session.refresh_token })); }
   catch (e) { logout('انتهت الجلسة. سجّل دخولك تاني.'); throw e; }
 }
-
-/* ============ طلب لـ Supabase بصلاحيات المستخدم اللي داخل ============ */
 async function api(path, { method = 'GET', body, headers = {}, raw = false } = {}) {
   await refreshIfNeeded();
-  const go = () => fetch(SB_URL + path, { method, body,
-    headers: { apikey: SB_KEY, Authorization: `Bearer ${session.access_token}`, ...headers } });
+  const go = () => fetch(SB_URL + path, { method, body, headers: { apikey: SB_KEY, Authorization: `Bearer ${session.access_token}`, ...headers } });
   let r = await go();
   if (r.status === 401) { await refreshIfNeeded(true); r = await go(); }
   if (raw) return r;
@@ -283,13 +285,15 @@ async function api(path, { method = 'GET', body, headers = {}, raw = false } = {
   if (!r.ok) { const e = new Error((data && (data.message || data.error)) || `HTTP ${r.status}`); e.status = r.status; e.data = data; throw e; }
   return data;
 }
-const json = (obj) => JSON.stringify(obj);
+const json = (o) => JSON.stringify(o);
 const JH = { 'Content-Type': 'application/json' };
 
-/* ============================ الصفحات (Database) ============================ */
+/* ============================ قاعدة البيانات ============================ */
+const LIST_COLS = 'id,slug,title,status,updated_at,published_at,description,v:project->>v,kind:project->>kind,meta:project->meta';
 const Pages = {
-  list: () => api('/rest/v1/pages?select=id,slug,title,status,updated_at,published_at&order=updated_at.desc'),
+  list: () => api(`/rest/v1/pages?select=${LIST_COLS}&order=updated_at.desc`),
   get: (id) => api(`/rest/v1/pages?id=eq.${id}&select=*`, { headers: { Accept: 'application/vnd.pgrst.object+json' } }),
+  bySlug: (slug) => api(`/rest/v1/pages?slug=eq.${slug}&select=*`).then((r) => r[0] || null),
   create: (row) => api('/rest/v1/pages', { method: 'POST', body: json(row), headers: { ...JH, Prefer: 'return=representation' } }).then((r) => r[0]),
   update: (id, patch) => api(`/rest/v1/pages?id=eq.${id}`, { method: 'PATCH', body: json(patch), headers: { ...JH, Prefer: 'return=representation' } }).then((r) => r[0]),
   remove: (id) => api(`/rest/v1/pages?id=eq.${id}`, { method: 'DELETE' }),
@@ -302,12 +306,18 @@ function friendlyDbError(e) {
   return 'حصلت مشكلة: ' + e.message;
 }
 
-/* ============================ الصور (Storage) ============================ */
+/* ============================ الصور ============================ */
 const publicUrl = (path) => `${SB_URL}/storage/v1/object/public/${BUCKET}/${path.split('/').map(encodeURIComponent).join('/')}`;
 async function listImages() {
-  const rows = await api(`/storage/v1/object/list/${BUCKET}`, { method: 'POST', headers: JH,
-    body: json({ prefix: '', limit: 200, offset: 0, sortBy: { column: 'created_at', order: 'desc' } }) });
-  return (rows || []).filter((f) => f.id).map((f) => ({ src: publicUrl(f.name), name: f.name }));
+  // الصور متقسمة في فولدرات بالتاريخ — بنجيب كل فولدر وجواه
+  const top = await api(`/storage/v1/object/list/${BUCKET}`, { method: 'POST', headers: JH, body: json({ prefix: '', limit: 100, offset: 0, sortBy: { column: 'name', order: 'desc' } }) });
+  const out = [];
+  for (const f of top || []) {
+    if (f.id) { out.push({ src: publicUrl(f.name), name: f.name }); continue; }
+    const files = await api(`/storage/v1/object/list/${BUCKET}`, { method: 'POST', headers: JH, body: json({ prefix: f.name + '/', limit: 200, offset: 0, sortBy: { column: 'created_at', order: 'desc' } }) });
+    (files || []).filter((x) => x.id).forEach((x) => out.push({ src: publicUrl(f.name + '/' + x.name), name: x.name }));
+  }
+  return out;
 }
 async function uploadImage(file) {
   if (!/^image\/(png|jpe?g|webp|gif|avif)$/.test(file.type)) throw new Error(`«${file.name}» مش صورة مدعومة (PNG / JPG / WebP / GIF / AVIF).`);
@@ -315,51 +325,182 @@ async function uploadImage(file) {
   const ext = file.name.split('.').pop().toLowerCase().replace(/[^a-z0-9]/g, '') || 'img';
   const base = file.name.replace(/\.[^.]+$/, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 40) || 'image';
   const path = `${new Date().toISOString().slice(0, 10)}/${base}-${Math.random().toString(36).slice(2, 7)}.${ext}`;
-  await api(`/storage/v1/object/${BUCKET}/${path}`, { method: 'POST', body: file,
-    headers: { 'Content-Type': file.type, 'x-upsert': 'false', 'cache-control': '31536000' } });
+  await api(`/storage/v1/object/${BUCKET}/${path}`, { method: 'POST', body: file, headers: { 'Content-Type': file.type, 'x-upsert': 'false', 'cache-control': '31536000' } });
   return { src: publicUrl(path), name: path };
 }
-
-/* =====================================================================
-   التصميم الحالي (القالب): بنقراه من binjan-style.html
-   - الـ CSS بيبقى أساس أي صفحة جديدة عشان الأقسام تطلع بنفس الشكل
-   - كل قسم فيه بيتحوّل لـ "بلوك" تسحبه في أي صفحة
-   ===================================================================== */
-let templateCache = null;
-async function loadTemplate() {
-  if (templateCache) return templateCache;
-  const r = await fetch(TEMPLATE_FILE, { cache: 'no-store' });
-  if (!r.ok) throw new Error(`مش لاقي ملف ${TEMPLATE_FILE} جنب لوحة التحكم.`);
-  const doc = new DOMParser().parseFromString(await r.text(), 'text/html');
-  let css = [...doc.querySelectorAll('style')].map((s) => s.textContent).join('\n');
-  doc.querySelectorAll('script').forEach((s) => s.remove());
-  // التنسيق المكتوب جوه العناصر نفسها (style="--c:...") المحرر بيضيّعه،
-  // فبننقله لقواعد CSS عادية مربوطة بعلامة data-s على العنصر
-  let n = 0, extra = '';
-  doc.body.querySelectorAll('[style]').forEach((el) => {
-    const decls = el.getAttribute('style').split(';').map((d) => d.trim()).filter(Boolean).map((d) => {
-      const i = d.indexOf(':'); return i > 0 ? `${d.slice(0, i).trim()}:${d.slice(i + 1).trim().replace(/\s*!important$/, '')} !important` : '';
-    }).filter(Boolean);
-    el.removeAttribute('style');
-    if (!decls.length) return;
-    n += 1; el.setAttribute('data-s', String(n));
-    extra += `[data-s="${n}"]{${decls.join(';')}}\n`;
-  });
-  if (extra) css += '\n/* inline styles */\n' + extra;
-  const body = doc.body;
-  const sections = [...body.children].filter((el) => /^(HEADER|SECTION|FOOTER|NAV|DIV)$/.test(el.tagName))
-    .map((el) => ({ id: el.id || el.className.split(' ')[0] || el.tagName.toLowerCase(), html: el.outerHTML, el }));
-  templateCache = { css, html: body.innerHTML, sections,
-    title: (doc.querySelector('title') || {}).textContent || '', description: (doc.querySelector('meta[name=description]') || { content: '' }).content };
-  return templateCache;
+async function externalizeImages(text) {
+  const re = /data:(image\/(?:png|jpe?g|webp|gif|avif));base64,([A-Za-z0-9+/=]+)/g;
+  const seen = new Map();
+  for (const m of text.matchAll(re)) {
+    if (seen.has(m[0])) continue;
+    try {
+      const bin = atob(m[2]); const bytes = new Uint8Array(bin.length);
+      for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+      const a = await uploadImage(new File([bytes], 'site-photo.' + m[1].split('/')[1].replace('jpeg', 'jpg'), { type: m[1] }));
+      seen.set(m[0], a.src);
+    } catch {}
+  }
+  seen.forEach((url, data) => { text = text.split(data).join(url); });
+  return text;
 }
-const SECTION_NAMES = { top: 'الهيدر والبداية', help: 'كيف أساعدك', exp: 'رحلتي العملية', experience: 'رحلتي العملية', works: 'أحدث أعمالي',
-  content: 'أشارك ما أتعلّمه', 'site-foot': 'الفوتر', 'svc-eng': 'صفحة: هندسة', 'svc-apps': 'صفحة: تطبيقات', 'svc-ops': 'صفحة: أنظمة', 'svc-media': 'صفحة: محتوى' };
 
 /* =====================================================================
-   الكود اللي بيشغّل الموقع المنشور (القايمة، الفلاتر، اقرأ المزيد...)
-   بيتحط تلقائيًا في كل صفحة وقت النشر — المحرر نفسه مش بيشغّل سكريبتات
+   مكتبة التصميم: كل الأقسام الجديدة متصممة بنفس ألوان وخطوط موقعك
    ===================================================================== */
+const PH = (w, h, label = 'صورة') => 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(
+  `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}"><rect width="100%" height="100%" fill="#ece8df"/><path d="M${w / 2 - 40} ${h / 2 + 24}l26-32 18 22 12-14 24 24z" fill="#c9c3b6"/><circle cx="${w / 2 + 22}" cy="${h / 2 - 22}" r="10" fill="#c9c3b6"/><text x="50%" y="${h / 2 + 56}" font-family="sans-serif" font-size="18" fill="#8a8578" text-anchor="middle">${label}</text></svg>`);
+const svgI = (d) => `<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
+const ICON = {
+  check: svgI('<path d="M20 6 9 17l-5-5"/>'),
+  bolt: svgI('<path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/>'),
+  shield: svgI('<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>'),
+  ruler: svgI('<path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.4 2.4 0 0 1 0-3.4l2.6-2.6a2.4 2.4 0 0 1 3.4 0Z"/><path d="m14.5 12.5 2-2"/><path d="m11.5 9.5 2-2"/><path d="m8.5 6.5 2-2"/>'),
+  chat: svgI('<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/>'),
+  phone: svgI('<path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/>'),
+  mail: svgI('<rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/>'),
+};
+const BUILDER_CSS = `
+.b-sec{padding:80px 0}
+.b-sec.pad-s{padding:40px 0}
+.b-head{max-width:680px;margin:0 auto 36px;text-align:center}
+.b-head p{color:var(--muted);margin-top:8px}
+.b-grid{display:grid;gap:22px}
+.b-cols-1{grid-template-columns:minmax(0,1fr)}
+.b-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.b-cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.b-cols-4{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media(max-width:900px){.b-cols-3,.b-cols-4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.b-grid{grid-template-columns:1fr!important}}
+.b-card{background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden;display:flex;flex-direction:column;color:inherit;text-decoration:none}
+a.b-card:hover{box-shadow:0 14px 30px rgba(18,48,74,.08)}
+.b-card-img{width:100%;aspect-ratio:16/10;object-fit:cover;display:block;background:#ece8df}
+.b-card-body{padding:20px;display:flex;flex-direction:column;gap:8px;flex:1}
+.b-card h3{color:var(--navy);font-size:1.15rem;line-height:1.5}
+.b-card p{color:var(--text);font-size:.95rem;line-height:1.85}
+.b-card .b-btn{margin-top:auto;align-self:flex-start}
+.b-price{color:var(--teal);font-weight:700;font-size:1.15rem}
+.b-meta{color:var(--muted);font-size:.85rem}
+.b-more{color:var(--coral);font-weight:600;margin-top:auto}
+.b-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:10px 24px;border-radius:999px;background:var(--coral);color:#fff;font-weight:600;text-decoration:none;border:2px solid transparent}
+.b-btn.alt{background:transparent;border-color:currentColor;color:var(--navy)}
+.b-btns{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
+.b-split{display:grid;grid-template-columns:1.1fr 1fr;gap:48px;align-items:center}
+.b-media{width:100%;border-radius:22px;aspect-ratio:4/3;object-fit:cover;display:block}
+@media(max-width:900px){.b-split{grid-template-columns:1fr;gap:28px}}
+.b-hero h1{font-size:clamp(2rem,5vw,3.2rem);color:var(--navy);line-height:1.3}
+.b-hero p{font-size:1.15rem;margin-top:14px;color:var(--text)}
+.b-center{text-align:center}
+.b-center .b-btns{justify-content:center}
+.b-center p{margin-inline:auto;max-width:640px}
+.b-feature{display:flex;gap:14px;align-items:flex-start}
+.b-icon{flex:none;width:52px;height:52px;border-radius:14px;display:grid;place-items:center;background:#e3f1ef;color:var(--teal)}
+.b-feature h3{color:var(--navy);font-size:1.05rem}
+.b-feature p{color:var(--text);font-size:.93rem;line-height:1.8}
+.b-rich{max-width:760px;margin:0 auto}
+.b-rich h2{margin:28px 0 10px;font-size:1.6rem}
+.b-rich h3{margin:22px 0 8px;color:var(--navy)}
+.b-rich p{margin-bottom:14px;font-size:1.05rem;line-height:2}
+.b-rich ul,.b-rich ol{padding-inline-start:22px;margin-bottom:14px;line-height:2}
+.b-rich blockquote{border-inline-start:4px solid var(--coral);padding:10px 18px;margin:22px 0;color:var(--navy);font-weight:500;background:#fff;border-radius:12px}
+.b-rich img{max-width:100%;border-radius:18px;margin:12px 0}
+.b-gallery img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:14px;display:block}
+.b-video{position:relative;aspect-ratio:16/9;border-radius:18px;overflow:hidden;background:#12304a;display:grid;place-items:center;color:#fff;text-align:center;padding:16px}
+.b-video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.b-stat{text-align:center}
+.b-stat b{display:block;font-size:2.6rem;color:var(--navy);line-height:1.2}
+.b-stat span{color:var(--muted)}
+.b-faq{max-width:760px;margin:0 auto}
+.b-faq details{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 20px;margin-bottom:10px}
+.b-faq summary{cursor:pointer;font-weight:600;color:var(--navy);list-style:none;display:flex;justify-content:space-between;gap:12px}
+.b-faq summary::-webkit-details-marker{display:none}
+.b-faq summary::after{content:"+";font-weight:700;color:var(--coral)}
+.b-faq details[open] summary::after{content:"−"}
+.b-faq details p{margin-top:10px;color:var(--text);line-height:1.9}
+.b-cta{border-radius:26px;padding:48px 28px;text-align:center;background:var(--navy);color:#fff}
+.b-cta h2{color:#fff}
+.b-cta p{opacity:.9;margin:10px auto 0;max-width:560px}
+.b-cta .b-btns{justify-content:center}
+.b-cta .b-btn.alt{color:#fff}
+.b-header{background:var(--cream)}
+.b-header nav{padding:20px 0}
+.b-header .b-btn{min-height:42px;padding:8px 18px}
+.b-article h1{font-size:clamp(1.9rem,4.5vw,2.8rem);color:var(--navy);line-height:1.35;margin-top:8px}
+.b-cover{width:100%;max-height:480px;aspect-ratio:16/8;object-fit:cover;border-radius:22px;margin-top:26px;display:block}
+.b-product{display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:start}
+.b-product>img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:22px}
+.b-product h1{font-size:clamp(1.8rem,4vw,2.6rem);color:var(--navy);line-height:1.35}
+.b-product .b-price{font-size:1.6rem;margin:10px 0}
+.b-product ul{padding-inline-start:20px;line-height:2;margin:14px 0}
+@media(max-width:900px){.b-product{grid-template-columns:1fr}}
+.b-contact{display:flex;gap:14px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px 20px;color:inherit;text-decoration:none}
+.b-contact b{display:block;color:var(--navy)}
+.b-contact span{color:var(--muted)}
+.b-ltr{direction:ltr;unicode-bidi:isolate}
+.b-spacer{height:56px}
+.b-divider{border:none;border-top:1px solid var(--line);margin:24px 0}
+.b-empty{color:var(--muted);text-align:center;padding:28px;border:2px dashed var(--line);border-radius:16px;grid-column:1/-1}
+@media(max-width:900px){.hide-mobile{display:none!important}}
+@media(min-width:901px){.hide-desktop{display:none!important}}
+`;
+const card = (title, text, btn = 'التفاصيل') => `<div class="b-card"><img class="b-card-img" src="${PH(640, 400)}" alt=""><div class="b-card-body"><h3>${title}</h3><p>${text}</p><a class="b-btn alt" href="#">${btn}</a></div></div>`;
+const SECTIONS = [
+  { id: 'hero-split', cat: 'بداية الصفحة', name: 'بداية بصورة', desc: 'عنوان كبير ونص وزرارين وصورة جنبهم',
+    html: `<section class="b-sec b-hero" style="background:var(--cream)"><div class="container b-split"><div><h1>{{title}}</h1><p>اكتب هنا جملة بتوضح القيمة اللي بتقدمها للزائر في سطرين.</p><div class="b-btns"><a class="b-btn" href="${WA}">كلّمني على واتساب</a><a class="b-btn alt" href="#">اعرف أكتر</a></div></div><img class="b-media" src="${PH(800, 600)}" alt=""></div></section>` },
+  { id: 'hero-center', cat: 'بداية الصفحة', name: 'بداية في النص', desc: 'عنوان ونص وزرار في منتصف الصفحة',
+    html: `<section class="b-sec b-hero b-center" style="background:var(--cream)"><div class="container"><h1>{{title}}</h1><p>اكتب هنا وصف قصير للصفحة دي.</p><div class="b-btns"><a class="b-btn" href="${WA}">ابدأ دلوقتي</a></div></div></section>` },
+  { id: 'cards-3', cat: 'كروت ومميزات', name: '3 كروت بصور', desc: 'عنوان + 3 كروت فيها صورة وعنوان ونص وزرار',
+    html: `<section class="b-sec"><div class="container"><div class="b-head"><h2>عنوان القسم</h2><p>وصف قصير للقسم.</p></div><div class="b-grid b-cols-3">${card('عنوان الكارت', 'وصف قصير يوضح الفكرة.').repeat(3)}</div></div></section>` },
+  { id: 'features', cat: 'كروت ومميزات', name: 'مميزات بأيقونات', desc: '4 مميزات صغيرة بأيقونة وعنوان ونص',
+    html: `<section class="b-sec" style="background:#ffffff"><div class="container"><div class="b-head"><h2>ليه تشتغل معانا؟</h2></div><div class="b-grid b-cols-2">${[['check', 'دقة في التنفيذ'], ['bolt', 'سرعة في التسليم'], ['shield', 'جودة مضمونة'], ['ruler', 'خبرة هندسية']].map(([i, t]) => `<div class="b-feature"><span class="b-icon">${ICON[i]}</span><div><h3>${t}</h3><p>اكتب هنا تفصيلة قصيرة عن الميزة دي.</p></div></div>`).join('')}</div></div></section>` },
+  { id: 'stats', cat: 'كروت ومميزات', name: 'أرقام', desc: '4 أرقام كبيرة بوصف صغير',
+    html: `<section class="b-sec pad-s"><div class="container b-grid b-cols-4">${[['+10', 'سنين خبرة'], ['+50', 'مشروع'], ['3', 'شركات ومنتجات'], ['100%', 'التزام']].map(([n, t]) => `<div class="b-stat"><b>${n}</b><span>${t}</span></div>`).join('')}</div></section>` },
+  { id: 'services', cat: 'خدمات ومنتجات', name: 'كروت خدمات بأسعار', desc: 'كروت خدمات فيها صورة وسعر وزرار طلب',
+    html: `<section class="b-sec"><div class="container"><div class="b-head"><h2>خدماتنا</h2><p>اختار الخدمة اللي تناسبك.</p></div><div class="b-grid b-cols-3">${`<div class="b-card"><img class="b-card-img" src="${PH(640, 400)}" alt=""><div class="b-card-body"><h3>اسم الخدمة</h3><p>وصف مختصر للخدمة واللي بتشمله.</p><span class="b-price">يبدأ من 1000 جنيه</span><a class="b-btn" href="${WA}">اطلب الخدمة</a></div></div>`.repeat(3)}</div></div></section>` },
+  { id: 'products', cat: 'خدمات ومنتجات', name: 'كروت منتجات', desc: 'منتجات بصورة وسعر وزرار «اطلب على واتساب»',
+    html: `<section class="b-sec"><div class="container"><div class="b-head"><h2>منتجاتنا</h2></div><div class="b-grid b-cols-4">${`<div class="b-card"><img class="b-card-img" src="${PH(500, 500)}" alt="" style="aspect-ratio:1"><div class="b-card-body"><h3>اسم المنتج</h3><span class="b-price">250 جنيه</span><a class="b-btn" href="${WA}">اطلب على واتساب</a></div></div>`.repeat(4)}</div></div></section>` },
+  { id: 'image-text', cat: 'نص وصور', name: 'صورة ونص', desc: 'صورة على جنب وعنوان ونقاط وزرار',
+    html: `<section class="b-sec"><div class="container b-split"><img class="b-media" src="${PH(800, 600)}" alt=""><div><h2>عنوان القسم</h2><p style="margin:12px 0">اكتب هنا فقرة بتشرح الفكرة بالتفصيل.</p><ul style="padding-inline-start:20px;line-height:2"><li>نقطة أولى مهمة</li><li>نقطة تانية مهمة</li><li>نقطة تالتة مهمة</li></ul><div class="b-btns"><a class="b-btn" href="#">اعرف أكتر</a></div></div></div></section>` },
+  { id: 'rich', cat: 'نص وصور', name: 'مقال / نص طويل', desc: 'عناوين وفقرات واقتباس — مناسب للمقالات',
+    html: `<section class="b-sec"><div class="container b-rich"><h2>عنوان فرعي</h2><p>اكتب هنا أول فقرة. تقدر تضيف فقرات وعناوين وصور من «عناصر صغيرة» في تبويب إضافة.</p><p>فقرة تانية تكمّل الفكرة وتشرح التفاصيل.</p><blockquote>جملة مهمة عاوز القارئ يفتكرها.</blockquote><h3>عنوان أصغر</h3><ul><li>نقطة</li><li>نقطة</li></ul></div></section>` },
+  { id: 'gallery', cat: 'نص وصور', name: 'معرض صور', desc: '6 صور في شبكة مرتبة',
+    html: `<section class="b-sec"><div class="container"><div class="b-head"><h2>من أعمالنا</h2></div><div class="b-grid b-cols-3 b-gallery">${`<img src="${PH(600, 600)}" alt="">`.repeat(6)}</div></div></section>` },
+  { id: 'video', cat: 'نص وصور', name: 'فيديو يوتيوب', desc: 'عنوان وفيديو من يوتيوب',
+    html: `<section class="b-sec"><div class="container" style="max-width:900px"><div class="b-head"><h2>شاهد الفيديو</h2></div><div class="b-video" data-video="">دوس هنا وبعدين «فيديو» عشان تحط رابط يوتيوب</div></div></section>` },
+  { id: 'faq', cat: 'تواصل وأسئلة', name: 'أسئلة شائعة', desc: 'أسئلة بتتفتح وتتقفل',
+    html: `<section class="b-sec"><div class="container"><div class="b-head"><h2>أسئلة شائعة</h2></div><div class="b-faq">${[1, 2, 3].map((i) => `<details><summary>السؤال رقم ${i}؟</summary><p>اكتب هنا الإجابة بوضوح.</p></details>`).join('')}</div></div></section>` },
+  { id: 'cta', cat: 'تواصل وأسئلة', name: 'دعوة للتواصل', desc: 'شريط كحلي بعنوان وزرار',
+    html: `<section class="b-sec pad-s"><div class="container"><div class="b-cta"><h2>جاهز نبدأ مشروعك؟</h2><p>ابعتلي على واتساب ونتكلم عن فكرتك.</p><div class="b-btns"><a class="b-btn" href="${WA}">كلّمني على واتساب</a></div></div></div></section>` },
+  { id: 'contact', cat: 'تواصل وأسئلة', name: 'طرق التواصل', desc: 'واتساب وتليفون وإيميل',
+    html: `<section class="b-sec"><div class="container"><div class="b-head"><h2>تواصل معايا</h2></div><div class="b-grid b-cols-3"><a class="b-contact" href="${WA}"><span class="b-icon">${ICON.chat}</span><div><b>واتساب</b><span class="b-ltr">+20 100 064 9748</span></div></a><a class="b-contact" href="tel:+201000649748"><span class="b-icon">${ICON.phone}</span><div><b>اتصال</b><span class="b-ltr">+20 100 064 9748</span></div></a><a class="b-contact" href="mailto:mattloop.app@gmail.com"><span class="b-icon">${ICON.mail}</span><div><b>إيميل</b><span class="b-ltr">mattloop.app@gmail.com</span></div></a></div></div></section>` },
+  { id: 'list-post', cat: 'قوايم تلقائية', name: 'قايمة المقالات', desc: 'بتعرض أحدث مقالات المدونة لوحدها',
+    html: `<section class="b-sec" data-collection="post" data-limit="9"><div class="container"><div class="b-head"><h2>أحدث المقالات</h2></div><div class="b-grid b-cols-3" data-collection-items></div></div></section>` },
+  { id: 'list-product', cat: 'قوايم تلقائية', name: 'قايمة المنتجات', desc: 'بتعرض المنتجات لوحدها',
+    html: `<section class="b-sec" data-collection="product" data-limit="12"><div class="container"><div class="b-head"><h2>المنتجات</h2></div><div class="b-grid b-cols-4" data-collection-items></div></div></section>` },
+  { id: 'list-service', cat: 'قوايم تلقائية', name: 'قايمة الخدمات', desc: 'بتعرض الخدمات لوحدها',
+    html: `<section class="b-sec" data-collection="service" data-limit="12"><div class="container"><div class="b-head"><h2>الخدمات</h2></div><div class="b-grid b-cols-3" data-collection-items></div></div></section>` },
+  { id: 'spacer', cat: 'مسافات', name: 'مسافة فاضية', desc: 'مسافة بين قسمين', html: `<div class="b-spacer"></div>` },
+];
+const ELEMENTS = [
+  ['عنوان', '<h2>عنوان جديد</h2>'], ['عنوان صغير', '<h3>عنوان صغير</h3>'], ['فقرة', '<p>اكتب النص هنا.</p>'],
+  ['زرار', `<a class="b-btn" href="${WA}">نص الزرار</a>`], ['زرار مفرّغ', '<a class="b-btn alt" href="#">نص الزرار</a>'],
+  ['صورة', `<img src="${PH(800, 500)}" alt="" style="width:100%;border-radius:18px;display:block">`],
+  ['فيديو يوتيوب', '<div class="b-video" data-video="">دوس هنا وبعدين «فيديو» عشان تحط رابط يوتيوب</div>'],
+  ['كارت', card('عنوان الكارت', 'وصف قصير.')],
+  ['3 كروت', `<div class="b-grid b-cols-3">${card('عنوان', 'وصف قصير.').repeat(3)}</div>`],
+  ['قايمة نقاط', '<ul style="padding-inline-start:20px;line-height:2"><li>نقطة</li><li>نقطة</li></ul>'],
+  ['اقتباس', '<blockquote style="border-inline-start:4px solid var(--coral);padding:10px 18px;margin:20px 0;color:var(--navy);background:#ffffff;border-radius:12px">جملة مهمة.</blockquote>'],
+  ['خط فاصل', '<hr class="b-divider">'], ['مسافة', '<div class="b-spacer"></div>'],
+];
+const ITEM_TEMPLATES = { page: ['hero-center'], post: ['__article', 'rich', 'cta'], product: ['__product', 'rich', 'cta'], service: ['hero-split', 'features', 'faq', 'cta'] };
+const SPECIAL = {
+  __article: `<section class="b-sec b-article" style="padding-bottom:20px"><div class="container" style="max-width:860px"><span class="b-meta">التصنيف · التاريخ</span><h1>{{title}}</h1><p style="color:var(--muted);margin-top:10px;font-size:1.1rem">ملخص المقال في جملة أو اتنين.</p><img class="b-cover" src="${PH(1200, 600)}" alt=""></div></section>`,
+  __product: `<section class="b-sec"><div class="container b-product"><img src="${PH(800, 800)}" alt=""><div><h1>{{title}}</h1><p class="b-price">250 جنيه</p><p>وصف المنتج ومميزاته في فقرة قصيرة.</p><ul><li>ميزة أولى</li><li>ميزة تانية</li></ul><div class="b-btns"><a class="b-btn" href="${WA}">اطلب على واتساب</a></div></div></div></section>`,
+};
+const sectionHtml = (id, title = 'عنوان الصفحة') => (SPECIAL[id] || (SECTIONS.find((s) => s.id === id) || {}).html || '').replace(/\{\{title\}\}/g, esc(title));
+
+const DEFAULT_HEADER = `<header class="b-header"><div class="container"><nav><a class="logo" href="index.html">عمار المهدي</a><ul><li><a href="index.html">الرئيسية</a></li><li><a href="services.html">الخدمات</a></li><li><a href="products.html">المنتجات</a></li><li><a href="blog.html">المدونة</a></li></ul><a class="b-btn hide-mobile" href="${WA}">كلّمني على واتساب</a><button class="round menu-btn" type="button" aria-label="القائمة"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h16"/></svg></button></nav></div></header>`;
+
+/* الكود اللي بيشغّل الموقع المنشور (القايمة، الفلاتر، اقرأ المزيد) */
 const SITE_RUNTIME = `(function(){
   var b=document.body, y=document.getElementById('year'); if(y) y.textContent=new Date().getFullYear();
   document.querySelectorAll('.menu-btn').forEach(function(m){ m.addEventListener('click',function(){ b.classList.toggle('menu-open'); }); });
@@ -374,423 +515,804 @@ const SITE_RUNTIME = `(function(){
   if(mb&&at){ mb.addEventListener('click',function(){ var closed=at.classList.toggle('clamp'); mb.textContent=closed?'اقرأ المزيد ↓':'اقرأ أقل ↑'; mb.setAttribute('aria-expanded',String(!closed)); }); }
 })();`;
 
-function bodyInner(html) { return html.replace(/^\s*<body[^>]*>/i, '').replace(/<\/body>\s*$/i, ''); }
-function buildDocument(page, html, css) {
+/* =====================================================================
+   البيانات المشتركة: تنسيق الموقع + الهيدر + الفوتر (صف site-global)
+   ===================================================================== */
+let globalRow = null, globalData = { baseCss: '', header: DEFAULT_HEADER, footer: '' }, globalDirty = false;
+async function loadGlobal() {
+  globalRow = await Pages.bySlug(GLOBAL_SLUG);
+  if (globalRow && globalRow.project) globalData = { baseCss: '', header: DEFAULT_HEADER, footer: '', ...globalRow.project };
+  return globalData;
+}
+async function saveGlobal() {
+  const project = { v: 2, kind: 'global', baseCss: globalData.baseCss, header: globalData.header, footer: globalData.footer };
+  if (globalRow) globalRow = await Pages.update(globalRow.id, { project });
+  else globalRow = await Pages.create({ slug: GLOBAL_SLUG, title: 'الهيدر والفوتر', status: 'draft', project });
+  globalDirty = false;
+}
+
+/* ============================ القالب الأصلي ============================ */
+async function loadTemplate() {
+  const r = await fetch(TEMPLATE_FILE, { cache: 'no-store' });
+  if (!r.ok) throw new Error(`مش لاقي ملف ${TEMPLATE_FILE} جنب لوحة التحكم.`);
+  const doc = new DOMParser().parseFromString(await r.text(), 'text/html');
+  const css = [...doc.querySelectorAll('style')].map((s) => s.textContent).join('\n');
+  doc.querySelectorAll('script').forEach((s) => s.remove());
+  // نشيل أوامر onclick وأخواتها — الكود اللي بيشغّل الموقع بيتحط لوحده وقت النشر
+  doc.body.querySelectorAll('*').forEach((el) => [...el.attributes].forEach((a) => { if (/^on/i.test(a.name)) el.removeAttribute(a.name); }));
+  const parts = [...doc.body.children];
+  return { css, title: doc.title, description: (doc.querySelector('meta[name=description]') || { content: '' }).content,
+    sections: parts.filter((el) => !el.matches('footer')).map((el) => el.outerHTML),
+    footer: (parts.find((el) => el.matches('footer')) || { outerHTML: '' }).outerHTML };
+}
+
+/* =====================================================================
+   بناء الصفحة: الهيدر + الأقسام + الفوتر، والقوايم التلقائية بتتملا
+   ===================================================================== */
+let allItems = [];
+function itemCard(it) {
+  const m = it.meta || {}, img = m.cover || PH(640, 400);
+  const line = it.kind === 'post' ? [m.category, m.date].filter(Boolean).join(' · ') : (m.category || '');
+  return `<a class="b-card" href="${esc(it.slug)}.html"><img class="b-card-img" src="${esc(img)}" alt="" loading="lazy"${it.kind === 'product' ? ' style="aspect-ratio:1"' : ''}><div class="b-card-body">${line ? `<span class="b-meta">${esc(line)}</span>` : ''}<h3>${esc(it.title)}</h3>${m.excerpt ? `<p>${esc(m.excerpt)}</p>` : ''}${m.price ? `<span class="b-price">${esc(m.price)}</span>` : ''}<span class="b-more">${it.kind === 'post' ? 'اقرأ المقال' : 'التفاصيل'}</span></div></a>`;
+}
+function fillCollections(root, editorMode) {
+  root.querySelectorAll('[data-collection]').forEach((sec) => {
+    const kind = sec.getAttribute('data-collection'), limit = +sec.getAttribute('data-limit') || 12;
+    const box = sec.querySelector('[data-collection-items]'); if (!box) return;
+    const list = allItems.filter((i) => i.kind === kind && (editorMode || i.status === 'published'))
+      .sort((a, b) => String((b.meta && b.meta.date) || b.published_at || b.updated_at).localeCompare(String((a.meta && a.meta.date) || a.published_at || a.updated_at)))
+      .slice(0, limit);
+    box.innerHTML = list.length ? list.map(itemCard).join('')
+      : `<p class="b-empty">${editorMode ? `القايمة دي بتتملا لوحدها من «${KIND_PLURAL[kind]}» في لوحة التحكم.` : 'قريبًا.'}</p>`;
+  });
+}
+function bodyParts(s) {
+  const parts = [];
+  if (s.showHeader !== false && globalData.header) parts.push({ html: globalData.header, global: 'header' });
+  s.sections.forEach((h) => parts.push({ html: h }));
+  if (s.showFooter !== false && globalData.footer) parts.push({ html: globalData.footer, global: 'footer' });
+  return parts;
+}
+function renderBodyHtml(s) {
+  const t = document.createElement('template');
+  t.innerHTML = bodyParts(s).map((p) => p.html).join('\n');
+  fillCollections(t.content, false);
+  return t.innerHTML;
+}
+function renderDocument(page, s) {
+  const m = s.meta || {}, desc = page.description || m.excerpt || '';
   return `<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${esc(page.title)}</title>
-  <meta name="description" content="${esc(page.description)}">
+  <meta name="description" content="${esc(desc)}">
   <meta property="og:title" content="${esc(page.title)}">
-  <meta property="og:description" content="${esc(page.description)}">
+  <meta property="og:description" content="${esc(desc)}">${m.cover ? `\n  <meta property="og:image" content="${esc(m.cover)}">` : ''}
   <link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300;400;500;600;700&family=Aref+Ruqaa:wght@700&display=swap" rel="stylesheet">
-  <style>${css}</style>
+  <style>${globalData.baseCss}\n${BUILDER_CSS}</style>
 </head>
 <body>
-${bodyInner(html)}
+${renderBodyHtml(s)}
 <script>${SITE_RUNTIME}<\/script>
 </body>
 </html>`;
 }
 
 /* =====================================================================
-   الشاشات
+   الشاشات: الدخول + القوايم
    ===================================================================== */
-function show(id) { ['login', 'pages', 'editor'].forEach((s) => { $('#' + s).hidden = s !== id; }); }
-
+function show(id) { ['login', 'pages', 'editor'].forEach((x) => { $('#' + x).hidden = x !== id; }); }
 $('#login-form').addEventListener('submit', async (ev) => {
   ev.preventDefault();
-  const email = $('#email').value.trim(), password = $('#password').value;
-  const err = $('#login-error'); err.textContent = '';
+  const email = $('#email').value.trim(), password = $('#password').value, err = $('#login-error');
+  err.textContent = '';
   if (!email || !password) { err.textContent = 'اكتب الإيميل والباسورد.'; return; }
   const btn = $('#login-btn'); btn.disabled = true; btn.textContent = 'جاري الدخول...';
-  try {
-    saveSession(await authCall('password', { email, password }));
-    $('#password').value = '';
-    await enterPages();
-  } catch (e) {
-    err.textContent = (e.code === 'invalid_credentials' || e.status === 400) ? 'الإيميل أو الباسورد غلط.'
-      : (e instanceof TypeError ? 'مفيش اتصال بـ Supabase. اتأكد من النت.' : 'مش قادر أسجّل دخول: ' + e.message);
-  } finally { btn.disabled = false; btn.textContent = 'دخول'; }
+  try { saveSession(await authCall('password', { email, password })); $('#password').value = ''; await enterPages(); }
+  catch (e) { err.textContent = (e.code === 'invalid_credentials' || e.status === 400) ? 'الإيميل أو الباسورد غلط.' : (e instanceof TypeError ? 'مفيش اتصال بـ Supabase. اتأكد من النت.' : 'مش قادر أسجّل دخول: ' + e.message); }
+  finally { btn.disabled = false; btn.textContent = 'دخول'; }
 });
-
 function logout(msg) {
   const s = session; saveSession(null);
   if (s) fetch(`${SB_URL}/auth/v1/logout`, { method: 'POST', headers: { apikey: SB_KEY, Authorization: `Bearer ${s.access_token}` } }).catch(() => {});
-  dirty = false; show('login');
-  if (msg) $('#login-error').textContent = msg;
+  dirty = false; show('login'); if (msg) $('#login-error').textContent = msg;
 }
 $('#logout-btn').addEventListener('click', () => logout());
 
+let listKind = 'page', pageCache = [];
 async function enterPages() {
-  show('pages');
-  $('#who').textContent = session.email || '';
-  // هل الحساب ده مسؤول؟ (جدول admins بيرجّع صفه بس لو اسمه موجود)
+  show('pages'); $('#who').textContent = session.email || '';
   try {
     const me = await api('/rest/v1/admins?select=user_id');
-    if (!me || !me.length) {
-      $('#page-list').innerHTML = `<div class="empty"><h3>حسابك لسه مش مسؤول</h3><p>شغّل ملف 02-make-me-admin.sql في Supabase بإيميلك، وبعدين اعمل تحديث للصفحة.</p></div>`;
-      $('#new-page-btn').disabled = $('#import-btn').disabled = true; return;
-    }
-    $('#new-page-btn').disabled = $('#import-btn').disabled = false;
+    if (!me || !me.length) { $('#page-list').innerHTML = `<div class="empty"><h3>حسابك لسه مش مسؤول</h3><p>شغّل ملف 02-make-me-admin.sql في Supabase بإيميلك، وبعدين اعمل تحديث للصفحة.</p></div>`; $('#list-actions').innerHTML = ''; return; }
+    await loadGlobal();
   } catch (e) { $('#page-list').innerHTML = `<div class="empty"><p>${esc(friendlyDbError(e))}</p></div>`; return; }
   await renderList();
 }
-
 const fmtDate = (d) => d ? new Date(d).toLocaleString('ar-EG', { dateStyle: 'medium', timeStyle: 'short' }) : '';
-let pageCache = [];
-async function renderList() {
+const kindOf = (p) => p.kind || 'page';
+$('#kind-tabs').addEventListener('click', (e) => {
+  const b = e.target.closest('[data-kind]'); if (!b) return;
+  listKind = b.dataset.kind; document.querySelectorAll('#kind-tabs button').forEach((x) => x.classList.toggle('on', x === b)); renderList(false);
+});
+async function renderList(refetch = true) {
   const box = $('#page-list');
-  try { pageCache = await Pages.list(); } catch (e) { box.innerHTML = `<div class="empty"><p>${esc(friendlyDbError(e))}</p></div>`; return; }
-  if (!pageCache.length) {
-    box.innerHTML = `<div class="empty"><h3>مفيش صفحات لسه</h3><p>ابدأ باستيراد تصميمك الحالي، وبعدها تقدر تعدّل فيه أو تعمل صفحات جديدة.</p>
-      <button class="btn primary" type="button" data-act="import">استيراد التصميم الحالي</button></div>`;
+  if (refetch) { try { pageCache = (await Pages.list()).filter((p) => p.slug !== GLOBAL_SLUG); } catch (e) { box.innerHTML = `<div class="empty"><p>${esc(friendlyDbError(e))}</p></div>`; return; } }
+  allItems = pageCache.filter((p) => p.kind && p.kind !== 'page');
+  const rows = pageCache.filter((p) => kindOf(p) === listKind);
+  const hasHome = pageCache.some((p) => p.slug === 'index' && p.v === '2');
+  $('#list-actions').innerHTML = listKind === 'page'
+    ? `<button class="btn primary" type="button" data-act="new">${KIND_NEW.page}</button><button class="btn" type="button" data-act="import">${hasHome ? 'إعادة استيراد التصميم الأصلي' : 'استيراد تصميم موقعك الحالي'}</button>`
+    : `<button class="btn primary" type="button" data-act="new">${KIND_NEW[listKind]}</button>${pageCache.some((p) => p.slug === LIST_SLUG[listKind]) ? '' : `<button class="btn" type="button" data-act="listpage">اعمل صفحة «${KIND_PLURAL[listKind]}» اللي بتعرضهم</button>`}`;
+  if (!rows.length) {
+    box.innerHTML = listKind === 'page'
+      ? `<div class="empty"><h3>مفيش صفحات لسه</h3><p>ابدأ باستيراد تصميم موقعك الحالي، وبعدها عدّل فيه أو اعمل صفحات جديدة.</p><button class="btn primary" type="button" data-act="import">استيراد تصميم موقعك</button></div>`
+      : `<div class="empty"><h3>مفيش حاجة في «${KIND_PLURAL[listKind]}» لسه</h3><p>كل ${KIND_NAMES[listKind]} بتضيفه هيظهر لوحده في صفحة «${KIND_PLURAL[listKind]}» وفي أي قايمة تلقائية.</p><button class="btn primary" type="button" data-act="new">${KIND_NEW[listKind]}</button></div>`;
     return;
   }
-  box.innerHTML = pageCache.map((p) => `
+  box.innerHTML = rows.map((p) => `
     <article class="page-row">
-      <div>
-        <h3>${esc(p.title)}</h3>
-        <div class="meta">
-          <code>${esc(p.slug === 'index' ? '/' : '/' + p.slug + '.html')}</code>
+      <div><h3>${esc(p.title)}</h3>
+        <div class="meta"><code>${esc(p.slug === 'index' ? '/' : '/' + p.slug + '.html')}</code>
           <span class="badge ${p.status}">${p.status === 'published' ? 'منشورة' : 'مسودة'}</span>
-          <span>آخر تعديل: ${esc(fmtDate(p.updated_at))}</span>
-        </div>
-      </div>
+          ${p.v === '2' ? '' : '<span class="badge old">نسخة قديمة</span>'}
+          <span>آخر تعديل: ${esc(fmtDate(p.updated_at))}</span></div></div>
       <div class="row-actions">
         <button class="btn small primary" type="button" data-act="edit" data-id="${p.id}">تعديل</button>
         <button class="btn small" type="button" data-act="dup" data-id="${p.id}">نسخة منها</button>
         <button class="btn small danger" type="button" data-act="del" data-id="${p.id}">حذف</button>
-      </div>
-    </article>`).join('');
+      </div></article>`).join('');
 }
-$('#page-list').addEventListener('click', async (ev) => {
-  const b = ev.target.closest('button[data-act]'); if (!b) return;
-  const id = b.dataset.id, p = pageCache.find((x) => x.id === id);
-  if (b.dataset.act === 'import') return importTemplate();
-  if (b.dataset.act === 'edit') return openEditor(id);
-  if (b.dataset.act === 'dup') return newPage(id);
-  if (b.dataset.act === 'del') {
-    const ok = await dialog({ title: `حذف «${p.title}»؟`,
-      html: `<p>الصفحة هتتمسح من لوحة التحكم ومش هينفع ترجّعها. لو كانت منشورة، النسخة المنشورة على الموقع هتفضل لحد ما تمسحها من GitHub.</p>`,
-      buttons: [{ label: 'أيوه، احذفها', value: 'ok', cls: 'danger' }, { label: 'إلغاء', value: 'cancel' }] });
+$('#pages').addEventListener('click', async (ev) => {
+  const b = ev.target.closest('[data-act]'); if (!b) return;
+  const id = b.dataset.id, p = pageCache.find((x) => x.id === id), a = b.dataset.act;
+  if (a === 'import') return importTemplate();
+  if (a === 'new') return newPage(listKind);
+  if (a === 'listpage') return createListPage(listKind);
+  if (a === 'edit') {
+    if (p.v !== '2') { toast(p.slug === 'index' ? 'الصفحة دي من النسخة القديمة. دوس «إعادة استيراد التصميم الأصلي» عشان تتحول للمحرر الجديد.' : 'الصفحة دي من النسخة القديمة من اللوحة. اعمل صفحة جديدة بدالها.', 'bad'); return; }
+    return openEditor(id);
+  }
+  if (a === 'dup') return newPage(kindOf(p), id);
+  if (a === 'del') {
+    const ok = await dialog({ title: `حذف «${p.title}»؟`, html: `<p>هتتمسح من لوحة التحكم ومش هينفع ترجّعها.</p>`, buttons: [{ label: 'أيوه، احذفها', value: 'ok', cls: 'danger' }, { label: 'إلغاء', value: 'cancel' }] });
     if (ok !== 'ok') return;
-    try { await Pages.remove(id); toast('اتحذفت الصفحة.', 'good'); renderList(); } catch (e) { toast(friendlyDbError(e), 'bad'); }
+    try { await Pages.remove(id); toast('اتحذفت.', 'good'); renderList(); } catch (e) { toast(friendlyDbError(e), 'bad'); }
   }
 });
 
 const slugify = (s) => s.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-const RESERVED = ['admin', 'binjan-style', 'design-options', 'design-options-2'];
+const RESERVED = ['admin', 'binjan-style', 'design-options', 'design-options-2', GLOBAL_SLUG];
 function slugError(slug) {
-  if (!/^[a-z0-9][a-z0-9-]*$/.test(slug)) return 'الرابط لازم يكون حروف إنجليزي صغيرة وأرقام وشرطة (-) بس، زي: about-me';
+  if (!/^[a-z0-9][a-z0-9-]*$/.test(slug)) return 'الرابط لازم يكون حروف إنجليزي صغيرة وأرقام وشرطة (-) بس، زي: my-service';
   if (RESERVED.includes(slug)) return 'الاسم ده محجوز لملف تاني في الموقع. اختار اسم غيره.';
   if (pageCache.some((p) => p.slug === slug)) return 'فيه صفحة بنفس الرابط ده.';
   return '';
 }
-
-async function newPage(copyFromId) {
+async function newPage(kind, copyFromId) {
   const src = copyFromId ? pageCache.find((p) => p.id === copyFromId) : null;
-  const res = await dialog({ title: src ? `نسخة من «${src.title}»` : 'صفحة جديدة', html: `
-    <div class="field"><label for="np-title">عنوان الصفحة</label><input id="np-title" required value="${src ? esc(src.title + ' (نسخة)') : ''}" placeholder="مثلاً: خدماتي الهندسية"></div>
-    <div class="field"><label for="np-slug">رابط الصفحة</label><input id="np-slug" dir="ltr" required placeholder="engineering">
-      <p class="hint">هيبقى عنوانها: <span dir="ltr">yoursite.com/<b id="np-preview">...</b>.html</span></p></div>
-    ${src ? '' : `<p>الصفحة الجديدة هتبدأ فاضية، بس بنفس ألوان وخطوط موقعك. اسحب فيها الأقسام من «Blocks».</p>`}
-    <p class="error" id="np-err"></p>`,
-    buttons: [{ label: 'إنشاء', value: 'ok', cls: 'primary' }, { label: 'إلغاء', value: 'cancel' }] });
-  // الحوار اتقفل — بنقرا القيم اللي اتكتبت
-  const title = ($('#np-title') || {}).value || '';
-  const slug = slugify(($('#np-slug') || {}).value || '');
+  const ph = { post: ['مثلاً: إزاي تختار مهندس لبيتك', 'choose-engineer'], product: ['مثلاً: قالب حساب كميات Excel', 'quantities-template'], service: ['مثلاً: تصميم إنشائي للمباني', 'structural-design'], page: ['مثلاً: عن الشركة', 'about'] }[kind];
+  const res = await dialog({ title: src ? `نسخة من «${src.title}»` : KIND_NEW[kind].replace('+ ', ''), html: `
+    <div class="field"><label for="np-title">العنوان</label><input id="np-title" required value="${src ? esc(src.title + ' (نسخة)') : ''}" placeholder="${ph[0]}"></div>
+    <div class="field"><label for="np-slug">الرابط (إنجليزي)</label><input id="np-slug" dir="ltr" required placeholder="${ph[1]}">
+      <p class="hint">هيبقى عنوانها: <span dir="ltr">.../<b id="np-preview">...</b>.html</span></p></div>
+    ${src ? '' : `<p>هتبدأ بقالب جاهز، وتقدر تغيّر وتضيف أي حاجة.</p>`}`,
+    buttons: [{ label: 'إنشاء', value: 'ok', cls: 'primary' }, { label: 'إلغاء', value: 'cancel' }],
+    onOpen: (d) => { const s = d.querySelector('#np-slug'); s.addEventListener('input', () => { d.querySelector('#np-preview').textContent = slugify(s.value) || '...'; }); } });
+  const title = ($('#np-title') || {}).value || '', slug = slugify(($('#np-slug') || {}).value || '');
   if (res !== 'ok') return;
-  const problem = !title.trim() ? 'اكتب عنوان للصفحة.' : slugError(slug);
+  const problem = !title.trim() ? 'اكتب عنوان.' : slugError(slug);
   if (problem) { toast(problem, 'bad'); return; }
   try {
-    let row = { title: title.trim(), slug, status: 'draft' };
-    if (src) {
-      const full = await Pages.get(src.id);
-      Object.assign(row, { description: full.description, project: full.project, html: full.html, css: full.css });
-    } else {
-      const baseCss = await siteBaseCss();
-      Object.assign(row, { html: '', css: baseCss, project: { baseCss, gjs: null } });
+    const row = { title: title.trim(), slug, status: 'draft' };
+    if (src) { const full = await Pages.get(src.id); Object.assign(row, { description: full.description, project: full.project, html: full.html, css: '' }); }
+    else {
+      const meta = kind === 'post' ? { date: new Date().toISOString().slice(0, 10), category: '', excerpt: '', cover: '' } : kind === 'page' ? {} : { price: '', category: '', excerpt: '', cover: '' };
+      row.project = { v: 2, kind, meta, showHeader: true, showFooter: true, sections: ITEM_TEMPLATES[kind].map((id) => sectionHtml(id, title.trim())) };
     }
     const created = await Pages.create(row);
-    toast('اتعملت الصفحة.', 'good');
-    openEditor(created.id);
+    toast('اتعملت. ابدأ عدّل.', 'good'); await renderList(); openEditor(created.id);
   } catch (e) { toast(friendlyDbError(e), 'bad'); }
 }
-$('#new-page-btn').addEventListener('click', () => newPage());
-document.addEventListener('input', (ev) => {
-  if (ev.target.id === 'np-slug' || ev.target.id === 'np-title') {
-    const s = $('#np-slug'); if (ev.target.id === 'np-title' && s && !s.dataset.touched) return;
-    if (ev.target.id === 'np-slug') s.dataset.touched = '1';
-    $('#np-preview').textContent = slugify(s.value) || '...';
-  }
-});
-
+async function createListPage(kind) {
+  try {
+    const row = { title: KIND_PLURAL[kind], slug: LIST_SLUG[kind], status: 'draft', project: { v: 2, kind: 'page', meta: {}, showHeader: true, showFooter: true,
+      sections: [sectionHtml('hero-center', KIND_PLURAL[kind]), sectionHtml('list-' + kind)] } };
+    const created = await Pages.create(row);
+    toast(`اتعملت صفحة «${KIND_PLURAL[kind]}» على الرابط ${LIST_SLUG[kind]}.html`, 'good'); await renderList(); openEditor(created.id);
+  } catch (e) { toast(friendlyDbError(e), 'bad'); }
+}
 async function importTemplate() {
   const existing = pageCache.find((p) => p.slug === 'index');
   if (existing) {
-    const r = await dialog({ title: 'فيه صفحة رئيسية بالفعل', html: '<p>الاستيراد هيستبدل محتوى الصفحة الرئيسية الحالية بالتصميم الموجود في الملف. تعديلاتك فيها هتضيع.</p>',
+    const r = await dialog({ title: 'استيراد التصميم الأصلي', html: '<p>الصفحة الرئيسية في اللوحة هتتستبدل بتصميم ملف binjan-style.html، والفوتر المشترك كمان. أي تعديل عملته عليهم هيضيع.</p>',
       buttons: [{ label: 'استبدلها', value: 'ok', cls: 'danger' }, { label: 'إلغاء', value: 'cancel' }] });
     if (r !== 'ok') return;
   }
   try {
-    const t = await loadTemplate();
     toast('بيجهّز التصميم ويرفع الصور اللي جواه...');
-    const baseCss = await externalizeImages(t.css);
-    const html = await externalizeImages(t.html);
-    const row = { title: t.title || 'الرئيسية', description: t.description, html, css: baseCss, project: { baseCss, gjs: null } };
+    const t = await loadTemplate();
+    globalData.baseCss = await externalizeImages(t.css);
+    globalData.footer = await externalizeImages(t.footer);
+    if (!globalData.header) globalData.header = DEFAULT_HEADER;
+    await saveGlobal();
+    const sections = []; for (const s of t.sections) sections.push(await externalizeImages(s));
+    const project = { v: 2, kind: 'page', meta: {}, showHeader: false, showFooter: true, sections };
+    const row = { title: t.title || 'الرئيسية', description: t.description, project, html: '', css: '' };
     const saved = existing ? await Pages.update(existing.id, row) : await Pages.create({ ...row, slug: 'index', status: 'draft' });
-    toast('اتستورد التصميم. افتحه وعدّل براحتك.', 'good');
-    await renderList(); openEditor(saved.id);
+    toast('اتستورد التصميم.', 'good'); await renderList(); openEditor(saved.id);
   } catch (e) { toast(e.status ? friendlyDbError(e) : e.message, 'bad'); }
-}
-$('#import-btn').addEventListener('click', importTemplate);
-
-/* الصور المدمجة جوه الكود (data:image...) بتخلّي الصفحة تقيلة جدًا
-   فبنرفعها مرة واحدة على مخزن الصور ونحط رابطها بدالها */
-async function externalizeImages(text) {
-  const re = /data:(image\/(?:png|jpe?g|webp|gif|avif));base64,([A-Za-z0-9+/=]+)/g;
-  const seen = new Map();
-  for (const m of text.matchAll(re)) {
-    if (seen.has(m[0])) continue;
-    try {
-      const bin = atob(m[2]); const bytes = new Uint8Array(bin.length);
-      for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
-      const ext = m[1].split('/')[1].replace('jpeg', 'jpg');
-      const a = await uploadImage(new File([bytes], 'site-photo.' + ext, { type: m[1] }));
-      seen.set(m[0], a.src);
-    } catch (e) { /* لو الرفع فشل نسيب الصورة مدمجة زي ما هي */ }
-  }
-  seen.forEach((url, data) => { text = text.split(data).join(url); });
-  return text;
-}
-/* تنسيق الموقع الأساسي لأي صفحة جديدة: بناخده من الصفحة الرئيسية لو موجودة (صورها مرفوعة بالفعل) */
-async function siteBaseCss() {
-  const home = pageCache.find((p) => p.slug === 'index');
-  if (home) { try { const full = await Pages.get(home.id); if (full.project && full.project.baseCss) return full.project.baseCss; } catch {} }
-  try { return await externalizeImages((await loadTemplate()).css); } catch { return ''; }
 }
 
 /* =====================================================================
-   المحرر (GrapesJS)
+   المحرر المرئي (شبه Wix): دوس على أي حاجة في الصفحة وعدّلها مكانها
    ===================================================================== */
-let editor = null, current = null, dirty = false, loading = false, showInner = false, autosaveTimer = null, baseCss = '';
+let current = null, st = null, dirty = false, saving = false, autosaveTimer = null;
+let cdoc = null, selected = null, editing = null, hoverSec = null, insertAfter = null;
+let undoStack = [], redoStack = [];
+const frame = $('#canvas');
+
+const EDITOR_CSS = `
+html{scroll-behavior:auto!important}
+body.__show-inner section.page{display:block!important;position:relative!important;inset:auto!important;z-index:auto!important;outline:3px dashed #2a6f68;outline-offset:-3px}
+.__hov{outline:2px dashed rgba(42,111,104,.7)!important;outline-offset:-2px}
+.__sel{outline:2px solid #2a6f68!important;outline-offset:2px}
+[contenteditable=true]{outline:2px solid #c2461f!important;outline-offset:3px;cursor:text}
+[data-collection-items]{pointer-events:none}
+.b-video iframe{pointer-events:none}
+a,button,summary,label{cursor:default}
+.__ed{all:initial;position:absolute;z-index:2147483000;display:none;gap:4px;flex-wrap:wrap;max-width:min(560px,calc(100vw - 8px));background:#12304a;padding:4px;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.25);font-family:'Readex Pro',sans-serif;direction:rtl}
+.__ed button{all:initial;font-family:'Readex Pro',sans-serif;font-size:13px;color:#fff;background:#1d4566;border-radius:7px;padding:7px 10px;cursor:pointer;line-height:1.2;white-space:nowrap}
+.__ed button:hover{background:#2a6f68}
+.__ed button.__danger{background:#8a2414}
+.__ed .__lbl{all:initial;font-family:'Readex Pro',sans-serif;font-size:12px;color:#cfe3e0;padding:7px 8px}
+#__addbtn{all:initial;position:absolute;z-index:2147482000;display:none;left:50%;transform:translate(-50%,-50%);font-family:'Readex Pro',sans-serif;font-size:13px;background:#2a6f68;color:#fff;border-radius:999px;padding:7px 16px;cursor:pointer;box-shadow:0 6px 16px rgba(0,0,0,.2)}
+`;
 
 function setStatus(t) { $('#ed-status').textContent = t; }
-function markDirty() { if (loading) return; dirty = true; setStatus('فيه تعديلات مش محفوظة'); }
-
-function canvasDoc() { try { return editor.Canvas.getDocument(); } catch { return null; } }
-function prepareCanvas() {
-  const d = canvasDoc(); if (!d) return;
-  d.documentElement.setAttribute('dir', 'rtl'); d.documentElement.setAttribute('lang', 'ar');
-  if (!d.getElementById('admin-fonts')) {
-    const l = d.createElement('link'); l.id = 'admin-fonts'; l.rel = 'stylesheet';
-    l.href = 'https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300;400;500;600;700&family=Aref+Ruqaa:wght@700&display=swap';
-    d.head.appendChild(l);
-  }
-  // تنسيق الموقع الأساسي بيتحط في الصفحة زي ما هو بالظبط (من غير ما المحرر يفكّه ويبوّظه)
-  let base = d.getElementById('admin-base-css');
-  if (!base) { base = d.createElement('style'); base.id = 'admin-base-css'; d.head.insertBefore(base, d.head.firstChild); }
-  if (base.textContent !== baseCss) base.textContent = baseCss;
-  let st = d.getElementById('admin-inner-pages');
-  if (!st) { st = d.createElement('style'); st.id = 'admin-inner-pages'; d.head.appendChild(st); }
-  // صفحات الخدمات في التصميم مخفية لحد ما حد يدوس عليها — هنا بنظهرها جوه المحرر بس
-  st.textContent = showInner ? 'section.page{display:block!important;position:relative!important;inset:auto!important;z-index:auto!important;outline:3px dashed #2a6f68;margin:24px 0;}' : '';
-}
-
-function addBlocks() {
-  const bm = editor.BlockManager, C = 'أساسي';
-  const blocks = [
-    ['b-section', 'قسم فاضي', `<section style="padding:64px 0"><div class="container"><h2>عنوان القسم</h2><p>اكتب هنا وصف القسم.</p></div></section>`],
-    ['b-heading', 'عنوان', `<h2>عنوان جديد</h2>`],
-    ['b-text', 'فقرة', `<p>اكتب النص هنا. دوس مرتين عشان تعدّله.</p>`],
-    ['b-button', 'زرار', { type: 'link', content: 'كلّمني على واتساب', attributes: { href: 'https://wa.me/201000649748', target: '_blank', rel: 'noopener', class: 'btn-coral' }, style: { display: 'inline-block' } }],
-    ['b-link', 'لينك', { type: 'link', content: 'نص اللينك', attributes: { href: '#' } }],
-    ['b-image', 'صورة', { type: 'image', activate: true, style: { 'max-width': '100%', height: 'auto', 'border-radius': '16px' } }],
-    ['b-cols2', 'عمودين', `<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px;padding:16px 0"><div><h3>عنوان</h3><p>نص العمود الأول.</p></div><div><h3>عنوان</h3><p>نص العمود التاني.</p></div></div>`],
-    ['b-cols3', '3 أعمدة', `<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;padding:16px 0"><div><h3>عنوان</h3><p>نص.</p></div><div><h3>عنوان</h3><p>نص.</p></div><div><h3>عنوان</h3><p>نص.</p></div></div>`],
-    ['b-card', 'كارت', `<div style="background:#fff;border:1px solid #ece8df;border-radius:18px;padding:22px"><h3>عنوان الكارت</h3><p>وصف قصير للكارت.</p><a href="#" class="cgo">التفاصيل</a></div>`],
-    ['b-video', 'فيديو يوتيوب', { type: 'video', provider: 'yt', videoId: '', style: { width: '100%', height: '360px', 'border-radius': '16px' } }],
-    ['b-divider', 'فاصل', `<hr style="border:none;border-top:1px solid #ece8df;margin:32px 0">`],
-    ['b-space', 'مسافة', `<div style="height:48px"></div>`],
-  ];
-  blocks.forEach(([id, label, content]) => bm.add(id, { label, category: C, content }));
-  loadTemplate().then((t) => {
-    t.sections.forEach((s) => {
-      if (!s.id) return;
-      bm.add('site-' + s.id, { label: SECTION_NAMES[s.id] || s.id, category: 'أقسام موقعي', content: s.html });
-    });
-  }).catch(() => {});
-}
-
-let arLocale = null;
-async function loadArabicUi() {
-  try { arLocale = (await import('https://cdn.jsdelivr.net/npm/grapesjs@0.22.9/locale/ar.mjs')).default; } catch { arLocale = null; }
-}
-function initEditor() {
-  if (editor) return;
-  if (!window.grapesjs) { toast('مكتبة المحرر ما اتحمّلتش. اتأكد من النت واعمل تحديث للصفحة.', 'bad'); throw new Error('grapesjs missing'); }
-  editor = grapesjs.init({
-    container: '#gjs', height: '100%', fromElement: false,
-    storageManager: false,               // الحفظ بنعمله إحنا في Supabase
-    undoManager: { trackSelection: false },
-    selectorManager: { componentFirst: true },
-    deviceManager: { devices: [
-      { id: 'desktop', name: 'Desktop', width: '' },
-      { id: 'tablet', name: 'Tablet', width: '820px', widthMedia: '900px' },
-      { id: 'mobile', name: 'Mobile', width: '390px', widthMedia: '480px' },
-    ] },
-    assetManager: {
-      embedAsBase64: false, multiUpload: true,
-      uploadText: 'اسحب الصور هنا أو دوس للاختيار (حد أقصى 5 ميجا للصورة)',
-      addBtnText: 'إضافة رابط صورة',
-      uploadFile: async (e) => {
-        const files = [...(e.dataTransfer ? e.dataTransfer.files : e.target.files)];
-        for (const f of files) {
-          try { setStatus('بيرفع ' + f.name + '...'); const a = await uploadImage(f); editor.AssetManager.add(a); toast('اترفعت الصورة.', 'good'); }
-          catch (err) { toast(err.status ? friendlyDbError(err) : err.message, 'bad'); }
-        }
-        setStatus(dirty ? 'فيه تعديلات مش محفوظة' : 'محفوظ');
-      },
-    },
-    canvas: { styles: [] },
-    i18n: arLocale ? { locale: 'ar', detectLocale: false, localeFallback: 'en', messages: { ar: arLocale } } : {},
-    parser: { optionsHtml: { allowScripts: false } },
-  });
-  addBlocks();
-  editor.on('load', () => {
-    prepareCanvas();
-    // نشيل الخطوط المتقطعة حوالين كل عنصر عشان الصفحة تبان زي الحقيقة
-    const sw = editor.Panels.getButton('options', 'sw-visibility'); if (sw) sw.set('active', false);
-  });
-  editor.on('canvas:frame:load', prepareCanvas);
-  editor.on('update', markDirty);
-  editor.on('component:update', markDirty);
-  editor.on('style:property:update', markDirty);
-  editor.Keymaps.add('admin:save', '⌘+s, ctrl+s', () => savePage(), { prevent: true });
-  // الصور اللي اترفعت قبل كده تظهر في مكتبة الصور
-  listImages().then((imgs) => editor.AssetManager.add(imgs)).catch(() => {});
-}
+function markDirty() { dirty = true; setStatus('فيه تعديلات مش محفوظة'); }
 
 async function openEditor(id) {
-  if (dirty && current && current.id !== id) { const ok = await confirmLeave(); if (!ok) return; }
-  let page;
-  try { page = await Pages.get(id); } catch (e) { toast(friendlyDbError(e), 'bad'); return; }
-  show('editor');
-  if (!editor && !arLocale) await loadArabicUi();
-  try { initEditor(); } catch { show('pages'); return; }
-  loading = true; current = page;
+  if (dirty && current && current.id !== id && !(await confirmLeave())) return;
+  let page; try { page = await Pages.get(id); } catch (e) { toast(friendlyDbError(e), 'bad'); return; }
+  if (!globalRow) await loadGlobal().catch(() => {});
+  current = page;
+  st = { v: 2, kind: 'page', meta: {}, showHeader: true, showFooter: true, sections: [], ...(page.project || {}) };
+  st.meta = st.meta || {};
+  undoStack = []; redoStack = []; selected = editing = hoverSec = insertAfter = null; globalDirty = false;
   $('#ed-title').textContent = page.title;
-  try {
-    const pr = page.project || {};
-    if (typeof pr.baseCss === 'string') {
-      baseCss = pr.baseCss; prepareCanvas();
-      if (pr.gjs && Array.isArray(pr.gjs.pages) && pr.gjs.pages.length) editor.loadProjectData(pr.gjs);
-      else { editor.setComponents(page.html || ''); editor.setStyle(''); }
-    } else {
-      // صفحة اتعملت بالنسخة القديمة من اللوحة
-      baseCss = ''; prepareCanvas();
-      if (Array.isArray(pr.pages) && pr.pages.length) editor.loadProjectData(pr);
-      else { editor.setComponents(page.html || ''); editor.setStyle(page.css || ''); }
-      if (page.slug === 'index') toast('الصفحة دي اتستوردت بنسخة قديمة من اللوحة، وشكلها ممكن يبقى مختلف. ارجع للصفحات ودوس «استيراد التصميم الحالي» تاني.', 'bad');
-    }
-    editor.UndoManager.clear();
-  } catch (e) { toast('مش قادر أفتح الصفحة: ' + e.message, 'bad'); }
-  setTimeout(() => { loading = false; dirty = false; setStatus(page.status === 'published' ? 'منشورة' : 'مسودة محفوظة'); prepareCanvas(); editor.refresh(); }, 300);
-  clearInterval(autosaveTimer);
-  autosaveTimer = setInterval(() => { if (dirty) savePage(true); }, 60000);   // حفظ تلقائي كل دقيقة لو فيه تعديل
+  show('editor'); setSideTab('add'); buildAddPanel(); buildPagePanel();
+  loadCanvas();
+  dirty = false; setStatus(page.status === 'published' ? 'منشورة' : 'مسودة محفوظة');
+  clearInterval(autosaveTimer); autosaveTimer = setInterval(() => { if (dirty && !editing) savePage(true); }, 60000);
+}
+function loadCanvas() {
+  cdoc = null;
+  frame.onload = () => { cdoc = frame.contentDocument; paintBody(); bindCanvas(); undoStack = [snapshotState()]; renderStylePanel(); };
+  frame.srcdoc = `<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300;400;500;600;700&family=Aref+Ruqaa:wght@700&display=swap" rel="stylesheet">
+<style>${globalData.baseCss}\n${BUILDER_CSS}</style><style>${EDITOR_CSS}</style></head><body></body></html>`;
+}
+function paintBody() {
+  const w = cdoc.defaultView, sy = w.scrollY, parts = bodyParts(st);
+  cdoc.body.innerHTML = parts.map((p) => p.html).join('\n');
+  let i = 0;
+  [...cdoc.body.children].forEach((el, k) => {
+    const p = parts[k]; if (!p) return;
+    if (p.global) el.setAttribute('data-global', p.global); else el.setAttribute('data-sid', String(i++));
+  });
+  fillCollections(cdoc.body, true);
+  cdoc.body.classList.toggle('__show-inner', !!st.__showInner);
+  selected = editing = hoverSec = null;
+  w.scrollTo(0, sy);
+  updateOverlays(); renderStylePanel();
 }
 
-function snapshot() {
-  const edits = editor.getCss();
-  return { project: { baseCss, gjs: editor.getProjectData() }, html: bodyInner(editor.getHtml()),
-    css: baseCss ? baseCss + '\n/* ===== تعديلات لوحة التحكم ===== */\n' + edits : edits };
+/* ---------- من الصفحة لبيانات نظيفة ---------- */
+function cleanHtml(el) {
+  const c = el.cloneNode(true);
+  c.querySelectorAll('.__ed,#__addbtn').forEach((x) => x.remove());
+  [c, ...c.querySelectorAll('*')].forEach((x) => {
+    ['data-sid', 'data-global', 'contenteditable', 'spellcheck'].forEach((a) => x.removeAttribute(a));
+    if (x.classList) { x.classList.remove('__sel', '__hov'); if (!x.classList.length) x.removeAttribute('class'); }
+  });
+  c.querySelectorAll('[data-collection-items]').forEach((b) => { b.innerHTML = ''; });
+  return c.outerHTML;
 }
-let saving = false;
+function syncFromDom() {
+  if (!cdoc) return;
+  const kids = [...cdoc.body.children];
+  st.sections = kids.filter((e) => e.hasAttribute('data-sid')).map(cleanHtml);
+  for (const g of ['header', 'footer']) {
+    const el = kids.find((e) => e.getAttribute('data-global') === g);
+    if (el) { const h = cleanHtml(el); if (h !== globalData[g]) { globalData[g] = h; globalDirty = true; } }
+  }
+}
+const snapshotState = () => JSON.stringify({ s: st.sections, h: globalData.header, f: globalData.footer, sh: st.showHeader, sf: st.showFooter });
+function pushHistory() {
+  const snap = snapshotState();
+  if (undoStack[undoStack.length - 1] === snap) return;
+  undoStack.push(snap); if (undoStack.length > 80) undoStack.shift();
+  redoStack = []; markDirty();
+}
+function changed() { syncFromDom(); pushHistory(); updateOverlays(); }
+function restore(snap) {
+  const o = JSON.parse(snap);
+  if (o.h !== globalData.header || o.f !== globalData.footer) globalDirty = true;
+  st.sections = o.s; globalData.header = o.h; globalData.footer = o.f; st.showHeader = o.sh; st.showFooter = o.sf;
+  paintBody(); buildPagePanel(); markDirty();
+}
+function undo() { stopEditing(); if (undoStack.length < 2) { toast('مفيش حاجة ترجع لها.'); return; } redoStack.push(undoStack.pop()); restore(undoStack[undoStack.length - 1]); }
+function redo() { stopEditing(); if (!redoStack.length) return; const s = redoStack.pop(); undoStack.push(s); restore(s); }
+
+/* ---------- التفاعل جوه الصفحة ---------- */
+const TEXT_TAGS = /^(H[1-6]|P|SPAN|A|LI|SMALL|B|STRONG|EM|I|LABEL|BUTTON|BLOCKQUOTE|FIGCAPTION|TD|TH|SUMMARY|CODE|DT|DD)$/;
+const isTextish = (el) => !!el && el.nodeType === 1 && !el.closest('[data-collection-items]') && el.tagName.toLowerCase() !== 'svg' && (
+  [...el.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim()) || (!el.children.length && TEXT_TAGS.test(el.tagName)));
+const topOf = (el) => el && el.closest && el.closest('[data-sid],[data-global]');
+function selectable(t) {
+  if (!t || t.nodeType !== 1) return null;
+  if (t.closest('svg')) t = t.closest('svg').parentElement;
+  if (t.closest('[data-collection-items]')) return t.closest('[data-collection]');
+  if (t === cdoc.body || t === cdoc.documentElement) return null;
+  return t;
+}
+function bindCanvas() {
+  const w = cdoc.defaultView;
+  cdoc.addEventListener('click', (e) => {
+    const ui = e.target.closest('.__ed,#__addbtn');
+    if (ui) { e.preventDefault(); onUi(e); return; }
+    if (editing && editing.contains(e.target)) { if (e.target.closest('a')) e.preventDefault(); return; }
+    if (!e.target.closest('summary')) e.preventDefault();
+    stopEditing(); select(selectable(e.target));
+  }, true);
+  cdoc.addEventListener('dblclick', (e) => {
+    if (e.target.closest('.__ed,#__addbtn')) return;
+    e.preventDefault();
+    let el = selectable(e.target); if (!el) return;
+    if (!isTextish(el)) { el = [...el.querySelectorAll('*')].find(isTextish); if (!el) return; }
+    select(el); startEditing(el);
+  }, true);
+  cdoc.addEventListener('mousedown', (e) => { if (e.target.closest('.__ed,#__addbtn')) e.preventDefault(); }, true);
+  cdoc.addEventListener('mouseover', (e) => {
+    if (e.target.closest('.__ed,#__addbtn')) return;
+    const s = topOf(e.target); if (s === hoverSec) return;
+    if (hoverSec) hoverSec.classList.remove('__hov');
+    hoverSec = s; if (s && s !== selected) s.classList.add('__hov');
+    updateOverlays();
+  });
+  cdoc.addEventListener('submit', (e) => e.preventDefault(), true);
+  cdoc.addEventListener('keydown', onKey);
+  cdoc.addEventListener('input', () => { if (editing) markDirty(); });
+  cdoc.addEventListener('paste', (e) => {
+    if (!editing) return; e.preventDefault();
+    cdoc.execCommand('insertText', false, (e.clipboardData || w.clipboardData).getData('text/plain'));
+  });
+  cdoc.addEventListener('focusout', (e) => {
+    if (editing && e.target === editing) setTimeout(() => { if (editing && cdoc.activeElement !== editing && !$('#dlg').open) stopEditing(); }, 200);
+  });
+  w.addEventListener('scroll', updateOverlays, { passive: true });
+  w.addEventListener('resize', updateOverlays);
+}
+function onKey(e) {
+  const k = (e.key || '').toLowerCase(), mod = e.ctrlKey || e.metaKey;
+  if (mod && k === 's') { e.preventDefault(); savePage(); return; }
+  if (editing) { if (k === 'escape') { e.preventDefault(); stopEditing(); } return; }
+  if (mod && k === 'z' && !e.shiftKey) { e.preventDefault(); undo(); return; }
+  if (mod && (k === 'y' || (k === 'z' && e.shiftKey))) { e.preventDefault(); redo(); return; }
+  if (!selected) return;
+  if (k === 'escape') { select(null); return; }
+  if (k === 'delete' && !e.target.closest('input,textarea,select')) { e.preventDefault(); act('delete'); }
+}
+document.addEventListener('keydown', (e) => { if (!$('#editor').hidden && !$('#dlg').open && !e.target.closest('input,textarea,select')) onKey(e); });
+
+function select(el) {
+  if (selected) selected.classList.remove('__sel');
+  selected = el || null;
+  if (selected) { selected.classList.remove('__hov'); selected.classList.add('__sel'); }
+  updateOverlays(); renderStylePanel();
+}
+function startEditing(el) {
+  if (!el) return;
+  stopEditing(true);
+  editing = el; el.setAttribute('contenteditable', 'true'); el.setAttribute('spellcheck', 'false'); el.focus();
+  const r = cdoc.createRange(); r.selectNodeContents(el); r.collapse(false);
+  const s = cdoc.getSelection(); s.removeAllRanges(); s.addRange(r);
+  updateOverlays();
+}
+function stopEditing(silent) {
+  if (!editing) return;
+  const el = editing; editing = null;
+  el.removeAttribute('contenteditable'); el.removeAttribute('spellcheck');
+  if (!silent) changed(); else updateOverlays();
+}
+
+/* ---------- شرائط الأدوات العايمة ---------- */
+const sectionLabel = (el) => el.getAttribute('data-global') === 'header' ? 'الهيدر (في كل الصفحات)' : el.getAttribute('data-global') === 'footer' ? 'الفوتر (في كل الصفحات)' : (el.hasAttribute('data-collection') ? 'قايمة تلقائية' : 'قسم');
+function imageTarget(el) {
+  if (!el) return null;
+  if (el.tagName === 'IMG') return { type: 'img', el };
+  const bg = cdoc.defaultView.getComputedStyle(el).backgroundImage;
+  if (bg && bg.startsWith('url(')) return { type: 'bg', el };
+  const imgs = el.querySelectorAll('img'); if (imgs.length === 1 && el.children.length <= 2) return { type: 'img', el: imgs[0] };
+  return null;
+}
+const videoTarget = (el) => el && el.closest && el.closest('.b-video');
+const linkTarget = (el) => el && topOf(el) && (el.tagName === 'A' ? el : el.closest('a'));
+function ui(id) { let b = cdoc.getElementById(id); if (!b) { b = cdoc.createElement(id === '__addbtn' ? 'button' : 'div'); b.id = id; if (id !== '__addbtn') b.className = '__ed'; cdoc.body.appendChild(b); } return b; }
+function place(b, rect, mode) {
+  const w = cdoc.defaultView; b.style.display = 'flex';
+  const bw = b.offsetWidth, bh = b.offsetHeight;
+  let top = mode === 'inside' ? Math.max(rect.top, 0) + 6 : rect.top - bh - 6;
+  if (mode !== 'inside' && top < 4) top = rect.bottom + 6;
+  if (top + bh > w.innerHeight - 4) top = Math.max(4, w.innerHeight - bh - 4);
+  let left = rect.right - bw; if (left < 4) left = 4; if (left + bw > w.innerWidth - 4) left = Math.max(4, w.innerWidth - bw - 4);
+  b.style.top = (top + w.scrollY) + 'px'; b.style.left = (left + w.scrollX) + 'px';
+}
+function updateOverlays() {
+  if (!cdoc || !cdoc.body) return;
+  const sb = ui('__secbar'), eb = ui('__elbar'), add = ui('__addbtn');
+  // 1) شريط القسم
+  const sec = (hoverSec && hoverSec.isConnected && hoverSec) || topOf(selected);
+  if (sec && !editing) {
+    const g = sec.getAttribute('data-global');
+    sb.innerHTML = `<span class="__lbl">${sectionLabel(sec)}</span>` + (g ? `<button data-s="sel">تنسيق</button>` :
+      `<button data-s="up">لفوق</button><button data-s="down">لتحت</button><button data-s="dup">نسخة</button><button data-s="sel">تنسيق</button><button data-s="del" class="__danger">حذف القسم</button>`);
+    sb.__sec = sec; place(sb, sec.getBoundingClientRect(), 'inside');
+    if (g !== 'footer') { add.textContent = '+ أضف قسم هنا'; add.__sec = sec; add.style.display = 'block'; add.style.top = (sec.getBoundingClientRect().bottom + cdoc.defaultView.scrollY) + 'px'; }
+    else add.style.display = 'none';
+  } else { sb.style.display = 'none'; add.style.display = 'none'; }
+  // 2) شريط العنصر المختار
+  if (selected && selected.isConnected) {
+    const isTop = selected.hasAttribute('data-sid') || selected.hasAttribute('data-global');
+    const btns = [];
+    if (editing) btns.push(['b', 'عريض'], ['i', 'مايل'], ['link', 'لينك'], ['h1', 'عنوان كبير'], ['h2', 'عنوان'], ['h3', 'عنوان صغير'], ['p', 'فقرة'], ['done', 'تم ✓']);
+    else {
+      if (!isTop && selected.parentElement && selected.parentElement !== cdoc.body) btns.push(['parent', 'تحديد الأكبر']);
+      if (isTextish(selected) || selected.querySelector('h1,h2,h3,h4,p,li,span,a')) btns.push(['edit', 'تعديل النص']);
+      if (imageTarget(selected)) btns.push(['image', 'تغيير الصورة']);
+      if (linkTarget(selected)) btns.push(['link', 'اللينك']);
+      if (videoTarget(selected)) btns.push(['video', 'فيديو']);
+      if (!isTop) btns.push(['dup', 'نسخة'], ['prev', 'قبل'], ['next', 'بعد']);
+      btns.push(['style', 'تنسيق']);
+      if (!selected.hasAttribute('data-global')) btns.push(['delete', 'حذف']);
+    }
+    eb.innerHTML = btns.map(([a, l]) => `<button data-a="${a}"${a === 'delete' ? ' class="__danger"' : ''}>${l}</button>`).join('');
+    place(eb, selected.getBoundingClientRect(), 'above');
+  } else eb.style.display = 'none';
+}
+function onUi(e) {
+  const b = e.target.closest('button'); if (!b) return;
+  if (b.id === '__addbtn') { insertAfter = b.__sec; setSideTab('add'); openSide(); toast('اختار القسم من «إضافة» وهيتحط هنا.'); return; }
+  if (b.dataset.s) return secAct(b.dataset.s, cdoc.getElementById('__secbar').__sec);
+  if (b.dataset.a) return act(b.dataset.a);
+}
+function secAct(a, sec) {
+  if (!sec || !sec.isConnected) return;
+  const prev = sec.previousElementSibling, next = sec.nextElementSibling;
+  if (a === 'sel') { select(sec); setSideTab('style'); openSide(); return; }
+  if (a === 'up') { if (!prev || !prev.hasAttribute('data-sid')) return; sec.parentNode.insertBefore(sec, prev); }
+  else if (a === 'down') { if (!next || !next.hasAttribute('data-sid')) return; sec.parentNode.insertBefore(next, sec); }
+  else if (a === 'dup') { const c = sec.cloneNode(true); c.removeAttribute('id'); c.querySelectorAll('[id]').forEach((x) => x.removeAttribute('id')); c.classList.remove('__hov', '__sel'); c.setAttribute('data-sid', 'n' + Date.now()); sec.after(c); fillCollections(c.parentNode, true); }
+  else if (a === 'del') { if (selected && sec.contains(selected)) select(null); hoverSec = null; sec.remove(); }
+  changed(); sec.isConnected && sec.scrollIntoView({ block: 'nearest' });
+}
+async function act(a) {
+  const el = selected; if (!el) return;
+  switch (a) {
+    case 'parent': select(el.parentElement); return;
+    case 'edit': startEditing(isTextish(el) ? el : [...el.querySelectorAll('*')].find(isTextish)); return;
+    case 'done': stopEditing(); return;
+    case 'b': cdoc.execCommand('bold'); markDirty(); return;
+    case 'i': cdoc.execCommand('italic'); markDirty(); return;
+    case 'h1': case 'h2': case 'h3': case 'p': { const n = retag(editing || el, a.toUpperCase()); editing = null; select(n); changed(); return; }
+    case 'link': return editLink(el);
+    case 'image': return changeImage(el);
+    case 'video': return changeVideo(videoTarget(el));
+    case 'dup': { const c = el.cloneNode(true); c.removeAttribute('id'); c.querySelectorAll('[id]').forEach((x) => x.removeAttribute('id')); c.classList.remove('__sel'); el.after(c); select(c); break; }
+    case 'prev': { const p = el.previousElementSibling; if (!p) return; el.parentNode.insertBefore(el, p); break; }
+    case 'next': { const n = el.nextElementSibling; if (!n || n.matches('[data-global],.__ed,#__addbtn')) return; el.parentNode.insertBefore(n, el); break; }
+    case 'style': setSideTab('style'); openSide(); return;
+    case 'delete': { if (el.hasAttribute('data-global')) return; const p = el.parentElement; select(null); el.remove(); if (p && p !== cdoc.body) select(p); break; }
+    default: return;
+  }
+  changed();
+}
+function retag(el, tag) {
+  if (el.tagName === tag) { el.removeAttribute('contenteditable'); el.removeAttribute('spellcheck'); return el; }
+  const n = cdoc.createElement(tag);
+  [...el.attributes].forEach((x) => { if (x.name !== 'contenteditable' && x.name !== 'spellcheck') n.setAttribute(x.name, x.value); });
+  n.innerHTML = el.innerHTML; el.replaceWith(n); return n;
+}
+
+/* ---------- نوافذ: لينك / صورة / فيديو ---------- */
+async function editLink(el) {
+  const inEdit = !!editing;
+  let range = null; if (inEdit) { const s = cdoc.getSelection(); if (s.rangeCount) range = s.getRangeAt(0).cloneRange(); }
+  if (inEdit && (!range || range.collapsed)) { toast('حدد الكلام اللي عاوز تعمل عليه لينك الأول.', 'bad'); return; }
+  const a = inEdit ? null : linkTarget(el);
+  if (!inEdit && !a) return;
+  const pagesOpts = pageCache.map((p) => `<option value="${p.slug === 'index' ? 'index.html' : p.slug + '.html'}">${esc(p.title)}</option>`).join('');
+  const isBtn = a && a.classList.contains('b-btn'), isAlt = a && a.classList.contains('alt');
+  const simpleText = a && !a.querySelector('img,svg,div,h1,h2,h3,p');
+  const r = await dialog({ title: inEdit ? 'لينك على الكلام المحدد' : 'تعديل اللينك أو الزرار', html: `
+    ${simpleText ? `<div class="field"><label for="lk-text">النص اللي بيظهر</label><input id="lk-text" value="${esc(a.textContent.trim())}"></div>` : ''}
+    <div class="field"><label for="lk-url">الرابط</label><input id="lk-url" dir="ltr" list="lk-pages" value="${esc(a ? a.getAttribute('href') || '' : '')}" placeholder="https://... أو اختار صفحة"><datalist id="lk-pages">${pagesOpts}<option value="${WA}">واتساب</option></datalist>
+      <p class="hint">لصفحة من موقعك اختارها من القايمة. واتساب: <span dir="ltr">${WA}</span></p></div>
+    <label class="choice"><input type="checkbox" id="lk-new" ${a && a.target === '_blank' ? 'checked' : ''}><span><b>يفتح في تاب جديد</b><small>مناسب للينكات اللي برّه موقعك</small></span></label>
+    ${a ? `<div class="field"><label for="lk-style">الشكل</label><select id="lk-style"><option value="keep">زي ما هو</option><option value="plain">لينك عادي</option><option value="btn" ${isBtn && !isAlt ? 'selected' : ''}>زرار ملوّن</option><option value="alt" ${isAlt ? 'selected' : ''}>زرار مفرّغ</option></select></div>` : ''}`,
+    buttons: [{ label: 'حفظ', value: 'ok', cls: 'primary' }, ...(a ? [{ label: 'إزالة اللينك', value: 'unlink', cls: 'danger' }] : []), { label: 'إلغاء', value: 'cancel' }] });
+  const url = (($('#lk-url') || {}).value || '').trim(), text = ($('#lk-text') || {}).value, newTab = ($('#lk-new') || {}).checked, style = ($('#lk-style') || {}).value;
+  if (r === 'cancel') { if (inEdit) editing.focus(); return; }
+  if (inEdit) {
+    editing.focus(); const s = cdoc.getSelection(); s.removeAllRanges(); s.addRange(range);
+    if (r === 'ok' && url) {
+      cdoc.execCommand('createLink', false, url);
+      const made = [...editing.querySelectorAll('a')].find((x) => x.getAttribute('href') === url);
+      if (made && newTab) { made.setAttribute('target', '_blank'); made.setAttribute('rel', 'noopener'); }
+      markDirty();
+    }
+    return;
+  }
+  if (r === 'unlink') { const span = cdoc.createElement('span'); span.innerHTML = a.innerHTML; a.replaceWith(span); select(span); changed(); return; }
+  if (!url) { toast('اكتب الرابط.', 'bad'); return; }
+  a.setAttribute('href', url);
+  if (newTab) { a.setAttribute('target', '_blank'); a.setAttribute('rel', 'noopener'); } else { a.removeAttribute('target'); a.removeAttribute('rel'); }
+  if (simpleText && text && text.trim()) a.textContent = text.trim();
+  if (style === 'plain') a.classList.remove('b-btn', 'alt');
+  if (style === 'btn') { a.classList.add('b-btn'); a.classList.remove('alt'); }
+  if (style === 'alt') a.classList.add('b-btn', 'alt');
+  changed(); toast('اتحفظ اللينك.', 'good');
+}
+let imageLib = null;
+async function pickImage(title = 'اختار صورة') {
+  const libHtml = () => (imageLib && imageLib.length) ? imageLib.map((i) => `<button type="button" data-src="${esc(i.src)}" title="${esc(i.name)}"><img src="${esc(i.src)}" alt="" loading="lazy"></button>`).join('') : '<p class="hint">لسه مفيش صور مرفوعة.</p>';
+  let picked = null;
+  const r = await dialog({ title, html: `
+    <label class="drop">ارفع صورة من جهازك (حد أقصى ${MAX_IMAGE_MB} ميجا)<input type="file" id="img-file" accept="image/png,image/jpeg,image/webp,image/gif,image/avif"></label>
+    <p class="hint" id="img-status"></p>
+    <h4>أو اختار من صورك</h4><div class="img-grid" id="img-grid">${imageLib ? libHtml() : '<p class="hint">بيحمّل...</p>'}</div>
+    <div class="field"><label for="img-url">أو الصق رابط صورة</label><input id="img-url" dir="ltr" placeholder="https://..."></div>`,
+    buttons: [{ label: 'استخدم الرابط', value: 'ok', cls: 'primary' }, { label: 'إلغاء', value: 'cancel' }],
+    onOpen: (d) => {
+      const grid = d.querySelector('#img-grid');
+      if (!imageLib) listImages().then((l) => { imageLib = l; grid.innerHTML = libHtml(); }).catch(() => { grid.innerHTML = '<p class="hint">مش قادر أجيب الصور.</p>'; });
+      grid.addEventListener('click', (e) => { const b = e.target.closest('[data-src]'); if (b) { picked = b.dataset.src; d.close('picked'); } });
+      d.querySelector('#img-file').addEventListener('change', async (e) => {
+        const f = e.target.files[0]; if (!f) return;
+        const s = d.querySelector('#img-status'); s.textContent = 'بيرفع...';
+        try { const a = await uploadImage(f); (imageLib = imageLib || []).unshift(a); picked = a.src; d.close('picked'); }
+        catch (err) { s.textContent = err.status ? friendlyDbError(err) : err.message; }
+      });
+    } });
+  if (r === 'picked') return picked;
+  if (r === 'ok') return (($('#img-url') || {}).value || '').trim() || null;
+  return null;
+}
+async function changeImage(el) {
+  const t = imageTarget(el); if (!t) return;
+  const url = await pickImage(); if (!url) return;
+  if (t.type === 'img') { t.el.src = url; t.el.removeAttribute('srcset'); }
+  else t.el.style.backgroundImage = `url('${url}')`;
+  changed(); toast('اتغيرت الصورة.', 'good');
+}
+async function changeVideo(box) {
+  if (!box) return;
+  const cur = box.getAttribute('data-video') || '';
+  const r = await dialog({ title: 'فيديو يوتيوب', html: `<div class="field"><label for="yt-url">رابط الفيديو</label><input id="yt-url" dir="ltr" value="${esc(cur ? 'https://youtu.be/' + cur : '')}" placeholder="https://www.youtube.com/watch?v=..."><p class="hint">انسخ الرابط من زرار Share في يوتيوب.</p></div>`,
+    buttons: [{ label: 'حفظ', value: 'ok', cls: 'primary' }, { label: 'إلغاء', value: 'cancel' }] });
+  if (r !== 'ok') return;
+  const m = (($('#yt-url') || {}).value || '').trim().match(/(?:youtu\.be\/|v=|embed\/|shorts\/|live\/)([A-Za-z0-9_-]{11})/);
+  if (!m) { toast('مش قادر أقرا رابط الفيديو. انسخه من زرار Share في يوتيوب.', 'bad'); return; }
+  box.setAttribute('data-video', m[1]);
+  box.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${m[1]}" title="فيديو يوتيوب" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+  changed(); toast('اتحط الفيديو.', 'good');
+}
+
+/* ---------- لوحة "إضافة" ---------- */
+function buildAddPanel() {
+  const cats = [...new Set(SECTIONS.map((s) => s.cat))];
+  $('#side-add').innerHTML = `<h4>عناصر صغيرة</h4><p class="hint" style="margin:-4px 0 8px">بتتحط بعد العنصر المختار، أو جواه لو كان قسم أو مجموعة كروت.</p>
+    <div class="lib">${ELEMENTS.map(([n], i) => `<button type="button" data-el="${i}"><b>${n}</b></button>`).join('')}</div>` +
+    cats.map((c) => `<h4>${c}</h4><div class="lib one">${SECTIONS.filter((s) => s.cat === c).map((s) => `<button type="button" data-sec="${s.id}"><b>${s.name}</b><small>${s.desc}</small></button>`).join('')}</div>`).join('') +
+    `<h4>عرض</h4><label class="choice"><input type="checkbox" id="show-inner" ${st.__showInner ? 'checked' : ''}><span><b>إظهار الصفحات الداخلية</b><small>صفحات الخدمات المخفية في الرئيسية، عشان تعدّلها</small></span></label>`;
+}
+$('#side-add').addEventListener('click', (e) => {
+  const s = e.target.closest('[data-sec]'), el = e.target.closest('[data-el]');
+  if (s) insertSection(sectionHtml(s.dataset.sec, current.title));
+  if (el) insertElement(ELEMENTS[+el.dataset.el][1]);
+});
+$('#side-add').addEventListener('change', (e) => { if (e.target.id === 'show-inner') { st.__showInner = e.target.checked; cdoc.body.classList.toggle('__show-inner', st.__showInner); updateOverlays(); } });
+function makeNode(html) { const t = cdoc.createElement('template'); t.innerHTML = html.trim(); return t.content.firstElementChild; }
+function insertSection(html) {
+  if (!cdoc) return;
+  stopEditing();
+  const n = makeNode(html); n.setAttribute('data-sid', 'n' + Date.now());
+  const ref = (insertAfter && insertAfter.isConnected && insertAfter) || topOf(selected);
+  if (ref && ref.getAttribute('data-global') !== 'footer') ref.after(n);
+  else { const f = cdoc.querySelector('body > [data-global=footer]'); f ? f.before(n) : cdoc.body.appendChild(n); }
+  insertAfter = null; fillCollections(n.parentNode, true); select(n); n.scrollIntoView({ block: 'start' }); changed(); closeSide();
+  toast('اتضاف القسم. دوس مرتين على أي نص عشان تعدّله.', 'good');
+}
+function insertElement(html) {
+  if (!cdoc) return;
+  stopEditing();
+  const n = makeNode(html);
+  let target = selected;
+  if (!target) {
+    const secs = cdoc.querySelectorAll('body > [data-sid]'); target = secs[secs.length - 1];
+    if (!target) { insertSection('<section class="b-sec"><div class="container"></div></section>'); target = selected; }
+  }
+  const isTop = target.hasAttribute('data-sid') || target.hasAttribute('data-global');
+  const isGroup = target.matches('.b-grid,.b-btns,.b-card-body,.container,.b-rich,.b-faq') || (!isTextish(target) && target.tagName !== 'IMG' && /^(DIV|SECTION|ARTICLE|ASIDE|MAIN)$/.test(target.tagName) && target.children.length > 1);
+  if (isTop) (target.querySelector('.container') || target).appendChild(n);
+  else if (isGroup) target.appendChild(n);
+  else target.after(n);
+  select(n); n.scrollIntoView({ block: 'center' }); changed(); closeSide();
+}
+
+/* ---------- لوحة "تنسيق" ---------- */
+const COLORS = [['', 'تلقائي'], ['var(--navy)', 'كحلي'], ['var(--text)', 'رمادي غامق'], ['var(--teal)', 'أخضر'], ['var(--coral)', 'برتقالي'], ['var(--yellow)', 'أصفر'], ['#ffffff', 'أبيض'], ['var(--muted)', 'رمادي']];
+const BGS = [['', 'من غير'], ['#ffffff', 'أبيض'], ['var(--cream)', 'كريمي'], ['#e3f1ef', 'أخضر فاتح'], ['#fef3ef', 'برتقالي فاتح'], ['var(--navy)', 'كحلي'], ['var(--teal)', 'أخضر'], ['linear-gradient(135deg, #c44a22, #a03615)', 'برتقالي متدرّج']];
+function renderStylePanel() {
+  const box = $('#side-style'); if (!box) return;
+  const el = selected;
+  if (!el || !el.isConnected || !cdoc) { box.innerHTML = '<p class="hint">دوس على أي حاجة في الصفحة (نص، صورة، كارت، قسم) عشان تنسّقها.</p>'; return; }
+  const s = el.style, cs = cdoc.defaultView.getComputedStyle(el);
+  const norm = (v) => (v || '').replace(/\s+/g, ' ').trim();
+  const chips = (prop, list, cur) => `<div class="chips">${list.map(([v, l]) => `<button type="button" data-p="${prop}" data-v="${esc(v)}" class="${norm(cur) === norm(v) ? 'on' : ''}">${l}</button>`).join('')}</div>`;
+  const sw = (prop, list, cur) => `<div class="chips">${list.map(([v, l]) => `<button type="button" class="swatch ${v ? '' : 'none'} ${norm(cur) === norm(v) ? 'on' : ''}" title="${l}" aria-label="${l}" data-p="${prop}" data-v="${esc(v)}" style="${v ? `background:${v}` : ''}"></button>`).join('')}<input type="color" data-p="${prop}" aria-label="لون مخصص" title="لون مخصص" style="width:36px;height:36px;border:none;background:none;padding:0;cursor:pointer"></div>`;
+  const isGrid = cs.display === 'grid';
+  const cols = (el.className.match(/b-cols-(\d)/) || [])[1] || '';
+  const names = { H1: 'عنوان رئيسي', H2: 'عنوان', H3: 'عنوان صغير', P: 'فقرة', A: 'لينك / زرار', IMG: 'صورة', SECTION: 'قسم', HEADER: 'هيدر', FOOTER: 'فوتر', LI: 'نقطة', UL: 'قايمة نقاط', BLOCKQUOTE: 'اقتباس' };
+  const name = names[el.tagName] || (el.classList.contains('b-card') ? 'كارت' : isGrid ? 'مجموعة / شبكة' : 'عنصر');
+  const hasText = isTextish(el) || !!el.querySelector('h1,h2,h3,p,li,a,span');
+  box.innerHTML = `
+    <div class="sel-info">المختار: <b>${name}</b>${el.hasAttribute('data-global') ? ' — بيظهر في كل الصفحات' : ''}</div>
+    ${hasText ? `
+    <div class="ctl"><span>حجم الخط</span>${chips('fontSize', [['', 'تلقائي'], ['14px', '14'], ['16px', '16'], ['18px', '18'], ['22px', '22'], ['28px', '28'], ['36px', '36'], ['48px', '48']], s.fontSize)}</div>
+    <div class="ctl"><span>سُمك الخط</span>${chips('fontWeight', [['', 'تلقائي'], ['400', 'عادي'], ['600', 'متوسط'], ['700', 'عريض']], s.fontWeight)}</div>
+    <div class="ctl"><span>لون الكلام</span>${sw('color', COLORS, s.color)}</div>
+    <div class="ctl"><span>المحاذاة</span>${chips('textAlign', [['', 'تلقائي'], ['right', 'يمين'], ['center', 'وسط'], ['left', 'شمال']], s.textAlign)}</div>` : ''}
+    <div class="ctl"><span>الخلفية</span>${sw('background', BGS, s.background)}<div class="chips" style="margin-top:6px"><button type="button" data-x="bgimg">صورة خلفية</button>${s.backgroundImage && s.backgroundImage !== 'none' && s.backgroundImage !== 'initial' ? '<button type="button" data-x="nobgimg">شيل صورة الخلفية</button>' : ''}</div></div>
+    ${isGrid || cols ? `<div class="ctl"><span>عدد الأعمدة</span>${chips('__cols', [['1', '1'], ['2', '2'], ['3', '3'], ['4', '4']], cols)}</div>` : ''}
+    <div class="ctl"><span>المسافة الداخلية</span>${chips('padding', [['', 'تلقائي'], ['0px', '0'], ['12px', 'صغيرة'], ['24px', 'متوسطة'], ['48px 24px', 'كبيرة'], ['96px 0px', 'قسم كبير']], s.padding)}</div>
+    <div class="ctl"><span>المسافة تحت العنصر</span>${chips('marginBottom', [['', 'تلقائي'], ['0px', '0'], ['12px', 'صغيرة'], ['24px', 'متوسطة'], ['48px', 'كبيرة']], s.marginBottom)}</div>
+    <div class="ctl"><span>استدارة الحواف</span>${chips('borderRadius', [['', 'تلقائي'], ['0px', 'حادة'], ['12px', 'خفيفة'], ['22px', 'واضحة'], ['999px', 'دايرية']], s.borderRadius)}</div>
+    <div class="ctl"><span>العرض</span>${chips('__width', [['', 'تلقائي'], ['100%', 'كامل'], ['75%', '¾'], ['50%', 'نص'], ['640px', 'متوسط في النص']], s.maxWidth === '640px' ? '640px' : s.width)}</div>
+    <div class="ctl"><span>الظهور</span><div class="chips"><button type="button" data-x="hm" class="${el.classList.contains('hide-mobile') ? 'on' : ''}">مخفي على الموبايل</button><button type="button" data-x="hd" class="${el.classList.contains('hide-desktop') ? 'on' : ''}">مخفي على الكمبيوتر</button></div></div>
+    <button type="button" class="btn small block" data-x="reset">مسح التنسيق الإضافي</button>`;
+}
+$('#side-style').addEventListener('click', async (e) => {
+  const el = selected; const b = e.target.closest('button'); if (!el || !b) return;
+  if (b.dataset.p) {
+    const p = b.dataset.p, v = b.dataset.v;
+    if (p === '__cols') { el.classList.remove('b-cols-1', 'b-cols-2', 'b-cols-3', 'b-cols-4'); el.classList.add('b-grid', 'b-cols-' + v); el.style.gridTemplateColumns = ''; }
+    else if (p === '__width') { if (v === '640px') { el.style.width = ''; el.style.maxWidth = '640px'; el.style.marginInline = 'auto'; } else { el.style.maxWidth = ''; el.style.marginInline = ''; el.style.width = v; } }
+    else el.style[p] = v;
+  } else if (b.dataset.x === 'bgimg') { const url = await pickImage('صورة خلفية'); if (!url) return; el.style.backgroundImage = `url('${url}')`; el.style.backgroundSize = 'cover'; el.style.backgroundPosition = 'center'; }
+  else if (b.dataset.x === 'nobgimg') { el.style.backgroundImage = ''; el.style.backgroundSize = ''; el.style.backgroundPosition = ''; }
+  else if (b.dataset.x === 'hm') el.classList.toggle('hide-mobile');
+  else if (b.dataset.x === 'hd') el.classList.toggle('hide-desktop');
+  else if (b.dataset.x === 'reset') el.removeAttribute('style');
+  else return;
+  if (el.getAttribute('style') === '') el.removeAttribute('style');
+  changed(); renderStylePanel();
+});
+$('#side-style').addEventListener('change', (e) => {
+  if (!selected || e.target.type !== 'color') return;
+  selected.style[e.target.dataset.p] = e.target.value; changed(); renderStylePanel();
+});
+
+/* ---------- لوحة "الصفحة" ---------- */
+function buildPagePanel() {
+  const m = st.meta, k = st.kind;
+  $('#side-page').innerHTML = `
+    <div class="sel-info">النوع: <b>${KIND_NAMES[k] || 'صفحة'}</b> · الرابط: <span dir="ltr">${esc(current.slug === 'index' ? '/' : current.slug + '.html')}</span></div>
+    <div class="field"><label for="pg-title">العنوان (بيظهر في جوجل وتاب المتصفح${k !== 'page' ? ' والكروت' : ''})</label><input id="pg-title" value="${esc(current.title)}" maxlength="80"></div>
+    <div class="field"><label for="pg-desc">وصف الصفحة لجوجل</label><textarea id="pg-desc" maxlength="200">${esc(current.description)}</textarea><p class="hint">جملة أو اتنين بين 120 و160 حرف.</p></div>
+    ${k !== 'page' ? `
+      <h4>بيانات ال${KIND_NAMES[k]} (بتظهر في الكروت والقوايم التلقائية)</h4>
+      <div class="field"><label>صورة الغلاف</label><div style="display:flex;gap:8px;align-items:center">${m.cover ? `<img src="${esc(m.cover)}" alt="" style="width:72px;height:48px;object-fit:cover;border-radius:8px">` : ''}<button class="btn small" type="button" id="pg-cover">${m.cover ? 'تغيير' : 'اختار صورة'}</button></div></div>
+      <div class="field"><label for="pg-excerpt">ملخص قصير</label><textarea id="pg-excerpt" maxlength="220">${esc(m.excerpt)}</textarea></div>
+      <div class="field"><label for="pg-cat">التصنيف</label><input id="pg-cat" value="${esc(m.category)}" placeholder="${k === 'post' ? 'مثلاً: هندسة' : 'مثلاً: قوالب'}"></div>
+      ${k === 'post' ? `<div class="field"><label for="pg-date">تاريخ النشر</label><input id="pg-date" type="date" value="${esc(m.date)}" dir="ltr"></div>` : `<div class="field"><label for="pg-price">السعر</label><input id="pg-price" value="${esc(m.price)}" placeholder="مثلاً: 250 جنيه أو يبدأ من 1000 جنيه"></div>`}` : ''}
+    <h4>أجزاء مشتركة</h4>
+    <label class="choice"><input type="checkbox" id="pg-header" ${st.showHeader !== false ? 'checked' : ''}><span><b>إظهار الهيدر المشترك</b><small>القايمة اللي فوق. تعديله من أي صفحة بيظهر في الكل</small></span></label>
+    <label class="choice"><input type="checkbox" id="pg-footer" ${st.showFooter !== false ? 'checked' : ''}><span><b>إظهار الفوتر المشترك</b><small>الجزء اللي تحت. تعديله من أي صفحة بيظهر في الكل</small></span></label>`;
+}
+$('#side-page').addEventListener('input', (e) => {
+  const id = e.target.id, v = e.target.value;
+  if (id === 'pg-title') { current.title = v; $('#ed-title').textContent = v; }
+  else if (id === 'pg-desc') current.description = v;
+  else if (id === 'pg-excerpt') st.meta.excerpt = v;
+  else if (id === 'pg-cat') st.meta.category = v;
+  else if (id === 'pg-date') st.meta.date = v;
+  else if (id === 'pg-price') st.meta.price = v;
+  else return;
+  markDirty();
+});
+$('#side-page').addEventListener('change', (e) => {
+  if (e.target.id === 'pg-header' || e.target.id === 'pg-footer') {
+    stopEditing(true); syncFromDom(); st[e.target.id === 'pg-header' ? 'showHeader' : 'showFooter'] = e.target.checked; paintBody(); pushHistory();
+  }
+});
+$('#side-page').addEventListener('click', async (e) => {
+  if (e.target.id !== 'pg-cover') return;
+  const url = await pickImage('صورة الغلاف'); if (!url) return;
+  st.meta.cover = url; markDirty(); buildPagePanel();
+});
+
+/* ---------- الشريط العلوي ---------- */
+function setSideTab(t) {
+  document.querySelectorAll('#side-tabs button').forEach((b) => b.classList.toggle('on', b.dataset.tab === t));
+  ['add', 'style', 'page'].forEach((x) => { $('#side-' + x).hidden = x !== t; });
+  if (t === 'style') renderStylePanel();
+}
+$('#side-tabs').addEventListener('click', (e) => { const b = e.target.closest('[data-tab]'); if (b) setSideTab(b.dataset.tab); });
+const openSide = () => document.body.classList.add('side-open');
+const closeSide = () => document.body.classList.remove('side-open');
+$('#side-toggle').addEventListener('click', () => document.body.classList.toggle('side-open'));
+document.querySelectorAll('[data-device]').forEach((b) => b.addEventListener('click', () => {
+  $('#stage').classList.toggle('mobile', b.dataset.device === 'mobile');
+  document.querySelectorAll('[data-device]').forEach((x) => x.classList.toggle('on', x === b));
+  setTimeout(updateOverlays, 80);
+}));
+$('#undo-btn').addEventListener('click', undo);
+$('#redo-btn').addEventListener('click', redo);
+
 async function savePage(auto = false) {
-  if (!current || saving) return false;
+  if (!current || saving || !cdoc) return false;
+  if (!auto) stopEditing();
+  syncFromDom();
   saving = true; $('#save-btn').disabled = true; setStatus(auto ? 'حفظ تلقائي...' : 'بيحفظ...');
   try {
-    const s = snapshot();
-    current = await Pages.update(current.id, s);
+    const project = { v: 2, kind: st.kind, meta: st.meta, showHeader: st.showHeader, showFooter: st.showFooter, sections: st.sections };
+    current = await Pages.update(current.id, { title: current.title, description: current.description, project, html: renderBodyHtml(st), css: '' });
+    if (globalDirty) await saveGlobal();
+    const i = pageCache.findIndex((p) => p.id === current.id);
+    const info = { title: current.title, meta: st.meta, kind: st.kind, v: '2', updated_at: current.updated_at, status: current.status, slug: current.slug, id: current.id };
+    if (i >= 0) pageCache[i] = { ...pageCache[i], ...info };
+    allItems = pageCache.filter((p) => p.kind && p.kind !== 'page');
     dirty = false; setStatus('اتحفظ ' + new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' }));
-    if (!auto) toast('اتحفظت المسودة.', 'good');
+    if (!auto) toast('اتحفظ.', 'good');
     return true;
   } catch (e) { setStatus('الحفظ فشل'); toast(friendlyDbError(e), 'bad'); return false; }
   finally { saving = false; $('#save-btn').disabled = false; }
 }
-
 async function confirmLeave() {
   const r = await dialog({ title: 'فيه تعديلات مش محفوظة', html: '<p>تحب تحفظها قبل ما تخرج؟</p>',
     buttons: [{ label: 'احفظ واخرج', value: 'save', cls: 'primary' }, { label: 'اخرج من غير حفظ', value: 'discard', cls: 'danger' }, { label: 'إلغاء', value: 'cancel' }] });
   if (r === 'save') return savePage();
   return r === 'discard';
 }
-
 $('#back-btn').addEventListener('click', async () => {
-  if (dirty && !(await confirmLeave())) return;
-  dirty = false; clearInterval(autosaveTimer); show('pages'); renderList();
+  stopEditing(); if (dirty && !(await confirmLeave())) return;
+  dirty = false; clearInterval(autosaveTimer); closeSide(); show('pages'); renderList();
 });
 $('#save-btn').addEventListener('click', () => savePage());
-$('#undo-btn').addEventListener('click', () => editor && editor.UndoManager.undo());
-$('#redo-btn').addEventListener('click', () => editor && editor.UndoManager.redo());
-document.querySelectorAll('[data-device]').forEach((b) => b.addEventListener('click', () => {
-  editor.setDevice(b.dataset.device);
-  document.querySelectorAll('[data-device]').forEach((x) => x.classList.toggle('on', x === b));
-}));
-$('#inner-btn').addEventListener('click', () => {
-  showInner = !showInner; prepareCanvas();
-  $('#inner-btn').classList.toggle('on', showInner);
-  $('#inner-btn').textContent = showInner ? 'إخفاء الصفحات الداخلية' : 'إظهار الصفحات الداخلية';
-});
-$('#settings-btn').addEventListener('click', async () => {
-  const r = await dialog({ title: 'إعدادات الصفحة', html: `
-    <div class="field"><label for="ps-title">العنوان اللي بيظهر في جوجل وتاب المتصفح</label><input id="ps-title" value="${esc(current.title)}" maxlength="70"><p class="hint">الأفضل أقل من 60 حرف.</p></div>
-    <div class="field"><label for="ps-desc">وصف الصفحة في نتايج جوجل</label><textarea id="ps-desc" maxlength="200">${esc(current.description)}</textarea><p class="hint">جملة أو اتنين بين 120 و160 حرف.</p></div>
-    <div class="field"><label>رابط الصفحة</label><input value="${esc(current.slug)}" dir="ltr" disabled><p class="hint">الرابط ثابت عشان اللينكات القديمة ما تبوظش. لو عاوز رابط جديد اعمل «نسخة منها».</p></div>`,
-    buttons: [{ label: 'حفظ الإعدادات', value: 'ok', cls: 'primary' }, { label: 'إلغاء', value: 'cancel' }] });
-  if (r !== 'ok') return;
-  const title = $('#ps-title').value.trim(), description = $('#ps-desc').value.trim();
-  if (!title) { toast('العنوان مينفعش يبقى فاضي.', 'bad'); return; }
-  try { current = await Pages.update(current.id, { title, description }); $('#ed-title').textContent = title; toast('اتحفظت الإعدادات.', 'good'); }
-  catch (e) { toast(friendlyDbError(e), 'bad'); }
-});
-
-function currentDocument() { const s = snapshot(); return buildDocument(current, s.html, s.css); }
 $('#preview-btn').addEventListener('click', () => {
-  const url = URL.createObjectURL(new Blob([currentDocument()], { type: 'text/html' }));
-  const w = window.open(url, '_blank', 'noopener');
-  if (!w) toast('المتصفح منع فتح تاب جديد. اسمح بالنوافذ المنبثقة للموقع ده.', 'bad');
+  stopEditing(); syncFromDom();
+  const url = URL.createObjectURL(new Blob([renderDocument(current, st)], { type: 'text/html' }));
+  const w = window.open(url, '_blank'); if (!w) toast('المتصفح منع فتح تاب جديد. اسمح بالنوافذ المنبثقة للموقع ده.', 'bad');
   setTimeout(() => URL.revokeObjectURL(url), 60000);
 });
-$('#download-btn').addEventListener('click', () => {
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(new Blob([currentDocument()], { type: 'text/html' }));
-  a.download = (current.slug === 'index' ? 'index' : current.slug) + '.html';
-  document.body.appendChild(a); a.click(); a.remove();
-  toast('اتنزّل الملف. حطه في فولدر الموقع وارفعه بـ GitHub Desktop.');
-});
-
 $('#publish-btn').addEventListener('click', async () => {
-  const r = await dialog({ title: `نشر «${current.title}»؟`, html: `<p>النسخة الحالية هتتحفظ وتتنشر على موقعك، والزوار هيشوفوها خلال دقيقة أو اتنين.</p>`,
-    buttons: [{ label: 'انشر', value: 'ok', cls: 'publish' }, { label: 'إلغاء', value: 'cancel' }] });
-  if (r !== 'ok') return;
-  if (!(await savePage(true))) return;
+  const r = await dialog({ title: `نشر «${current.title}»؟`, html: `<p>النسخة الحالية هتتحفظ وتتنشر على موقعك.</p>`, buttons: [{ label: 'انشر', value: 'ok', cls: 'publish' }, { label: 'إلغاء', value: 'cancel' }] });
+  if (r !== 'ok' || !(await savePage(true))) return;
   const btn = $('#publish-btn'); btn.disabled = true; setStatus('بينشر...');
   try {
-    const res = await api('/functions/v1/publish', { method: 'POST', headers: JH, raw: true,
-      body: json({ id: current.id, document: currentDocument() }) });
-    if (res.status === 404) { setStatus('مسودة محفوظة'); toast('زرار النشر هيشتغل بعد ما نعمل خطوة النشر في Supabase. لحد ما نعملها استخدم «تنزيل HTML».', 'bad'); return; }
+    const path = current.slug === 'index' ? 'index.html' : current.slug + '.html';
+    const res = await api('/functions/v1/publish', { method: 'POST', headers: JH, raw: true, body: json({ id: current.id, files: [{ path, content: renderDocument(current, st) }] }) });
+    if (res.status === 404) { setStatus('مسودة محفوظة'); toast('زرار النشر هيشتغل بعد ما نعمل خطوة النشر في Supabase.', 'bad'); return; }
     const data = await res.json().catch(() => ({}));
     if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
-    current = await Pages.get(current.id);
     setStatus('منشورة'); toast('اتنشرت! هتظهر على الموقع خلال دقيقة أو اتنين.', 'good');
   } catch (e) { setStatus('النشر فشل'); toast('النشر فشل: ' + e.message, 'bad'); }
   finally { btn.disabled = false; }
 });
-
 window.addEventListener('beforeunload', (e) => { if (dirty) { e.preventDefault(); e.returnValue = ''; } });
 
 /* ============================ البداية ============================ */
