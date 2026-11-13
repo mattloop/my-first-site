@@ -168,6 +168,17 @@
     .drop { border: 2px dashed var(--line); border-radius: 12px; padding: 16px; text-align: center; cursor: pointer; display: block; font-weight: 600; }
     .drop:hover { border-color: var(--teal); background: var(--teal-soft); }
     .drop input { display: none; }
+    .crop-wrap { text-align: center; background: #12304a; border-radius: 12px; padding: 10px; }
+    .crop-stage { position: relative; display: inline-block; max-width: 100%; overflow: hidden; user-select: none; touch-action: none; }
+    #cr-img { display: block; max-width: 100%; max-height: 380px; }
+    #cr-box { position: absolute; border: 2px solid #fff; box-shadow: 0 0 0 9999px rgba(0,0,0,.55); cursor: move; }
+    #cr-box i { position: absolute; width: 16px; height: 16px; background: #fff; border: 2px solid var(--coral); border-radius: 4px; }
+    #cr-box i[data-h=nw] { left: -9px; top: -9px; cursor: nwse-resize; } #cr-box i[data-h=ne] { right: -9px; top: -9px; cursor: nesw-resize; }
+    #cr-box i[data-h=sw] { left: -9px; bottom: -9px; cursor: nesw-resize; } #cr-box i[data-h=se] { right: -9px; bottom: -9px; cursor: nwse-resize; }
+    .nudge { display: grid; justify-items: center; gap: 4px; width: 140px; }
+    .nudge div { display: flex; gap: 40px; }
+    .nudge button { width: 40px; height: 36px; border: 1.5px solid var(--line); background: var(--white); border-radius: 8px; cursor: pointer; font-size: 1.1rem; }
+    .nudge button:hover { border-color: var(--ink); }
     #toast { position: fixed; bottom: 20px; inset-inline-start: 20px; z-index: 9999; background: var(--ink); color: var(--white);
       padding: 12px 18px; border-radius: 12px; box-shadow: 0 12px 30px rgba(0,0,0,.25); max-width: min(440px, calc(100% - 40px));
       opacity: 0; transform: translateY(8px); transition: opacity .2s, transform .2s; pointer-events: none; }
@@ -1007,6 +1018,8 @@ function onKey(e) {
   if (!selected) return;
   if (k === 'escape') { select(null); return; }
   if (k === 'delete' && !e.target.closest('input,textarea,select')) { e.preventDefault(); act('delete'); }
+  const arrows = { arrowup: [0, -1], arrowdown: [0, 1], arrowleft: [-1, 0], arrowright: [1, 0] };
+  if (arrows[k] && !selected.hasAttribute('data-sid') && !selected.hasAttribute('data-global')) { e.preventDefault(); const m = e.shiftKey ? 10 : 1; nudge(selected, arrows[k][0] * m, arrows[k][1] * m); }
 }
 document.addEventListener('keydown', (e) => { if (!$('#editor').hidden && !$('#dlg').open && !e.target.closest('input,textarea,select')) onKey(e); });
 
@@ -1058,6 +1071,7 @@ const TI = (d) => `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" s
 const TB_ICON = {
   parent: TI('<path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/>'),
   edit: TI('<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/>'),
+  crop: TI('<path d="M6 2v14a2 2 0 0 0 2 2h14"/><path d="M18 22V8a2 2 0 0 0-2-2H2"/>'),
   image: TI('<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/>'),
   link: TI('<path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/>'),
   video: TI('<path d="m22 8-6 4 6 4V8Z"/><rect x="2" y="6" width="14" height="12" rx="2"/>'),
@@ -1104,7 +1118,7 @@ function renderFloatBar() {
     h = `<span class="fb-lbl">${elName(sel)}</span>`;
     if (!isTop && sel.parentElement && sel.parentElement !== cdoc.body) h += tbBtn('parent', 'الأكبر');
     if (isTextish(sel) || sel.querySelector('h1,h2,h3,h4,p,li,span,a')) h += tbBtn('edit', 'نص');
-    if (imageTarget(sel)) h += tbBtn('image', 'صورة');
+    if (imageTarget(sel)) h += tbBtn('image', 'صورة') + tbBtn('crop', 'قص');
     if (linkTarget(sel)) h += tbBtn('link', 'لينك');
     if (videoTarget(sel)) h += tbBtn('video', 'فيديو');
     if (!isTop) h += tbBtn('dup', 'نسخة') + tbBtn('prev', 'قبل', 'ic-only') + tbBtn('next', 'بعد', 'ic-only');
@@ -1167,6 +1181,7 @@ async function act(a) {
     case 'h1': case 'h2': case 'h3': case 'p': { const n = retag(editing || el, a.toUpperCase()); editing = null; select(n); changed(); return; }
     case 'link': return editLink(el);
     case 'image': return changeImage(el);
+    case 'crop': return cropImage(el);
     case 'video': return changeVideo(videoTarget(el));
     case 'dup': { const c = el.cloneNode(true); c.removeAttribute('id'); c.querySelectorAll('[id]').forEach((x) => x.removeAttribute('id')); c.classList.remove('__sel'); el.after(c); select(c); break; }
     case 'prev': { const u = unitOf(el), p = u.previousElementSibling; if (!p) return; u.parentNode.insertBefore(u, p); break; }
@@ -1357,6 +1372,83 @@ async function changeImage(el) {
   else t.el.style.backgroundImage = `url('${url}')`;
   changed(); toast('اتغيرت الصورة.', 'good');
 }
+/* ---------- قص الصورة: بتختار الجزء اللي عاوزه، وبيترفع كصورة جديدة (الأصلية مابتتمسحش) ---------- */
+async function cropImage(el) {
+  const t = imageTarget(el); if (!t) return;
+  const src = t.type === 'img' ? (t.el.currentSrc || t.el.src) : ((cdoc.defaultView.getComputedStyle(t.el).backgroundImage.match(/url\(["']?(.*?)["']?\)/) || [])[1]);
+  if (!src || src.startsWith('data:image/svg')) { toast('دي صورة مثال. غيّرها بصورة حقيقية الأول من «صورة»، وبعدين قصّها.', 'bad'); return; }
+  const img = new Image(); img.crossOrigin = 'anonymous';
+  try { await new Promise((res, rej) => { img.onload = res; img.onerror = rej; img.src = src; }); }
+  catch { toast('مش قادر أفتح الصورة دي للقص. ارفعها من جديد من زرار «صورة» وجرّب تاني.', 'bad'); return; }
+  const frame = t.el.getBoundingClientRect();
+  const RATIOS = [['0', 'حر'], [String(frame.width / Math.max(frame.height, 1)), 'زي مكانها'], ['1', 'مربع'], ['0.8', '4:5 (طولي)'], ['1.3333', '4:3'], ['1.7778', '16:9 (عرضي)']];
+  let box = null, ratio = 0, scale = 1;
+  const r = await dialog({ title: 'قص الصورة', html: `
+    <div class="chips" id="cr-ratios" style="margin-bottom:10px">${RATIOS.map(([v, l], i) => `<button type="button" data-r="${v}" class="${i === 0 ? 'on' : ''}">${l}</button>`).join('')}</div>
+    <div class="crop-wrap"><div class="crop-stage" id="cr-stage"><img id="cr-img" alt="" draggable="false"><div id="cr-box"><i data-h="nw"></i><i data-h="ne"></i><i data-h="sw"></i><i data-h="se"></i></div></div></div>
+    <p class="hint">اسحب المربع عشان تختار الجزء اللي هيظهر، واسحب الأركان عشان تكبّره أو تصغّره. الصورة الأصلية بتفضل محفوظة.</p>`,
+    buttons: [{ label: 'قص واستخدم', value: 'ok', cls: 'primary' }, { label: 'إلغاء', value: 'cancel' }],
+    onOpen: (d) => {
+      const stage = d.querySelector('#cr-stage'), im = d.querySelector('#cr-img'), bx = d.querySelector('#cr-box');
+      im.src = img.src;
+      const draw = () => Object.assign(bx.style, { left: box.x + 'px', top: box.y + 'px', width: box.w + 'px', height: box.h + 'px' });
+      const reset = () => {
+        const W = im.clientWidth, H = im.clientHeight; scale = W / img.naturalWidth;
+        let w = W * 0.9, h = H * 0.9;
+        if (ratio) { if (w / h > ratio) w = h * ratio; else h = w / ratio; }
+        box = { x: (W - w) / 2, y: (H - h) / 2, w, h }; draw();
+      };
+      im.onload = reset; if (im.complete) setTimeout(reset, 0);
+      d.querySelector('#cr-ratios').addEventListener('click', (e) => {
+        const b = e.target.closest('[data-r]'); if (!b) return;
+        ratio = parseFloat(b.dataset.r) || 0; d.querySelectorAll('#cr-ratios button').forEach((x) => x.classList.toggle('on', x === b)); reset();
+      });
+      let op = null;
+      stage.addEventListener('pointerdown', (e) => {
+        if (!e.target.closest('#cr-box')) return;
+        e.preventDefault(); stage.setPointerCapture(e.pointerId);
+        op = { h: e.target.dataset.h || 'move', x: e.clientX, y: e.clientY, b: { ...box } };
+      });
+      stage.addEventListener('pointermove', (e) => {
+        if (!op) return;
+        const W = im.clientWidth, H = im.clientHeight, dx = e.clientX - op.x, dy = e.clientY - op.y, o = op.b;
+        if (op.h === 'move') { box.x = Math.min(Math.max(o.x + dx, 0), W - o.w); box.y = Math.min(Math.max(o.y + dy, 0), H - o.h); }
+        else {
+          const left = op.h.includes('w'), topH = op.h.includes('n');
+          let w = Math.max(30, o.w + (left ? -dx : dx)), h = Math.max(30, o.h + (topH ? -dy : dy));
+          if (ratio) { if (Math.abs(dx) > Math.abs(dy)) h = w / ratio; else w = h * ratio; }
+          let x = left ? o.x + o.w - w : o.x, y = topH ? o.y + o.h - h : o.y;
+          if (x < 0 || y < 0 || x + w > W || y + h > H) return;
+          box = { x, y, w, h };
+        }
+        draw();
+      });
+      stage.addEventListener('pointerup', () => { op = null; });
+    } });
+  if (r !== 'ok' || !box) return;
+  try {
+    toast('بيقص الصورة ويرفعها...');
+    const sx = box.x / scale, sy = box.y / scale, sw = box.w / scale, sh = box.h / scale;
+    const k = Math.min(1, 1800 / Math.max(sw, sh));
+    const c = document.createElement('canvas'); c.width = Math.round(sw * k); c.height = Math.round(sh * k);
+    c.getContext('2d').drawImage(img, sx, sy, sw, sh, 0, 0, c.width, c.height);
+    const blob = await new Promise((res, rej) => c.toBlob((b) => (b ? res(b) : rej(new Error('crop failed'))), 'image/webp', 0.9));
+    const a = await uploadImage(new File([blob], 'cropped.webp', { type: 'image/webp' }));
+    (imageLib = imageLib || []).unshift(a);
+    if (t.type === 'img') { t.el.src = a.src; t.el.removeAttribute('srcset'); } else t.el.style.backgroundImage = `url('${a.src}')`;
+    changed(); toast('اتقصت الصورة.', 'good');
+  } catch (e) { toast(e.status ? friendlyDbError(e) : 'القص فشل: الصورة دي مش بتسمح بالقص من المتصفح. ارفعها من جديد من «صورة» وجرّب تاني.', 'bad'); }
+}
+/* ---------- تحريك دقيق بالبكسل (بالأسهم أو من لوحة التنسيق) ---------- */
+let nudgeTimer = null;
+function nudge(el, dx, dy) {
+  const s = styleOf(el);
+  const x = (parseFloat(s.left) || 0) + dx, y = (parseFloat(s.top) || 0) + dy;
+  setProp(el, 'position', x || y ? 'relative' : '');
+  setProp(el, 'left', x ? x + 'px' : ''); setProp(el, 'top', y ? y + 'px' : '');
+  updateOverlays();
+  clearTimeout(nudgeTimer); nudgeTimer = setTimeout(() => { changed(); renderStylePanel(); }, 350);
+}
 async function changeVideo(box) {
   if (!box) return;
   const cur = box.getAttribute('data-video') || '';
@@ -1451,7 +1543,7 @@ function refreshMobileCss() {
   const css = mobileCssFrom(cdoc.body); t.textContent = css ? `@media(max-width:900px){${css}}` : '';
 }
 
-let openGroups = { text: true, box: false, space: false, size: false, layout: true, place: false, show: false };
+let openGroups = { text: true, box: false, space: false, size: false, layout: true, place: false, nudge: true, show: false };
 function renderStylePanel() {
   const box = $('#side-style'); if (!box) return;
   const el = selected;
@@ -1514,12 +1606,21 @@ function renderStylePanel() {
       ${ctl('العرض', chips('width', [['', 'تلقائي'], ['100%', 'كامل'], ['75%', '¾'], ['50%', 'نص'], ['fit-content', 'على قد المحتوى']], s.width))}
       ${ctl('أقصى عرض', chips('maxWidth', [['', 'تلقائي'], ['none', 'من غير حد'], ['960px', 'عريض'], ['720px', 'متوسط'], ['480px', 'ضيق'], ['320px', 'صغير']], s.maxWidth))}
       ${ctl('أقل ارتفاع', chips('minHeight', [['', 'تلقائي'], ['0px', '0'], ['200px', '200'], ['400px', '400'], ['600px', '600'], ['100vh', 'طول الشاشة']], s.minHeight))}`)}
+    ${group('nudge', 'تحريك دقيق ومحاذاة', `
+      ${ctl('حرّك بالبكسل', `<div class="nudge"><button type="button" data-n="0,-1" title="لفوق">↑</button><div><button type="button" data-n="1,0" title="يمين">→</button><button type="button" data-n="-1,0" title="شمال">←</button></div><button type="button" data-n="0,1" title="لتحت">↓</button></div>
+        <div class="chips" style="margin-top:6px"><button type="button" data-step="1" class="${(window.__nstep || 1) === 1 ? 'on' : ''}">1 بكسل</button><button type="button" data-step="10" class="${window.__nstep === 10 ? 'on' : ''}">10 بكسل</button><button type="button" data-x="nreset">رجّعه مكانه</button></div>`,
+        `الإزاحة الحالية: ${parseInt(s.left) || 0} أفقي، ${parseInt(s.top) || 0} رأسي. وكمان تقدر تستخدم أسهم الكيبورد (ومعاها Shift للحركة الكبيرة).`)}
+      ${el.parentElement && el.parentElement !== cdoc.body ? ctl('محاذاة كل العناصر اللي جنبه', `<div class="chips"><button type="button" data-al="start">من فوق</button><button type="button" data-al="center">في النص</button><button type="button" data-al="end">من تحت</button><button type="button" data-al="stretch">ممدودة</button></div>`, 'بيحاذي العنصر ده واللي جنبه على نفس الخط (بيتطبق على المجموعة اللي هو جواها).') : ''}`)}
     ${group('show', 'الظهور', `<div class="chips"><button type="button" data-x="hm" class="${el.classList.contains('hide-mobile') ? 'on' : ''}">مخفي على الموبايل</button><button type="button" data-x="hd" class="${el.classList.contains('hide-desktop') ? 'on' : ''}">مخفي على الكمبيوتر</button></div>`)}
     <button type="button" class="btn small block" data-x="reset">${isMobileMode() ? 'مسح تنسيق الموبايل لهذا العنصر' : 'مسح التنسيق الإضافي'}</button>`;
 }
 $('#side-style').addEventListener('toggle', (e) => { const d = e.target.closest('details[data-g]'); if (d) openGroups[d.dataset.g] = d.open; }, true);
 $('#side-style').addEventListener('click', async (e) => {
   const el = selected; const b = e.target.closest('button'); if (!el || !b) return;
+  if (b.dataset.n) { const [dx, dy] = b.dataset.n.split(',').map(Number), m = window.__nstep || 1; nudge(el, dx * m, dy * m); return; }
+  if (b.dataset.step) { window.__nstep = +b.dataset.step; renderStylePanel(); return; }
+  if (b.dataset.x === 'nreset') { ['position', 'left', 'top'].forEach((p) => setProp(el, p, '')); changed(); renderStylePanel(); return; }
+  if (b.dataset.al) { const p = el.parentElement, d = cdoc.defaultView.getComputedStyle(p).display; if (!/flex|grid/.test(d)) setProp(p, 'display', 'flex'); setProp(p, 'alignItems', /flex/.test(cdoc.defaultView.getComputedStyle(p).display) && b.dataset.al !== 'stretch' ? 'flex-' + b.dataset.al : b.dataset.al); [...p.children].forEach((c) => { if (styleOf(c).alignSelf) setProp(c, 'alignSelf', ''); }); changed(); renderStylePanel(); toast('اتحاذوا.', 'good'); return; }
   if (b.dataset.crumb) { const t = $('#side-style').__chain[+b.dataset.crumb]; if (t) { select(t); t.scrollIntoView({ block: 'nearest' }); } return; }
   if (b.dataset.p) {
     const p = b.dataset.p, v = b.dataset.v;
