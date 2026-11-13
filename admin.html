@@ -179,6 +179,8 @@
     .nudge div { display: flex; gap: 40px; }
     .nudge button { width: 40px; height: 36px; border: 1.5px solid var(--line); background: var(--white); border-radius: 8px; cursor: pointer; font-size: 1.1rem; }
     .nudge button:hover { border-color: var(--ink); }
+    label.check { display: flex; gap: 8px; align-items: flex-start; margin-top: 12px; font-size: .92rem; cursor: pointer; }
+    label.check input { margin-top: 4px; accent-color: var(--coral); }
     #toast { position: fixed; bottom: 20px; inset-inline-start: 20px; z-index: 9999; background: var(--ink); color: var(--white);
       padding: 12px 18px; border-radius: 12px; box-shadow: 0 12px 30px rgba(0,0,0,.25); max-width: min(440px, calc(100% - 40px));
       opacity: 0; transform: translateY(8px); transition: opacity .2s, transform .2s; pointer-events: none; }
@@ -1777,19 +1779,52 @@ $('#preview-btn').addEventListener('click', () => {
   const w = window.open(url, '_blank'); if (!w) toast('المتصفح منع فتح تاب جديد. اسمح بالنوافذ المنبثقة للموقع ده.', 'bad');
   setTimeout(() => URL.revokeObjectURL(url), 60000);
 });
+/* ---------- النشر: بنبني ملف HTML كامل لكل صفحة ونبعته لـ Supabase، وهو يحطه على GitHub ---------- */
+const pagePath = (p) => (p.slug === 'index' ? 'index.html' : p.slug + '.html');
+function publishError(e) {
+  const m = String(e.message || '');
+  if (/GITHUB_TOKEN is missing/.test(m)) return 'مفتاح GitHub مش متسجل في Supabase (Secrets ← GITHUB_TOKEN).';
+  if (/GitHub 401/.test(m)) return 'مفتاح GitHub غلط أو انتهى. اعمل مفتاح جديد وحطه في Supabase مكان القديم.';
+  if (/GitHub 40[34]/.test(m)) return 'مفتاح GitHub مالوش صلاحية الكتابة على المستودع ده (Contents: Read and write).';
+  if (/not an admin/.test(m)) return 'حسابك مش متسجل كمسؤول.';
+  if (e instanceof TypeError) return 'مش قادر أوصل لـ Supabase. اتأكد من النت، وإن خطوة النشر اتعملت.';
+  return m;
+}
 $('#publish-btn').addEventListener('click', async () => {
-  const r = await dialog({ title: `نشر «${current.title}»؟`, html: `<p>النسخة الحالية هتتحفظ وتتنشر على موقعك.</p>`, buttons: [{ label: 'انشر', value: 'ok', cls: 'publish' }, { label: 'إلغاء', value: 'cancel' }] });
+  const kind = st.kind || 'page', isItem = kind !== 'page';
+  const r = await dialog({ title: `نشر «${current.title}»؟`, html: `<p>النسخة الحالية هتتحفظ وتتنشر على موقعك.${isItem ? ` وصفحات القوايم اللي بتعرض «${KIND_PLURAL[kind]}» هتتحدّث لوحدها.` : ''}</p>
+    <label class="check"><input type="checkbox" id="pub-all"> حدّث كل الصفحات المنشورة كمان (استخدمها لو غيّرت الهيدر أو الفوتر)</label>`,
+    buttons: [{ label: 'انشر', value: 'ok', cls: 'publish' }, { label: 'إلغاء', value: 'cancel' }] });
+  const all = !!($('#pub-all') || {}).checked;
   if (r !== 'ok' || !(await savePage(true))) return;
-  const btn = $('#publish-btn'); btn.disabled = true; setStatus('بينشر...');
+  const btn = $('#publish-btn'); btn.disabled = true; setStatus('بيجهّز الصفحات...');
+  const ci = pageCache.findIndex((p) => p.id === current.id), oldStatus = ci >= 0 ? pageCache[ci].status : current.status;
+  // نعتبرها منشورة وإحنا بنبني القوايم، عشان الكارت بتاعها يظهر فيها
+  if (ci >= 0) pageCache[ci].status = 'published';
+  allItems = pageCache.filter((p) => p.kind && p.kind !== 'page');
   try {
-    const path = current.slug === 'index' ? 'index.html' : current.slug + '.html';
-    const res = await api('/functions/v1/publish', { method: 'POST', headers: JH, raw: true, body: json({ id: current.id, files: [{ path, content: renderDocument(current, st) }] }) });
-    if (res.status === 404) { setStatus('مسودة محفوظة'); toast('زرار النشر هيشتغل بعد ما نعمل خطوة النشر في Supabase.', 'bad'); return; }
+    const files = [{ path: pagePath(current), content: renderDocument(current, st) }];
+    const others = pageCache.filter((p) => p.id !== current.id && p.status === 'published' && p.v === '2' && (all || (isItem && (!p.kind || p.kind === 'page'))));
+    for (const p of others) {
+      const row = await Pages.get(p.id), s = row.project || {};
+      if (!Array.isArray(s.sections)) continue;
+      if (!all && !s.sections.some((h) => h.includes(`data-collection="${kind}"`))) continue;
+      files.push({ path: pagePath(row), content: renderDocument(row, s) });
+    }
+    setStatus('بينشر...');
+    const res = await api('/functions/v1/publish', { method: 'POST', headers: JH, raw: true, body: json({ id: current.id, files }) });
     const data = await res.json().catch(() => ({}));
+    if (res.status === 404 && (data.code === 'NOT_FOUND' || /function was not found/i.test(data.message || '') || !data.error)) throw Object.assign(new Error('no function'), { noFn: true });
     if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
-    setStatus('منشورة'); toast('اتنشرت! هتظهر على الموقع خلال دقيقة أو اتنين.', 'good');
-  } catch (e) { setStatus('النشر فشل'); toast('النشر فشل: ' + e.message, 'bad'); }
-  finally { btn.disabled = false; }
+    current.status = 'published';
+    setStatus('منشورة');
+    toast(`اتنشرت! ${files.length > 1 ? `(${files.length} صفحات) ` : ''}هتظهر على الموقع خلال دقيقة أو اتنين.`, 'good');
+  } catch (e) {
+    if (ci >= 0) pageCache[ci].status = oldStatus;
+    allItems = pageCache.filter((p) => p.kind && p.kind !== 'page');
+    if (e.noFn) { setStatus('مسودة محفوظة'); toast('زرار النشر هيشتغل بعد ما نعمل خطوة النشر في Supabase.', 'bad'); return; }
+    setStatus('النشر فشل'); toast('النشر فشل: ' + publishError(e), 'bad');
+  } finally { btn.disabled = false; }
 });
 window.addEventListener('beforeunload', (e) => { if (dirty) { e.preventDefault(); e.returnValue = ''; } });
 
