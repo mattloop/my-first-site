@@ -851,6 +851,12 @@ a,button,summary,label{cursor:default}
 #__drop{position:absolute;z-index:2147482500;background:#c2461f;border-radius:4px;display:none;pointer-events:none;box-shadow:0 0 0 3px rgba(194,70,31,.25)}
 body.__dragging,body.__dragging *{cursor:grabbing!important;user-select:none!important}
 .__sel:not([contenteditable]){cursor:grab}
+body:not(.__dragging) [data-sid] *:not([contenteditable]):not([contenteditable] *),body:not(.__dragging) [data-global] *:not([contenteditable]):not([contenteditable] *){cursor:grab}
+.__dragsrc{opacity:.3!important;outline:2px dashed #c2461f!important;outline-offset:2px}
+#__drop.into{background:rgba(194,70,31,.08)!important;border:2px dashed #c2461f;border-radius:12px;box-shadow:none}
+#__ghost{position:fixed;z-index:2147483600;pointer-events:none;overflow:hidden;border-radius:12px;background:#fff;box-shadow:0 18px 40px rgba(18,48,74,.35);outline:2px solid #c2461f;opacity:.92;transform:rotate(-1.5deg)}
+#__sechandle{all:initial;position:absolute;z-index:2147482600;display:none;font-family:'Readex Pro',sans-serif;font-size:12px;background:#12304a;color:#fff;border-radius:0 0 10px 10px;padding:5px 12px;cursor:grab;box-shadow:0 6px 16px rgba(0,0,0,.2);user-select:none}
+#__sechandle:active{cursor:grabbing}
 #__addbtn{all:initial;position:absolute;z-index:2147482000;display:none;left:50%;transform:translate(-50%,-50%);font-family:'Readex Pro',sans-serif;font-size:13px;background:#2a6f68;color:#fff;border-radius:999px;padding:7px 16px;cursor:pointer;box-shadow:0 6px 16px rgba(0,0,0,.2)}
 `;
 
@@ -898,10 +904,10 @@ function paintBody() {
 /* ---------- من الصفحة لبيانات نظيفة ---------- */
 function cleanHtml(el) {
   const c = el.cloneNode(true);
-  c.querySelectorAll('.__ed,#__addbtn,#__drop').forEach((x) => x.remove());
+  c.querySelectorAll('.__ed,#__addbtn,#__drop,#__ghost,#__sechandle').forEach((x) => x.remove());
   [c, ...c.querySelectorAll('*')].forEach((x) => {
     ['data-sid', 'data-global', 'contenteditable', 'spellcheck'].forEach((a) => x.removeAttribute(a));
-    if (x.classList) { x.classList.remove('__sel', '__hov'); if (!x.classList.length) x.removeAttribute('class'); }
+    if (x.classList) { x.classList.remove('__sel', '__hov', '__dragsrc'); if (!x.classList.length) x.removeAttribute('class'); }
   });
   c.querySelectorAll('[data-collection-items]').forEach((b) => { b.innerHTML = ''; });
   return c.outerHTML;
@@ -947,6 +953,7 @@ function selectable(t) {
 function bindCanvas() {
   const w = cdoc.defaultView;
   cdoc.addEventListener('click', (e) => {
+    if (e.target.closest('#__sechandle')) { e.preventDefault(); if (!suppressClick) { select(e.target.closest('#__sechandle').__sec); } return; }
     const ui = e.target.closest('.__ed,#__addbtn');
     if (ui) { e.preventDefault(); onUi(e); return; }
     if (suppressClick) { e.preventDefault(); return; }
@@ -966,7 +973,7 @@ function bindCanvas() {
   cdoc.addEventListener('mouseup', dragEnd, true);
   cdoc.addEventListener('dragstart', (e) => e.preventDefault(), true);
   cdoc.addEventListener('mouseover', (e) => {
-    if (e.target.closest('.__ed,#__addbtn')) return;
+    if (e.target.closest('.__ed,#__addbtn,#__sechandle,#__ghost') || drag) return;
     const s = topOf(e.target); if (s === hoverSec) return;
     if (hoverSec) hoverSec.classList.remove('__hov');
     hoverSec = s; if (s && s !== selected) s.classList.add('__hov');
@@ -1030,7 +1037,7 @@ function imageTarget(el) {
 }
 const videoTarget = (el) => el && el.closest && el.closest('.b-video');
 const linkTarget = (el) => el && topOf(el) && (el.tagName === 'A' ? el : el.closest('a'));
-function ui(id) { let b = cdoc.getElementById(id); if (!b) { b = cdoc.createElement(id === '__addbtn' ? 'button' : 'div'); b.id = id; if (id !== '__addbtn') b.className = '__ed'; cdoc.body.appendChild(b); } return b; }
+function ui(id) { let b = cdoc.getElementById(id); if (!b) { b = cdoc.createElement(id === '__addbtn' ? 'button' : 'div'); b.id = id; if (!/^(__addbtn|__sechandle)$/.test(id)) b.className = '__ed'; cdoc.body.appendChild(b); } return b; }
 function place(b, rect, mode) {
   const w = cdoc.defaultView; b.style.display = 'flex';
   const bw = b.offsetWidth, bh = b.offsetHeight;
@@ -1062,9 +1069,15 @@ function updateOverlays() {
   if (!cdoc || !cdoc.body) return;
   // زرار «+ أضف قسم هنا» بيفضل جوه الصفحة تحت القسم
   const add = ui('__addbtn');
+  const sh = ui('__sechandle');
   const hs = (hoverSec && hoverSec.isConnected && hoverSec) || topOf(selected);
   if (hs && !editing && hs.getAttribute('data-global') !== 'footer') { add.textContent = '+ أضف قسم هنا'; add.__sec = hs; add.style.display = 'block'; add.style.top = (hs.getBoundingClientRect().bottom + cdoc.defaultView.scrollY) + 'px'; }
   else add.style.display = 'none';
+  if (hs && !editing && hs.hasAttribute('data-sid')) {
+    const r = hs.getBoundingClientRect(), w = cdoc.defaultView;
+    sh.textContent = '⠿ اسحب القسم'; sh.__sec = hs; sh.style.display = 'block';
+    sh.style.top = (Math.max(r.top, 0) + w.scrollY) + 'px'; sh.style.left = (r.left + r.width / 2 - 50 + w.scrollX) + 'px';
+  } else sh.style.display = 'none';
   renderFloatBar();
 }
 function renderFloatBar() {
@@ -1164,44 +1177,101 @@ function unitOf(el) {
   while (u.parentElement && u.parentElement.children.length === 1 && /^(LI|SPAN|FIGURE)$/.test(u.parentElement.tagName) && !u.parentElement.hasAttribute('data-sid')) u = u.parentElement;
   return u;
 }
-/* ---------- السحب والإفلات: اسحب العنصر المختار وحطه مكان تاني ---------- */
+/* ---------- السحب والإفلات المباشر: امسك أي عنصر بالماوس وحطه في أي مكان ----------
+   - العنصر بيتنسخ "طاير" ماشي مع الماوس، ومكانه الأصلي بيبهت
+   - خط برتقالي بيوريك هيتحط فين، ومربع منقّط لو هيتحط جوه مجموعة
+   - الأقسام الكبيرة بتتسحب من المقبض ⠿ اللي بيظهر فوقها */
 let drag = null, suppressClick = false;
 function dropMark() { let d = cdoc.getElementById('__drop'); if (!d) { d = cdoc.createElement('div'); d.id = '__drop'; cdoc.body.appendChild(d); } return d; }
 function dragStart(e) {
-  if (editing || !selected || e.button !== 0) return;
-  if (!selected.contains(e.target) || selected.hasAttribute('data-global')) return;
-  const unit = selected.hasAttribute('data-sid') ? selected : unitOf(selected);
-  if (!unit.parentElement || [...unit.parentElement.children].filter((x) => !x.matches('.__ed,#__addbtn,#__drop')).length < 2) return;
-  drag = { unit, x: e.clientX, y: e.clientY, on: false, target: null, before: true };
+  if (editing || e.button !== 0 || $('#dlg').open) return;
+  let unit = null, isSec = false;
+  const h = e.target.closest('#__sechandle');
+  if (h) { unit = h.__sec; isSec = true; }
+  else {
+    if (e.target.closest('.__ed,#__addbtn,#__drop,#__ghost')) return;
+    const el = selectable(e.target); if (!el || el.hasAttribute('data-sid') || el.hasAttribute('data-global')) return;
+    unit = unitOf(el);
+  }
+  if (!unit || !unit.isConnected) return;
+  e.preventDefault();
+  drag = { unit, isSec, x: e.clientX, y: e.clientY, on: false, target: null, mode: 'before' };
+}
+function makeGhost(unit) {
+  const g = cdoc.createElement('div'); g.id = '__ghost';
+  const r = unit.getBoundingClientRect();
+  const c = unit.cloneNode(true); c.classList.remove('__sel', '__hov');
+  const w = Math.min(r.width, drag.isSec ? 360 : 420), sc = Math.min(1, w / Math.max(r.width, 1));
+  Object.assign(c.style, { width: r.width + 'px', transform: `scale(${sc})`, transformOrigin: 'top right', margin: '0' });
+  g.appendChild(c);
+  Object.assign(g.style, { width: w + 'px', height: Math.min(r.height * sc, 180) + 'px' });
+  cdoc.body.appendChild(g);
+  return g;
 }
 function dragMove(e) {
   if (!drag) return;
-  if (!drag.on) { if (Math.hypot(e.clientX - drag.x, e.clientY - drag.y) < 8) return; drag.on = true; cdoc.body.classList.add('__dragging'); }
+  if (!drag.on) {
+    if (Math.hypot(e.clientX - drag.x, e.clientY - drag.y) < 6) return;
+    drag.on = true; cdoc.body.classList.add('__dragging'); drag.unit.classList.add('__dragsrc');
+    drag.ghost = makeGhost(drag.unit); select(null);
+  }
   e.preventDefault();
-  const parent = drag.unit.parentElement;
+  const w = cdoc.defaultView;
+  drag.ghost.style.left = (e.clientX - drag.ghost.offsetWidth + 24) + 'px'; drag.ghost.style.top = (e.clientY + 14) + 'px';
+  // سكرول تلقائي لما تقرّب من فوق أو تحت
+  if (e.clientY < 50) w.scrollBy(0, -18); else if (e.clientY > w.innerHeight - 50) w.scrollBy(0, 18);
+  const mark = dropMark(); mark.className = '';
   let t = cdoc.elementFromPoint(e.clientX, e.clientY);
-  while (t && t.parentElement !== parent) t = t.parentElement;
-  const mark = dropMark();
-  if (!t || t === drag.unit || t.matches('.__ed,#__addbtn,#__drop,[data-global]')) { mark.style.display = 'none'; drag.target = null; return; }
-  const r = t.getBoundingClientRect(), w = cdoc.defaultView;
-  const sibs = [...parent.children].filter((x) => x !== drag.unit && !x.matches('.__ed,#__addbtn,#__drop'));
-  const horizontal = sibs.length > 1 ? Math.abs(sibs[0].getBoundingClientRect().top - sibs[1].getBoundingClientRect().top) < 10 : r.width < r.height * 1.2 && getComputedStyle(parent).display.includes('flex');
+  drag.target = null;
+  if (!t || t.closest('#__ghost,.__ed,#__addbtn')) { mark.style.display = 'none'; return; }
+  if (drag.isSec) {
+    t = topOf(t);
+    if (!t || t === drag.unit || !t.hasAttribute('data-sid')) { mark.style.display = 'none'; return; }
+    const r = t.getBoundingClientRect(); drag.target = t; drag.mode = e.clientY < r.top + r.height / 2 ? 'before' : 'after';
+    Object.assign(mark.style, { display: 'block', left: (r.left + w.scrollX) + 'px', width: r.width + 'px', height: '6px', top: ((drag.mode === 'before' ? r.top : r.bottom) + w.scrollY - 3) + 'px' });
+    return;
+  }
+  if (drag.unit.contains(t)) { mark.style.display = 'none'; return; }
+  if (t.closest('svg')) t = t.closest('svg').parentElement;
+  // الكلام جوه فقرة (زي كلمة عريضة) بيتعامل كأنه الفقرة نفسها
+  while (t.parentElement && t.parentElement !== cdoc.body && isTextish(t.parentElement) && !t.parentElement.hasAttribute('data-sid')) t = t.parentElement;
+  t = unitOf(t);
+  if (t.closest('[data-collection-items]')) t = t.closest('[data-collection]');
+  const top = t.hasAttribute('data-sid') || t.hasAttribute('data-global');
+  const container = top ? (t.querySelector('.container') || t) : t;
+  const kids = [...container.children].filter((k) => k !== drag.unit && !k.matches('.__ed,#__addbtn,#__drop,#__ghost'));
+  const canHold = !isTextish(container) && !/^(IMG|A|BUTTON|INPUT|SVG|HR|BR)$/.test(container.tagName);
+  // 1) فوق مساحة فاضية جوه مجموعة → يتحط جواها
+  if (top || (canHold && kids.length === 0)) {
+    if (!canHold) { mark.style.display = 'none'; return; }
+    const r = container.getBoundingClientRect(); drag.target = container; drag.mode = 'into';
+    mark.className = 'into'; Object.assign(mark.style, { display: 'block', left: (r.left + w.scrollX) + 'px', top: (r.top + w.scrollY) + 'px', width: r.width + 'px', height: r.height + 'px' });
+    return;
+  }
+  // 2) فوق عنصر → قبله أو بعده (يمين/شمال لو العناصر جنب بعض)
+  const parent = t.parentElement;
+  const sibs = [...parent.children].filter((x) => x !== drag.unit && !x.matches('.__ed,#__addbtn,#__drop,#__ghost'));
+  const r = t.getBoundingClientRect();
+  const horizontal = sibs.length > 1 ? Math.abs(sibs[0].getBoundingClientRect().top - sibs[1].getBoundingClientRect().top) < 12 : /flex/.test(getComputedStyle(parent).display) && !/column/.test(getComputedStyle(parent).flexDirection);
   const rtl = getComputedStyle(parent).direction === 'rtl';
-  drag.before = horizontal ? (rtl ? e.clientX > r.left + r.width / 2 : e.clientX < r.left + r.width / 2) : e.clientY < r.top + r.height / 2;
-  drag.target = t;
+  const before = horizontal ? (rtl ? e.clientX > r.left + r.width / 2 : e.clientX < r.left + r.width / 2) : e.clientY < r.top + r.height / 2;
+  drag.target = t; drag.mode = before ? 'before' : 'after';
   Object.assign(mark.style, horizontal
-    ? { display: 'block', top: (r.top + w.scrollY) + 'px', height: r.height + 'px', width: '4px', left: ((drag.before === rtl ? r.left : r.right) + w.scrollX - 2) + 'px' }
-    : { display: 'block', left: (r.left + w.scrollX) + 'px', width: r.width + 'px', height: '4px', top: ((drag.before ? r.top : r.bottom) + w.scrollY - 2) + 'px' });
+    ? { display: 'block', top: (r.top + w.scrollY) + 'px', height: r.height + 'px', width: '5px', left: ((before === rtl ? r.right : r.left) + w.scrollX - 2) + 'px' }
+    : { display: 'block', left: (r.left + w.scrollX) + 'px', width: r.width + 'px', height: '5px', top: ((before ? r.top : r.bottom) + w.scrollY - 2) + 'px' });
 }
 function dragEnd() {
   if (!drag) return;
-  const d = drag; drag = null; cdoc.body.classList.remove('__dragging');
-  const mark = cdoc.getElementById('__drop'); if (mark) mark.style.display = 'none';
+  const d = drag; drag = null;
+  cdoc.body.classList.remove('__dragging'); d.unit.classList.remove('__dragsrc');
+  if (d.ghost) d.ghost.remove();
+  const mark = cdoc.getElementById('__drop'); if (mark) { mark.style.display = 'none'; mark.className = ''; }
   if (!d.on) return;
-  suppressClick = true; setTimeout(() => { suppressClick = false; }, 50);
-  if (!d.target) return;
-  d.before ? d.target.before(d.unit) : d.target.after(d.unit);
-  changed(); toast('اتنقل.', 'good');
+  suppressClick = true; setTimeout(() => { suppressClick = false; }, 60);
+  if (!d.target || d.target === d.unit) { select(d.isSec ? null : d.unit); return; }
+  if (d.mode === 'into') d.target.appendChild(d.unit);
+  else if (d.mode === 'before') d.target.before(d.unit); else d.target.after(d.unit);
+  changed(); select(d.unit); toast(d.isSec ? 'اتنقل القسم.' : 'اتنقل.', 'good');
 }
 function retag(el, tag) {
   if (el.tagName === tag) { el.removeAttribute('contenteditable'); el.removeAttribute('spellcheck'); return el; }
@@ -1297,7 +1367,7 @@ async function changeVideo(box) {
 /* ---------- لوحة "إضافة" ---------- */
 function buildAddPanel() {
   const cats = [...new Set(SECTIONS.map((s) => s.cat))];
-  $('#side-add').innerHTML = `<p class="sel-info">نصيحة: تقدر <b>تسحب</b> أي عنصر مختار (زرار، كارت، صورة، قسم) وتحطه مكان تاني. الخط البرتقالي بيوريك هيتحط فين.</p><h4>عناصر صغيرة</h4><p class="hint" style="margin:-4px 0 8px">بتتحط بعد العنصر المختار، أو جواه لو كان قسم أو مجموعة كروت.</p>
+  $('#side-add').innerHTML = `<p class="sel-info"><b>التحريك:</b> امسك أي عنصر في الصفحة بالماوس (زرار، صورة، كارت، عنوان) واسحبه لمكانه الجديد. الأقسام الكبيرة بتتسحب من المقبض <b>⠿ اسحب القسم</b> اللي بيظهر فوقها.</p><h4>عناصر صغيرة</h4><p class="hint" style="margin:-4px 0 8px">بتتحط بعد العنصر المختار، أو جواه لو كان قسم أو مجموعة كروت.</p>
     <div class="lib">${ELEMENTS.map(([n], i) => `<button type="button" data-el="${i}"><b>${n}</b></button>`).join('')}</div>` +
     cats.map((c) => `<h4>${c}</h4><div class="lib one">${SECTIONS.filter((s) => s.cat === c).map((s) => `<button type="button" data-sec="${s.id}"><b>${s.name}</b><small>${s.desc}</small></button>`).join('')}</div>`).join('') +
     `<h4>عرض</h4><label class="choice"><input type="checkbox" id="show-inner" ${st.__showInner ? 'checked' : ''}><span><b>إظهار الصفحات الداخلية</b><small>صفحات الخدمات المخفية في الرئيسية، عشان تعدّلها</small></span></label>`;
