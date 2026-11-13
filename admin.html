@@ -100,6 +100,11 @@
     .gjs-two-color { color: #e6edf3; }
     .gjs-three-bg { background-color: var(--teal); color: #fff; }
     .gjs-four-color, .gjs-four-color-h:hover { color: #7fd1c6; }
+    .gjs-cv-canvas { width: 76%; }
+    .gjs-pn-views-container, .gjs-pn-views { width: 24%; }
+    .gjs-pn-options { right: 24%; }
+    .gjs-sm-sector-title, .gjs-layer-name, .gjs-trt-trait, .gjs-clm-tags { font-family: 'Readex Pro', sans-serif; font-size: .85rem; }
+    @media (max-width: 1000px) { .gjs-cv-canvas { width: 62%; } .gjs-pn-views-container, .gjs-pn-views { width: 38%; } .gjs-pn-options { right: 38%; } }
     .gjs-block { width: 44%; min-height: 84px; font-family: 'Readex Pro', sans-serif; }
     .gjs-block-label { font-size: .8rem; }
     .gjs-block-category .gjs-title { font-family: 'Readex Pro', sans-serif; }
@@ -326,8 +331,21 @@ async function loadTemplate() {
   const r = await fetch(TEMPLATE_FILE, { cache: 'no-store' });
   if (!r.ok) throw new Error(`مش لاقي ملف ${TEMPLATE_FILE} جنب لوحة التحكم.`);
   const doc = new DOMParser().parseFromString(await r.text(), 'text/html');
-  const css = [...doc.querySelectorAll('style')].map((s) => s.textContent).join('\n');
+  let css = [...doc.querySelectorAll('style')].map((s) => s.textContent).join('\n');
   doc.querySelectorAll('script').forEach((s) => s.remove());
+  // التنسيق المكتوب جوه العناصر نفسها (style="--c:...") المحرر بيضيّعه،
+  // فبننقله لقواعد CSS عادية مربوطة بعلامة data-s على العنصر
+  let n = 0, extra = '';
+  doc.body.querySelectorAll('[style]').forEach((el) => {
+    const decls = el.getAttribute('style').split(';').map((d) => d.trim()).filter(Boolean).map((d) => {
+      const i = d.indexOf(':'); return i > 0 ? `${d.slice(0, i).trim()}:${d.slice(i + 1).trim().replace(/\s*!important$/, '')} !important` : '';
+    }).filter(Boolean);
+    el.removeAttribute('style');
+    if (!decls.length) return;
+    n += 1; el.setAttribute('data-s', String(n));
+    extra += `[data-s="${n}"]{${decls.join(';')}}\n`;
+  });
+  if (extra) css += '\n/* inline styles */\n' + extra;
   const body = doc.body;
   const sections = [...body.children].filter((el) => /^(HEADER|SECTION|FOOTER|NAV|DIV)$/.test(el.tagName))
     .map((el) => ({ id: el.id || el.className.split(' ')[0] || el.tagName.toLowerCase(), html: el.outerHTML, el }));
@@ -493,8 +511,8 @@ async function newPage(copyFromId) {
       const full = await Pages.get(src.id);
       Object.assign(row, { description: full.description, project: full.project, html: full.html, css: full.css });
     } else {
-      let css = ''; try { css = (await loadTemplate()).css; } catch {}
-      Object.assign(row, { html: '', css });
+      const baseCss = await siteBaseCss();
+      Object.assign(row, { html: '', css: baseCss, project: { baseCss, gjs: null } });
     }
     const created = await Pages.create(row);
     toast('اتعملت الصفحة.', 'good');
@@ -519,7 +537,10 @@ async function importTemplate() {
   }
   try {
     const t = await loadTemplate();
-    const row = { title: t.title || 'الرئيسية', description: t.description, html: t.html, css: t.css, project: {} };
+    toast('بيجهّز التصميم ويرفع الصور اللي جواه...');
+    const baseCss = await externalizeImages(t.css);
+    const html = await externalizeImages(t.html);
+    const row = { title: t.title || 'الرئيسية', description: t.description, html, css: baseCss, project: { baseCss, gjs: null } };
     const saved = existing ? await Pages.update(existing.id, row) : await Pages.create({ ...row, slug: 'index', status: 'draft' });
     toast('اتستورد التصميم. افتحه وعدّل براحتك.', 'good');
     await renderList(); openEditor(saved.id);
@@ -527,10 +548,35 @@ async function importTemplate() {
 }
 $('#import-btn').addEventListener('click', importTemplate);
 
+/* الصور المدمجة جوه الكود (data:image...) بتخلّي الصفحة تقيلة جدًا
+   فبنرفعها مرة واحدة على مخزن الصور ونحط رابطها بدالها */
+async function externalizeImages(text) {
+  const re = /data:(image\/(?:png|jpe?g|webp|gif|avif));base64,([A-Za-z0-9+/=]+)/g;
+  const seen = new Map();
+  for (const m of text.matchAll(re)) {
+    if (seen.has(m[0])) continue;
+    try {
+      const bin = atob(m[2]); const bytes = new Uint8Array(bin.length);
+      for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+      const ext = m[1].split('/')[1].replace('jpeg', 'jpg');
+      const a = await uploadImage(new File([bytes], 'site-photo.' + ext, { type: m[1] }));
+      seen.set(m[0], a.src);
+    } catch (e) { /* لو الرفع فشل نسيب الصورة مدمجة زي ما هي */ }
+  }
+  seen.forEach((url, data) => { text = text.split(data).join(url); });
+  return text;
+}
+/* تنسيق الموقع الأساسي لأي صفحة جديدة: بناخده من الصفحة الرئيسية لو موجودة (صورها مرفوعة بالفعل) */
+async function siteBaseCss() {
+  const home = pageCache.find((p) => p.slug === 'index');
+  if (home) { try { const full = await Pages.get(home.id); if (full.project && full.project.baseCss) return full.project.baseCss; } catch {} }
+  try { return await externalizeImages((await loadTemplate()).css); } catch { return ''; }
+}
+
 /* =====================================================================
    المحرر (GrapesJS)
    ===================================================================== */
-let editor = null, current = null, dirty = false, loading = false, showInner = false, autosaveTimer = null;
+let editor = null, current = null, dirty = false, loading = false, showInner = false, autosaveTimer = null, baseCss = '';
 
 function setStatus(t) { $('#ed-status').textContent = t; }
 function markDirty() { if (loading) return; dirty = true; setStatus('فيه تعديلات مش محفوظة'); }
@@ -544,6 +590,10 @@ function prepareCanvas() {
     l.href = 'https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300;400;500;600;700&family=Aref+Ruqaa:wght@700&display=swap';
     d.head.appendChild(l);
   }
+  // تنسيق الموقع الأساسي بيتحط في الصفحة زي ما هو بالظبط (من غير ما المحرر يفكّه ويبوّظه)
+  let base = d.getElementById('admin-base-css');
+  if (!base) { base = d.createElement('style'); base.id = 'admin-base-css'; d.head.insertBefore(base, d.head.firstChild); }
+  if (base.textContent !== baseCss) base.textContent = baseCss;
   let st = d.getElementById('admin-inner-pages');
   if (!st) { st = d.createElement('style'); st.id = 'admin-inner-pages'; d.head.appendChild(st); }
   // صفحات الخدمات في التصميم مخفية لحد ما حد يدوس عليها — هنا بنظهرها جوه المحرر بس
@@ -575,6 +625,10 @@ function addBlocks() {
   }).catch(() => {});
 }
 
+let arLocale = null;
+async function loadArabicUi() {
+  try { arLocale = (await import('https://cdn.jsdelivr.net/npm/grapesjs@0.22.9/locale/ar.mjs')).default; } catch { arLocale = null; }
+}
 function initEditor() {
   if (editor) return;
   if (!window.grapesjs) { toast('مكتبة المحرر ما اتحمّلتش. اتأكد من النت واعمل تحديث للصفحة.', 'bad'); throw new Error('grapesjs missing'); }
@@ -602,10 +656,15 @@ function initEditor() {
       },
     },
     canvas: { styles: [] },
+    i18n: arLocale ? { locale: 'ar', detectLocale: false, localeFallback: 'en', messages: { ar: arLocale } } : {},
     parser: { optionsHtml: { allowScripts: false } },
   });
   addBlocks();
-  editor.on('load', prepareCanvas);
+  editor.on('load', () => {
+    prepareCanvas();
+    // نشيل الخطوط المتقطعة حوالين كل عنصر عشان الصفحة تبان زي الحقيقة
+    const sw = editor.Panels.getButton('options', 'sw-visibility'); if (sw) sw.set('active', false);
+  });
   editor.on('canvas:frame:load', prepareCanvas);
   editor.on('update', markDirty);
   editor.on('component:update', markDirty);
@@ -620,13 +679,23 @@ async function openEditor(id) {
   let page;
   try { page = await Pages.get(id); } catch (e) { toast(friendlyDbError(e), 'bad'); return; }
   show('editor');
+  if (!editor && !arLocale) await loadArabicUi();
   try { initEditor(); } catch { show('pages'); return; }
   loading = true; current = page;
   $('#ed-title').textContent = page.title;
   try {
-    const hasProject = page.project && Array.isArray(page.project.pages) && page.project.pages.length;
-    if (hasProject) editor.loadProjectData(page.project);
-    else { editor.setComponents(page.html || ''); editor.setStyle(page.css || ''); }
+    const pr = page.project || {};
+    if (typeof pr.baseCss === 'string') {
+      baseCss = pr.baseCss; prepareCanvas();
+      if (pr.gjs && Array.isArray(pr.gjs.pages) && pr.gjs.pages.length) editor.loadProjectData(pr.gjs);
+      else { editor.setComponents(page.html || ''); editor.setStyle(''); }
+    } else {
+      // صفحة اتعملت بالنسخة القديمة من اللوحة
+      baseCss = ''; prepareCanvas();
+      if (Array.isArray(pr.pages) && pr.pages.length) editor.loadProjectData(pr);
+      else { editor.setComponents(page.html || ''); editor.setStyle(page.css || ''); }
+      if (page.slug === 'index') toast('الصفحة دي اتستوردت بنسخة قديمة من اللوحة، وشكلها ممكن يبقى مختلف. ارجع للصفحات ودوس «استيراد التصميم الحالي» تاني.', 'bad');
+    }
     editor.UndoManager.clear();
   } catch (e) { toast('مش قادر أفتح الصفحة: ' + e.message, 'bad'); }
   setTimeout(() => { loading = false; dirty = false; setStatus(page.status === 'published' ? 'منشورة' : 'مسودة محفوظة'); prepareCanvas(); editor.refresh(); }, 300);
@@ -635,7 +704,9 @@ async function openEditor(id) {
 }
 
 function snapshot() {
-  return { project: editor.getProjectData(), html: bodyInner(editor.getHtml()), css: editor.getCss() };
+  const edits = editor.getCss();
+  return { project: { baseCss, gjs: editor.getProjectData() }, html: bodyInner(editor.getHtml()),
+    css: baseCss ? baseCss + '\n/* ===== تعديلات لوحة التحكم ===== */\n' + edits : edits };
 }
 let saving = false;
 async function savePage(auto = false) {

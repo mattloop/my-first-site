@@ -218,7 +218,7 @@
     .ccard::before { content: ""; position: absolute; top: 0; inset-inline: 0; height: 6px; background: var(--c); }
     .ccard .cic { box-shadow: 0 8px 18px rgba(18,48,74,0.12); }
     .ccard .cgo { align-self: flex-start; background: var(--c); color: var(--white); padding: 5px 16px; border-radius: 999px; }
-    .ccard[style*="yellow"] .cgo { color: var(--navy); }
+    .ccard.on-light .cgo { color: var(--navy); }
     .channel { border: 2px solid #ffd6d6; }
     .talk .skills-box { text-align: center; }
     .ccards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; text-align: start; }
@@ -383,7 +383,7 @@
     .grp .ic { color: var(--teal); margin-inline-end: 4px; }
     .yt .ic { width: 24px; height: 24px; }
     /* تباين الألوان: أصفر = كلام كحلي، والرمادي أغمق */
-    .tl-stage[style*="yellow"] { color: var(--navy); }
+    .tl-stage.on-light { color: var(--navy); }
     /* مساحة اللمس: كل زرار/لينك 44 بكسل على الأقل */
     .more-btn { border-bottom: none; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 6px; padding: 12px 0; min-height: 44px; }
     .filters button { min-height: 44px; padding: 8px 18px; }
@@ -533,7 +533,7 @@
         <div class="tl-item">
           <div class="tl-dot" style="--c:var(--yellow)"><span><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 10h.01" /> <path d="M12 14h.01" /> <path d="M12 6h.01" /> <path d="M16 10h.01" /> <path d="M16 14h.01" /> <path d="M16 6h.01" /> <path d="M8 10h.01" /> <path d="M8 14h.01" /> <path d="M8 6h.01" /> <path d="M9 22v-3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3" /> <rect x="4" y="2" width="16" height="20" rx="2" /></svg></span></div>
           <div class="tl-card">
-            <div class="tl-meta"><span class="tl-stage" style="--c:var(--yellow)">منذ 2022</span><small>مؤسس ومدير</small></div>
+            <div class="tl-meta"><span class="tl-stage on-light" style="--c:var(--yellow)">منذ 2022</span><small>مؤسس ومدير</small></div>
             <h3>مؤسس شركة مطلوب للتجارة والخدمات</h3>
             <p>شركة لتقديم الخدمات الهندسية وبناء البرمجيات والتطبيقات.</p>
             <div class="tl-tags"><span>خدمات هندسية</span><span>برمجيات</span><span>تطبيقات</span></div>
