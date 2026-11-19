@@ -120,6 +120,13 @@
     .tl-pick:has(input:checked) .swatch, .tl-pick.tl-ico:has(input:checked) { outline: 3px solid var(--ink); outline-offset: 2px; }
     .tl-pick:has(input:focus-visible) { outline: 3px solid var(--teal); outline-offset: 2px; border-radius: 8px; }
     .field .lbl { display: block; font-weight: 600; margin-bottom: 6px; }
+    .tl-structs { display: grid; grid-template-columns: repeat(auto-fill, minmax(92px, 1fr)); gap: 6px; }
+    .tl-struct { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 8px 4px; border: 1.5px solid var(--line); border-radius: 10px; background: var(--white); cursor: pointer; color: var(--muted); font-size: .8rem; line-height: 1.3; text-align: center; }
+    .tl-struct:hover { border-color: var(--ink); }
+    .tl-struct.on { border-color: var(--coral); color: var(--coral); background: #fef3ef; font-weight: 600; }
+    .tl-saved { display: inline-flex; }
+    .tl-saved button:first-child { border-start-end-radius: 0; border-end-end-radius: 0; }
+    .tl-saved button:last-child { border-start-start-radius: 0; border-end-start-radius: 0; margin-inline-start: -1px; color: var(--danger); }
     .tl-h { margin: 14px 0 4px; font-size: .95rem; color: var(--ink); border-top: 1px solid var(--line); padding-top: 12px; }
     .tl-pick.tl-ico img { width: 24px; height: 24px; object-fit: contain; }
     .tl-more { margin-top: 10px; border: 1.5px dashed var(--line); border-radius: 12px; padding: 8px 12px; }
@@ -600,6 +607,47 @@ nav ul a.active,nav ul a[aria-current=page]{background:var(--coral);color:#fff!i
 .tl-compact .tl-card{padding:12px 18px}
 .tl-compact .tl-card>p{display:none}
 .tl-no-tags .tl-tags{display:none}
+/* --- هيكل «شريط أفقي»: الخبرات جنب بعض وبتتسحب بالعرض --- */
+.timeline.tl-horizontal{max-width:var(--tl-w,100%);display:flex;gap:var(--tl-gap,18px);overflow-x:auto;padding:6px 4px 18px;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch}
+.timeline.tl-horizontal::before{display:none}
+.tl-horizontal .tl-item{flex:0 0 270px;display:flex;flex-direction:column;gap:14px;margin:0;scroll-snap-align:start}
+.tl-horizontal .tl-item::before{content:"";position:absolute;top:calc(var(--tl-dot,56px) / 2 - 1px);right:0;left:calc(-1 * var(--tl-gap,18px));border-top:var(--tl-line-w,2px) dashed var(--tl-line,#c9c3b6)}
+.tl-horizontal .tl-item:last-child::before{left:0}
+.tl-horizontal.tl-line-solid .tl-item::before{border-top-style:solid}
+.tl-horizontal.tl-line-none .tl-item::before{display:none}
+.tl-horizontal .tl-dot{align-self:flex-start;width:var(--tl-dot,56px);height:var(--tl-dot,56px)}
+.tl-horizontal.tl-dots-small .tl-item::before{top:28px}
+.tl-horizontal .tl-card{flex:1}
+.tl-horizontal .tl-card:hover{transform:translateY(-4px)}
+@media(max-width:900px){.tl-horizontal .tl-item{flex-basis:78vw}.tl-horizontal .tl-dot{width:44px;height:44px}.tl-horizontal .tl-item::before{top:21px}}
+/* --- هيكل «شبكة كروت»: من غير خط، والأيقونة في ركن الكارت --- */
+.timeline.tl-grid{max-width:var(--tl-w,1100px);display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:var(--tl-gap,22px)}
+.timeline.tl-grid::before{display:none}
+.timeline.tl-grid .tl-item{display:block;margin:0}
+.tl-grid .tl-dot{position:absolute;top:14px;left:14px;width:42px;height:42px;font-size:1.05rem;z-index:2;box-shadow:none}
+.tl-grid.tl-dots-small .tl-dot{top:20px;left:20px;margin:0;width:16px;height:16px}
+.tl-grid .tl-card{height:100%}
+.tl-grid .tl-meta{padding-left:48px}
+.tl-grid .tl-card:hover{transform:translateY(-4px)}
+/* --- هيكل «جدول زمني / سيرة ذاتية»: عمود السنين على اليمين --- */
+.timeline.tl-table::before{display:none}
+.timeline.tl-table .tl-item{display:block;margin:0}
+.tl-table .tl-dot{display:none}
+.timeline.tl-table .tl-card{display:grid;grid-template-columns:170px 1fr;column-gap:28px;background:var(--tl-card-bg,transparent);border:0;border-bottom:1px solid var(--tl-card-border,var(--line));border-radius:0;box-shadow:none;padding:20px 4px}
+.tl-table .tl-card:hover{transform:none}
+.tl-table .tl-meta{grid-column:1;grid-row:1 / span 4;flex-direction:column;align-items:flex-start;gap:6px;margin:0}
+.tl-table .tl-card>:not(.tl-meta){grid-column:2}
+.tl-table .tl-stage{font-size:1rem;padding:4px 16px}
+@media(max-width:900px){.timeline.tl-table .tl-card{grid-template-columns:1fr}.tl-table .tl-meta{grid-row:auto;flex-direction:row;align-items:center}.tl-table .tl-card>:not(.tl-meta){grid-column:1}}
+/* --- هيكل «خطوات مرقّمة»: رقم كبير مكان الأيقونة (--tl-n = عدد الخبرات + 1، بيتحدّث لوحده) --- */
+.timeline.tl-steps{counter-reset:tlstep var(--tl-n,0)}
+.tl-steps .tl-item{counter-increment:tlstep -1}
+.timeline.tl-steps:not([data-sort="desc"]){counter-reset:tlstep 0}
+.tl-steps:not([data-sort="desc"]) .tl-item{counter-increment:tlstep 1}
+.tl-steps .tl-dot{background:var(--c);color:#fff}
+.tl-steps .tl-dot>span{display:none}
+.tl-steps .tl-dot::after{content:counter(tlstep);font-weight:800;font-size:1.35em;line-height:1}
+.tl-steps.tl-dots-small .tl-dot::after{content:none}
 @media(min-width:901px){
 .timeline.tl-zigzag{max-width:1040px}
 .timeline.tl-zigzag::before{right:50%;margin-right:-1px}
@@ -700,7 +748,7 @@ async function loadGlobal() {
   return globalData;
 }
 async function saveGlobal() {
-  const project = { v: 2, kind: 'global', baseCss: globalData.baseCss, header: globalData.header, footer: globalData.footer, spacing: globalData.spacing || '' };
+  const project = { v: 2, kind: 'global', baseCss: globalData.baseCss, header: globalData.header, footer: globalData.footer, spacing: globalData.spacing || '', tlLooks: globalData.tlLooks || [] };
   if (globalRow) globalRow = await Pages.update(globalRow.id, { project });
   else globalRow = await Pages.create({ slug: GLOBAL_SLUG, title: 'الهيدر والفوتر', status: 'draft', project });
   globalDirty = false;
@@ -1024,7 +1072,7 @@ function pushHistory() {
   undoStack.push(snap); if (undoStack.length > 80) undoStack.shift();
   redoStack = []; markDirty();
 }
-function changed() { syncFromDom(); pushHistory(); updateOverlays(); refreshMobileCss(); renderLayers(); }
+function changed() { tlRefreshCounts(); syncFromDom(); pushHistory(); updateOverlays(); refreshMobileCss(); renderLayers(); }
 function restore(snap) {
   const o = JSON.parse(snap);
   if (o.h !== globalData.header || o.f !== globalData.footer) globalDirty = true;
@@ -1597,7 +1645,7 @@ const TL_DEFAULT_ICONS = [
   TL_ICON('<path d="m16 18 6-6-6-6"/><path d="m8 6-6 6 6 6"/>'), // برمجة
   TL_ICON('<path d="M12 2 15 8.5 22 9.3 17 14 18.2 21 12 17.8 5.8 21 7 14 2 9.3 9 8.5z"/>'), // نجمة
 ];
-const TL_GROUPS = { layout: ['', 'tl-zigzag', 'tl-compact'], line: ['', 'tl-line-solid', 'tl-line-none'], dots: ['', 'tl-dots-small'], cards: ['', 'tl-cards-flat', 'tl-cards-plain'], tags: ['', 'tl-no-tags'] };
+const TL_GROUPS = { layout: ['', 'tl-zigzag', 'tl-horizontal', 'tl-grid', 'tl-table', 'tl-steps'], density: ['', 'tl-compact'], line: ['', 'tl-line-solid', 'tl-line-none'], dots: ['', 'tl-dots-small'], cards: ['', 'tl-cards-flat', 'tl-cards-plain'], tags: ['', 'tl-no-tags'] };
 // ألوان var(--navy) وأخواتها متعرّفة جوه الصفحة بس، فبنجيب قيمتها الحقيقية عشان تظهر في نافذة الداشبورد
 const tlCss = (v) => { const m = /^var\((--[\w-]+)\)$/.exec(v); return m && cdoc ? (cdoc.defaultView.getComputedStyle(cdoc.documentElement).getPropertyValue(m[1]).trim() || v) : v; };
 const toLatinDigits =(s) => String(s || '').replace(/[٠-٩]/g, (d) => '٠١٢٣٤٥٦٧٨٩'.indexOf(d));
@@ -1754,6 +1802,63 @@ async function tlEdit(item) {
   tlApply(item, d); if (tl.hasAttribute('data-sort')) sortTimeline(tl, tl.getAttribute('data-sort'));
   select(item.querySelector('.tl-card') || item); changed(); toast('اتعدّلت الخبرة.', 'good');
 }
+/* ---------- الأشكال: هيكل + كلاسات + متغيرات --tl-... في «شكل» واحد يتحفظ ويتنقل ---------- */
+const TL_LAYOUT_NAMES = ['عمود جنب الخط', 'متبادل يمين وشمال', 'شريط أفقي', 'شبكة كروت', 'جدول زمني (CV)', 'خطوات مرقّمة'];
+const TH = (inner) => `<svg viewBox="0 0 64 40" width="64" height="40" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2">${inner}</svg>`;
+const TL_THUMBS = [
+  TH('<line x1="54" y1="4" x2="54" y2="36" stroke-dasharray="3 3"/><circle cx="54" cy="10" r="3" fill="currentColor"/><circle cx="54" cy="28" r="3" fill="currentColor"/><rect x="6" y="5" width="40" height="10" rx="2"/><rect x="6" y="23" width="40" height="10" rx="2"/>'),
+  TH('<line x1="32" y1="4" x2="32" y2="36" stroke-dasharray="3 3"/><circle cx="32" cy="10" r="3" fill="currentColor"/><circle cx="32" cy="28" r="3" fill="currentColor"/><rect x="38" y="5" width="22" height="10" rx="2"/><rect x="4" y="23" width="22" height="10" rx="2"/>'),
+  TH('<line x1="4" y1="10" x2="60" y2="10" stroke-dasharray="3 3"/><circle cx="54" cy="10" r="3" fill="currentColor"/><circle cx="32" cy="10" r="3" fill="currentColor"/><circle cx="10" cy="10" r="3" fill="currentColor"/><rect x="44" y="18" width="18" height="16" rx="2"/><rect x="23" y="18" width="18" height="16" rx="2"/><rect x="2" y="18" width="18" height="16" rx="2"/>'),
+  TH('<rect x="42" y="4" width="18" height="14" rx="2"/><rect x="23" y="4" width="18" height="14" rx="2"/><rect x="4" y="4" width="18" height="14" rx="2"/><rect x="42" y="22" width="18" height="14" rx="2"/><rect x="23" y="22" width="18" height="14" rx="2"/><rect x="4" y="22" width="18" height="14" rx="2"/>'),
+  TH('<line x1="46" y1="4" x2="46" y2="36"/><line x1="4" y1="20" x2="60" y2="20"/><rect x="50" y="7" width="10" height="5" rx="2" fill="currentColor"/><rect x="50" y="26" width="10" height="5" rx="2" fill="currentColor"/><line x1="8" y1="10" x2="40" y2="10"/><line x1="8" y1="29" x2="40" y2="29"/>'),
+  TH('<line x1="54" y1="8" x2="54" y2="32"/><circle cx="54" cy="8" r="5" fill="currentColor"/><circle cx="54" cy="32" r="5" fill="currentColor"/><rect x="6" y="3" width="40" height="10" rx="2"/><rect x="6" y="27" width="40" height="10" rx="2"/>'),
+];
+const TL_PRESETS = [
+  { name: 'الأصلي', look: { cls: [], vars: {} } },
+  { name: 'متبادل كلاسيك', look: { cls: ['tl-zigzag'], vars: {} } },
+  { name: 'شريط أفقي', look: { cls: ['tl-horizontal', 'tl-line-solid', 'tl-cards-flat'], vars: { '--tl-line': 'var(--coral)' } } },
+  { name: 'كروت شبكة', look: { cls: ['tl-grid', 'tl-cards-flat'], vars: { '--tl-radius': '22px' } } },
+  { name: 'سيرة ذاتية', look: { cls: ['tl-table'], vars: { '--tl-title-size': '1.25rem' } } },
+  { name: 'خطوات ملوّنة', look: { cls: ['tl-steps', 'tl-line-solid'], vars: { '--tl-line': 'var(--coral)', '--tl-line-w': '4px' } } },
+  { name: 'بسيط', look: { cls: ['tl-compact', 'tl-dots-small', 'tl-cards-plain', 'tl-line-solid'], vars: {} } },
+  { name: 'دافي ملوّن', look: { cls: ['tl-line-solid'], vars: { '--tl-card-bg': '#fef3ef', '--tl-line': 'var(--coral)', '--tl-title': 'var(--coral)', '--tl-radius': '28px', '--tl-tag-bg': '#ffffff' } } },
+];
+const TL_ALL_CLASSES = Object.values(TL_GROUPS).flat().filter(Boolean);
+function tlGetLook(tl) {
+  const vars = {}; [...tl.style].filter((p) => p.startsWith('--tl-') && p !== '--tl-n').forEach((p) => { vars[p] = tl.style.getPropertyValue(p).trim(); });
+  return { cls: TL_ALL_CLASSES.filter((c) => tl.classList.contains(c)), vars };
+}
+// قيمة آمنة بس: من غير ; أو { } أو url( أو كود — عشان الشكل المستورد مايقدرش يدخّل حاجة غريبة
+const tlSafeVal = (v) => typeof v === 'string' && v.length <= 80 && /^[\w\s#%().,'"\-+*/]+$/.test(v) && !/url\s*\(|expression|javascript|[;{}<>\\]/i.test(v);
+function tlCleanLook(raw) {
+  if (!raw || typeof raw !== 'object') return null;
+  const look = raw.look && typeof raw.look === 'object' ? raw.look : raw;
+  const cls = Array.isArray(look.cls) ? look.cls.filter((c) => TL_ALL_CLASSES.includes(c)) : [];
+  const vars = {}; Object.entries(look.vars && typeof look.vars === 'object' ? look.vars : {}).forEach(([k, v]) => { if (/^--tl-[a-z-]+$/.test(k) && k !== '--tl-n' && tlSafeVal(v)) vars[k] = v.trim(); });
+  // من كل مجموعة اختيار واحد بس
+  const seen = new Set(), out = [];
+  cls.forEach((c) => { const g = Object.keys(TL_GROUPS).find((k) => TL_GROUPS[k].includes(c)); if (!seen.has(g)) { seen.add(g); out.push(c); } });
+  return { cls: out, vars };
+}
+function tlApplyLook(tl, look) {
+  TL_ALL_CLASSES.forEach((c) => tl.classList.remove(c));
+  [...tl.style].filter((p) => p.startsWith('--tl-') && p !== '--tl-n').forEach((p) => tl.style.removeProperty(p));
+  look.cls.forEach((c) => tl.classList.add(c));
+  Object.entries(look.vars).forEach(([k, v]) => tl.style.setProperty(k, v));
+  if (!tl.getAttribute('style')) tl.removeAttribute('style');
+}
+function tlRefreshCounts() {
+  if (!cdoc) return;
+  cdoc.querySelectorAll('.timeline').forEach((tl) => {
+    if (tl.classList.contains('tl-steps')) tl.style.setProperty('--tl-n', String(tlItems(tl).length + 1));
+    else if (tl.style.getPropertyValue('--tl-n')) { tl.style.removeProperty('--tl-n'); if (!tl.getAttribute('style')) tl.removeAttribute('style'); }
+  });
+}
+// حفظ الأشكال في صف الإعدادات العامة (site-global) عشان تفضل موجودة على أي جهاز ولأي صفحة
+async function saveLooks() {
+  if (!globalRow) { await saveGlobal(); return; }
+  globalRow = await Pages.update(globalRow.id, { project: { ...(globalRow.project || {}), tlLooks: globalData.tlLooks || [] } });
+}
 function tlPanel(tl, el) {
   const item = tlItemOf(el), dir = tl.getAttribute('data-sort') || '';
   const on = (g) => TL_GROUPS[g].find((c) => c && tl.classList.contains(c)) || '';
@@ -1764,7 +1869,14 @@ function tlPanel(tl, el) {
       `عندك ${tlItems(tl).length} خبرات. الخبرة الجديدة بتاخد نفس الشكل وبتتحط في مكانها حسب السنة.`)}
     ${ctl('الترتيب', `<div class="chips"><button type="button" data-tl="desc" class="${dir === 'desc' ? 'on' : ''}">الأحدث فوق</button><button type="button" data-tl="asc" class="${dir === 'asc' ? 'on' : ''}">الأقدم فوق</button></div>`,
       dir ? '' : 'الخبرات دلوقتي بترتيبها اليدوي. اختار ترتيب عشان يتظبط بالسنين.')}
-    ${ctl('شكل السلسلة', opt('layout', ['عمود جنب الخط', 'متبادل يمين وشمال', 'مختصر (من غير وصف)']), '«متبادل» بيظهر على الكمبيوتر بس، والموبايل بيفضل عمود واحد.')}
+    ${ctl('هيكل المخطط', `<div class="tl-structs">${TL_GROUPS.layout.map((c, i) => `<button type="button" data-tlc="layout:${c}" class="tl-struct ${on('layout') === c ? 'on' : ''}" aria-pressed="${on('layout') === c}">${TL_THUMBS[i]}<span>${TL_LAYOUT_NAMES[i]}</span></button>`).join('')}</div>`,
+      'المحتوى نفسه مش بيتغير، الهيكل بس. «متبادل» و«جدول» بيرجعوا عمود واحد على الموبايل، و«أفقي» بيتسحب بالصباع.')}
+    ${ctl('كمية التفاصيل', opt('density', ['كاملة', 'مختصرة (من غير وصف)']))}
+    <h4 class="tl-h">أشكال جاهزة ومحفوظة</h4>
+    <p class="hint">دوس على شكل يتطبق على طول (الهيكل + الألوان + المقاسات). تقدر ترجع بـ «تراجع».</p>
+    <div class="chips">${TL_PRESETS.map((p, i) => `<button type="button" data-tlpreset="${i}">${esc(p.name)}</button>`).join('')}</div>
+    ${(globalData.tlLooks || []).length ? `<p class="hint" style="margin-top:8px">أشكالك المحفوظة:</p><div class="chips">${globalData.tlLooks.map((p, i) => `<span class="tl-saved"><button type="button" data-tlsaved="${i}">⭐ ${esc(p.name)}</button><button type="button" data-tlsaveddel="${i}" aria-label="امسح الشكل ${esc(p.name)}" title="امسح">✕</button></span>`).join('')}</div>` : ''}
+    <div class="chips" style="margin-top:8px"><button type="button" data-tl="save-look">💾 احفظ الشكل الحالي</button><button type="button" data-tl="export-look">📤 صدّر الشكل</button><button type="button" data-tl="import-look">📥 استورد شكل</button></div>
     ${ctl('الخط', opt('line', ['منقّط', 'متصل', 'من غير خط']))}
     ${ctl('النقط', opt('dots', ['دواير بأيقونات', 'نقط صغيرة']))}
     ${ctl('الكروت', opt('cards', ['بظل', 'بإطار بس', 'من غير خلفية']))}
@@ -1803,6 +1915,31 @@ async function tlAction(a, el) {
   if (a === 'del' && item) {
     const r = await dialog({ title: 'حذف الخبرة؟', html: `<p>هتتحذف «${esc((item.querySelector('h3') || item).textContent.trim())}». تقدر ترجعها بـ «تراجع».</p>`, buttons: [{ label: 'احذف', value: 'ok', cls: 'danger' }, { label: 'إلغاء', value: 'cancel' }] });
     if (r !== 'ok') return; select(tl); item.remove(); changed(); return;
+  }
+  if (a === 'save-look') {
+    const r = await dialog({ title: 'احفظ الشكل الحالي', html: `<div class="field"><label for="lk-name">اسم الشكل</label><input id="lk-name" required maxlength="40" placeholder="مثلاً: شكلي المفضل"></div><p class="hint">هيتحفظ الهيكل والألوان والمقاسات، وهتلاقيه في أي صفحة وأي جهاز.</p>`, buttons: [{ label: 'احفظ', value: 'ok', cls: 'primary' }, { label: 'إلغاء', value: 'cancel' }] });
+    const name = (($('#lk-name') || {}).value || '').trim(); if (r !== 'ok' || !name) return;
+    const list = (globalData.tlLooks || []).filter((x) => x.name !== name), before = globalData.tlLooks;
+    globalData.tlLooks = [...list, { name, look: tlGetLook(tl) }].slice(-20);
+    try { await saveLooks(); toast(`اتحفظ «${name}».`, 'good'); } catch (err) { globalData.tlLooks = before; toast(err.status ? friendlyDbError(err) : 'الحفظ فشل. جرّب تاني.', 'bad'); }
+    renderStylePanel(); return;
+  }
+  if (a === 'export-look') {
+    const code = JSON.stringify({ type: 'ammar-timeline-look', v: 1, look: tlGetLook(tl) });
+    await dialog({ title: 'كود الشكل', html: `<p class="hint">انسخ الكود ده واحفظه في أي مكان، أو ابعته لحد. بعدين تقدر تستورده بـ «استورد شكل».</p><textarea id="lk-code" rows="5" dir="ltr" readonly>${esc(code)}</textarea><div class="chips" style="margin-top:8px"><button type="button" class="btn small" id="lk-copy">انسخ الكود</button></div>`,
+      buttons: [{ label: 'تمام', value: 'cancel' }],
+      onOpen: (d) => d.querySelector('#lk-copy').addEventListener('click', async () => { const t = d.querySelector('#lk-code'); t.select(); try { await navigator.clipboard.writeText(t.value); } catch { document.execCommand('copy'); } toast('اتنسخ الكود.', 'good'); }) });
+    return;
+  }
+  if (a === 'import-look') {
+    const r = await dialog({ title: 'استورد شكل', html: `<div class="field"><label for="lk-in">الصق كود الشكل</label><textarea id="lk-in" rows="5" dir="ltr" required placeholder='{"type":"ammar-timeline-look", ...}'></textarea></div><div class="field"><label for="lk-in-name">اسم تحفظه بيه (اختياري)</label><input id="lk-in-name" maxlength="40"></div>`,
+      buttons: [{ label: 'طبّق الشكل', value: 'ok', cls: 'primary' }, { label: 'إلغاء', value: 'cancel' }] });
+    const txt = (($('#lk-in') || {}).value || '').trim(), name = (($('#lk-in-name') || {}).value || '').trim(); if (r !== 'ok' || !txt) return;
+    let look = null; try { look = tlCleanLook(JSON.parse(txt)); } catch { look = null; }
+    if (!look || (!look.cls.length && !Object.keys(look.vars).length)) { toast('الكود ده مش كود شكل سليم. انسخه كله زي ما هو.', 'bad'); return; }
+    tlApplyLook(tl, look); changed(); renderStylePanel(); toast('اتطبق الشكل المستورد.', 'good');
+    if (name) { const before = globalData.tlLooks; globalData.tlLooks = [...(globalData.tlLooks || []).filter((x) => x.name !== name), { name, look }].slice(-20); try { await saveLooks(); } catch (err) { globalData.tlLooks = before; toast('اتطبق، بس الحفظ في أشكالك فشل.', 'bad'); } renderStylePanel(); }
+    return;
   }
   if (a === 'pick-title') { const sec = tlSecOf(tl), h = sec && sec.querySelector('h2,h1'); if (h) { select(h); h.scrollIntoView({ block: 'center' }); } return; }
   if (a === 'pick-sec') { const sec = tlSecOf(tl); if (sec) { openGroups.tl = false; select(sec); toast('اخترت القسم كله. استخدم «الخلفية» و«المسافات» تحت.'); } return; }
@@ -1924,6 +2061,20 @@ $('#side-style').addEventListener('toggle', (e) => { const d = e.target.closest(
 $('#side-style').addEventListener('click', async (e) => {
   const el = selected; const b = e.target.closest('button'); if (!el || !b) return;
   if (b.dataset.tl) return tlAction(b.dataset.tl, el);
+  if (b.dataset.tlpreset != null || b.dataset.tlsaved != null) {
+    const tl = tlOf(el); if (!tl) return;
+    const p = b.dataset.tlpreset != null ? TL_PRESETS[+b.dataset.tlpreset] : (globalData.tlLooks || [])[+b.dataset.tlsaved];
+    const look = p && tlCleanLook(p.look); if (!look) return;
+    tlApplyLook(tl, look); changed(); renderStylePanel(); toast(`اتطبق شكل «${p.name}».`, 'good'); return;
+  }
+  if (b.dataset.tlsaveddel != null) {
+    const i = +b.dataset.tlsaveddel, p = (globalData.tlLooks || [])[i]; if (!p) return;
+    const r = await dialog({ title: 'مسح الشكل المحفوظ؟', html: `<p>هيتمسح «${esc(p.name)}» من أشكالك المحفوظة. الصفحات اللي مستخدماه مش هتتأثر.</p>`, buttons: [{ label: 'امسح', value: 'ok', cls: 'danger' }, { label: 'إلغاء', value: 'cancel' }] });
+    if (r !== 'ok') return;
+    const before = globalData.tlLooks.slice(); globalData.tlLooks.splice(i, 1);
+    try { await saveLooks(); toast('اتمسح.', 'good'); } catch (err) { globalData.tlLooks = before; toast(friendlyDbError(err), 'bad'); }
+    renderStylePanel(); return;
+  }
   if (b.dataset.tlv || b.dataset.tlsec != null) {
     const tl = tlOf(el); if (!tl) return;
     if (b.dataset.tlv) { if (b.dataset.v) tl.style.setProperty(b.dataset.tlv, b.dataset.v); else tl.style.removeProperty(b.dataset.tlv); if (!tl.getAttribute('style')) tl.removeAttribute('style'); }
