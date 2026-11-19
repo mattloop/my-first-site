@@ -120,6 +120,18 @@
     .tl-pick:has(input:checked) .swatch, .tl-pick.tl-ico:has(input:checked) { outline: 3px solid var(--ink); outline-offset: 2px; }
     .tl-pick:has(input:focus-visible) { outline: 3px solid var(--teal); outline-offset: 2px; border-radius: 8px; }
     .field .lbl { display: block; font-weight: 600; margin-bottom: 6px; }
+    .tl-h { margin: 14px 0 4px; font-size: .95rem; color: var(--ink); border-top: 1px solid var(--line); padding-top: 12px; }
+    .tl-pick.tl-ico img { width: 24px; height: 24px; object-fit: contain; }
+    .tl-more { margin-top: 10px; border: 1.5px dashed var(--line); border-radius: 12px; padding: 8px 12px; }
+    .tl-more summary { cursor: pointer; font-weight: 600; color: var(--teal); }
+    .tl-more-body { display: grid; gap: 8px; margin-top: 10px; }
+    .tl-more-body label { font-weight: 600; font-size: .9rem; }
+    .tl-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    .tl-row input { flex: 1; min-width: 160px; }
+    .tl-results { max-height: 168px; overflow: auto; }
+    .tl-res { width: 44px; height: 44px; border-radius: 10px; border: 1.5px solid var(--line); background: var(--white); cursor: pointer; display: grid; place-items: center; }
+    .tl-res:hover { border-color: var(--ink); }
+    .tl-res img { width: 22px; height: 22px; }
     .chips button.swatch.none { background: repeating-linear-gradient(45deg, #fff 0 6px, #f1d4cc 6px 8px); }
     .sgroup { border: 1px solid var(--line); border-radius: 12px; margin-bottom: 8px; background: var(--white); }
     .sgroup > summary { cursor: pointer; padding: 10px 12px; font-weight: 700; font-size: .92rem; list-style: none; display: flex; justify-content: space-between; }
@@ -559,10 +571,29 @@ nav ul a.active,nav ul a[aria-current=page]{background:var(--coral);color:#fff!i
 @media(min-width:901px){.link-coral{display:inline-flex;align-items:center;gap:8px;background:var(--coral);color:#fff;border:none;border-radius:999px;padding:12px 26px;box-shadow:0 8px 20px rgba(194,70,31,.3)}}
 @media(prefers-reduced-motion:reduce){nav ul a{transition:none}}
 /* ===== أشكال الخط الزمني (رحلتي): كلاسات على .timeline بتتغير من الداشبورد ===== */
+/* متغيرات (--tl-...) بتتحط على .timeline من «تنسيق السلسلة كلها»، والقيمة الاحتياطية = الشكل الأصلي */
+.timeline{max-width:var(--tl-w,820px)}
+.timeline::before{border-right-color:var(--tl-line,#c9c3b6);border-right-width:var(--tl-line-w,2px)}
+.timeline .tl-item{margin-bottom:var(--tl-gap,22px)}
+.timeline .tl-card{background:var(--tl-card-bg,var(--white));border-radius:var(--tl-radius,18px);border-color:var(--tl-card-border,var(--line))}
+.timeline .tl-card h3{color:var(--tl-title,var(--navy));font-size:var(--tl-title-size,1.15rem)}
+.timeline .tl-card>p{color:var(--tl-text,var(--text));font-size:var(--tl-text-size,.92rem)}
+.timeline .tl-tags span{background:var(--tl-tag-bg,var(--cream))}
+.timeline[style*="--tl-font"] .tl-card h3{font-family:var(--tl-font)}
+.tl-dot img{width:55%;height:55%;object-fit:contain}
+@media(min-width:901px){
+.timeline[style*="--tl-dot"] .tl-item{grid-template-columns:var(--tl-dot) 1fr}
+.timeline[style*="--tl-dot"] .tl-dot{width:var(--tl-dot);height:var(--tl-dot);font-size:calc(var(--tl-dot) * .42)}
+.timeline[style*="--tl-dot"]::before{right:calc(var(--tl-dot) / 2 - 1px)}
+.timeline.tl-zigzag[style*="--tl-dot"] .tl-item{grid-template-columns:1fr var(--tl-dot) 1fr}
+.timeline.tl-dots-small:not(.tl-zigzag)[style*="--tl-dot"] .tl-item{grid-template-columns:56px 1fr}
+.timeline.tl-dots-small:not(.tl-zigzag)[style*="--tl-dot"]::before{right:27px}
+}
 .timeline.tl-line-solid::before{border-right-style:solid}
 .timeline.tl-line-none::before{display:none}
 .tl-dots-small .tl-dot{width:18px;height:18px;margin:20px auto 0;background:var(--c);border-width:4px;border-color:#fff;box-shadow:0 0 0 2px var(--c)}
 .tl-dots-small .tl-dot>span{display:none}
+.timeline.tl-dots-small[style*="--tl-dot"] .tl-dot{width:18px;height:18px}
 .tl-cards-flat .tl-card{box-shadow:none}
 .tl-cards-plain .tl-card{background:transparent;border-color:transparent;box-shadow:none;padding-top:10px}
 .tl-compact .tl-item{margin-bottom:12px}
@@ -1588,14 +1619,77 @@ function sortTimeline(tl, dir) {
 }
 function tlIconChoices(tl) {
   const seen = new Set(), out = [];
-  tlItems(tl).forEach((it) => { const s = it.querySelector('.tl-dot svg'); if (s && !seen.has(s.outerHTML)) { seen.add(s.outerHTML); out.push(s.outerHTML); } });
+  tlItems(tl).forEach((it) => { const s = it.querySelector('.tl-dot svg, .tl-dot img'); if (s && !seen.has(s.outerHTML)) { seen.add(s.outerHTML); out.push(s.outerHTML); } });
   TL_DEFAULT_ICONS.forEach((s) => { if (!seen.has(s)) out.push(s); });
   return out;
+}
+const tlIconRadio = (s, i, checked, color) => `<label class="tl-pick tl-ico" style="--c:${esc(tlCss(color || 'var(--coral)'))}"><input type="radio" name="tl-icon" value="${i}" ${checked ? 'checked' : ''} aria-label="أيقونة ${i + 1}">${s}</label>`;
+/* تنضيف أي SVG جاي من برّه: بنشيل أي كود ممكن يتنفّذ (script / on...) قبل ما يدخل الصفحة */
+function sanitizeSvg(text) {
+  const doc = new DOMParser().parseFromString(String(text || '').trim(), 'image/svg+xml');
+  const svg = doc.documentElement;
+  if (!svg || svg.nodeName.toLowerCase() !== 'svg' || doc.querySelector('parsererror')) return null;
+  svg.querySelectorAll('script,foreignObject,iframe,object,embed,audio,video,animate,set,a').forEach((x) => x.remove());
+  [svg, ...svg.querySelectorAll('*')].forEach((el) => [...el.attributes].forEach((a) => {
+    if (/^on/i.test(a.name) || (/href$/i.test(a.name) && !/^#/.test(a.value)) || /javascript:/i.test(a.value)) el.removeAttribute(a.name);
+  }));
+  if (!svg.getAttribute('viewBox')) { const w = parseFloat(svg.getAttribute('width')), h = parseFloat(svg.getAttribute('height')); if (w && h) svg.setAttribute('viewBox', `0 0 ${w} ${h}`); }
+  ['width', 'height', 'class', 'id', 'style'].forEach((a) => svg.removeAttribute(a));
+  svg.setAttribute('class', 'ic'); svg.setAttribute('aria-hidden', 'true');
+  const out = new XMLSerializer().serializeToString(svg).replace(/ xmlns="http:\/\/www\.w3\.org\/2000\/svg"/, '').replace(/<!--[\s\S]*?-->/g, '').replace(/>\s+</g, '><');
+  return out.length > 20000 ? null : out;
+}
+const LUCIDE = 'https://cdn.jsdelivr.net/npm/lucide-static@0.460.0';
+let lucideTags = null;
+// كلمات عربي شائعة → كلمة البحث بالإنجليزي (المكتبة نفسها بالإنجليزي)
+const ICON_AR = { 'شغل': 'briefcase', 'عمل': 'briefcase', 'وظيفة': 'briefcase', 'برمجة': 'code', 'كود': 'code', 'برنامج': 'app', 'تطبيق': 'smartphone', 'موبايل': 'smartphone', 'تعليم': 'school', 'جامعة': 'graduation', 'تخرج': 'graduation', 'شهادة': 'award', 'جائزة': 'trophy', 'كتاب': 'book', 'كورس': 'book-open', 'محاضرة': 'presentation', 'هندسة': 'ruler', 'مبنى': 'building', 'عمارة': 'building', 'شركة': 'building', 'مصنع': 'factory', 'محل': 'store', 'بيع': 'shopping', 'فلوس': 'banknote', 'كاشير': 'receipt', 'توصيل': 'truck', 'عربية': 'car', 'سيارة': 'car', 'موتوسيكل': 'bike', 'سفر': 'plane', 'بيت': 'home', 'فيديو': 'video', 'يوتيوب': 'youtube', 'صوت': 'mic', 'كاميرا': 'camera', 'تصميم': 'palette', 'فكرة': 'lightbulb', 'نجمة': 'star', 'قلب': 'heart', 'فريق': 'users', 'ناس': 'users', 'إدارة': 'clipboard', 'أمان': 'shield', 'سلامة': 'shield-check', 'قانون': 'scale', 'مخزن': 'warehouse', 'خريطة': 'map', 'مكان': 'map-pin', 'وقت': 'clock', 'تقويم': 'calendar', 'رسم': 'chart', 'إحصائيات': 'chart', 'ذكاء': 'brain', 'روبوت': 'bot', 'كمبيوتر': 'laptop', 'سيرفر': 'server', 'موقع': 'globe', 'إنترنت': 'wifi', 'رسالة': 'mail', 'تليفون': 'phone', 'أدوات': 'wrench', 'صيانة': 'hammer', 'زراعة': 'leaf', 'طب': 'stethoscope', 'رياضة': 'dumbbell', 'قرآن': 'book-open', 'مسجد': 'landmark' };
+async function searchIcons(q) {
+  q = q.trim().toLowerCase(); if (!q) return [];
+  const words = q.split(/\s+/).map((w) => ICON_AR[w] || ICON_AR[w.replace(/^ال/, '')] || w);
+  if (!lucideTags) { const r = await fetch(`${LUCIDE}/tags.json`); if (!r.ok) throw new Error('net'); lucideTags = await r.json(); }
+  const score = (name, tags) => words.reduce((s, w) => s + (name === w ? 10 : name.includes(w) ? 5 : tags.some((t) => t.includes(w)) ? 2 : 0), 0);
+  return Object.entries(lucideTags).map(([n, t]) => [n, score(n, t)]).filter((x) => x[1] > 0).sort((a, b) => b[1] - a[1] || a[0].length - b[0].length).slice(0, 40).map((x) => x[0]);
+}
+function tlIconImporter(dlg, icons) {
+  const box = dlg.querySelector('#tl-icons'), res = dlg.querySelector('#tl-results');
+  const color = () => { const c = dlg.querySelector('input[name="tl-color"]:checked'); return c ? c.value : 'var(--coral)'; };
+  const addIcon = (svg) => {
+    let i = icons.indexOf(svg); if (i < 0) { icons.push(svg); i = icons.length - 1; box.insertAdjacentHTML('beforeend', tlIconRadio(svg, i, false, color())); }
+    const r = box.querySelector(`input[value="${i}"]`); r.checked = true; r.focus(); toast('اتضافت الأيقونة واتختارت.', 'good');
+  };
+  // لما تغيّر اللون، الأيقونات بتتلوّن بيه عشان تشوف الشكل النهائي
+  dlg.querySelectorAll('input[name="tl-color"]').forEach((r) => r.addEventListener('change', () => box.querySelectorAll('.tl-ico').forEach((l) => l.style.setProperty('--c', tlCss(r.value)))));
+  const go = async () => {
+    const q = dlg.querySelector('#tl-q').value; if (!q.trim()) return;
+    res.innerHTML = '<span class="hint">بدوّر...</span>';
+    let names; try { names = await searchIcons(q); } catch { res.innerHTML = '<span class="hint">مش قادر أوصل لمكتبة الأيقونات. اتأكد من النت وجرّب تاني.</span>'; return; }
+    if (!names.length) { res.innerHTML = '<span class="hint">مفيش نتايج. جرّب كلمة تانية بالإنجليزي (مثلاً: work, school, car).</span>'; return; }
+    res.innerHTML = names.map((n) => `<button type="button" class="tl-res" data-icon="${esc(n)}" title="${esc(n)}"><img src="${LUCIDE}/icons/${esc(n)}.svg" alt="${esc(n)}" loading="lazy" width="22" height="22"></button>`).join('');
+  };
+  dlg.querySelector('#tl-q-go').addEventListener('click', go);
+  dlg.querySelector('#tl-q').addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); go(); } });
+  res.addEventListener('click', async (e) => {
+    const b = e.target.closest('[data-icon]'); if (!b) return;
+    try { const r = await fetch(`${LUCIDE}/icons/${encodeURIComponent(b.dataset.icon)}.svg`); const svg = sanitizeSvg(await r.text()); if (!svg) throw 0; addIcon(svg); }
+    catch { toast('مقدرتش أجيب الأيقونة دي. جرّب تانية.', 'bad'); }
+  });
+  dlg.querySelector('#tl-svg-go').addEventListener('click', () => {
+    const svg = sanitizeSvg(dlg.querySelector('#tl-svg').value);
+    if (!svg) { toast('ده مش كود SVG سليم. انسخ الكود كله من <svg لحد </svg>.', 'bad'); return; }
+    dlg.querySelector('#tl-svg').value = ''; addIcon(svg);
+  });
+  dlg.querySelector('#tl-file').addEventListener('change', async (e) => {
+    const f = e.target.files[0]; e.target.value = ''; if (!f) return;
+    try {
+      if (/svg/.test(f.type) || /\.svg$/i.test(f.name)) { if (f.size > 100000) throw new Error('ملف الـ SVG كبير. اختار أيقونة أبسط.'); const svg = sanitizeSvg(await f.text()); if (!svg) throw new Error('الملف ده مش SVG سليم.'); addIcon(svg); }
+      else { toast('برفع الصورة...'); const up = await uploadImage(f); addIcon(`<img class="ic" src="${esc(up.src)}" alt="">`); }
+    } catch (err) { toast(err.status ? friendlyDbError(err) : (err.message || 'الرفع فشل.'), 'bad'); }
+  });
 }
 async function tlDialog(tl, item) {
   const g = (sel) => (item && item.querySelector(sel) ? item.querySelector(sel).textContent.trim() : '');
   const color = item ? ((item.querySelector('.tl-dot') || item).style.getPropertyValue('--c').trim() || TL_COLORS[0][0]) : TL_COLORS[4][0];
-  const icons = tlIconChoices(tl), curIcon = item && item.querySelector('.tl-dot svg') ? item.querySelector('.tl-dot svg').outerHTML : icons[0];
+  const icons = tlIconChoices(tl), curIcon = item && item.querySelector('.tl-dot svg, .tl-dot img') ? item.querySelector('.tl-dot svg, .tl-dot img').outerHTML : icons[0];
   const tags = item ? [...item.querySelectorAll('.tl-tags span')].map((s) => s.textContent.trim()).join('، ') : '';
   const r = await dialog({ title: item ? 'تعديل الخبرة' : 'خبرة جديدة', html: `
     <div class="field"><label for="tl-period">الفترة (بتظهر في الشارة الملوّنة)</label><input id="tl-period" required value="${esc(g('.tl-stage'))}" placeholder="مثلاً: 2024 أو 2020 – 2023 أو منذ 2024"></div>
@@ -1606,8 +1700,19 @@ async function tlDialog(tl, item) {
     <div class="field"><label for="tl-year">سنة الترتيب (اختياري)</label><input id="tl-year" type="number" min="1950" max="2100" dir="ltr" value="${esc(item ? item.getAttribute('data-year') || '' : '')}" placeholder="${(item && tlYear(item)) || ''}">
       <p class="hint">لو سبتها فاضية، الترتيب بيعتمد على أول سنة مكتوبة في «الفترة».</p></div>
     <div class="field"><span class="lbl">اللون</span><div class="chips">${TL_COLORS.map(([v, l]) => `<label class="tl-pick" title="${l}"><input type="radio" name="tl-color" value="${esc(v)}" ${v === color ? 'checked' : ''}><span class="swatch" style="background:${esc(tlCss(v))}"></span><small>${l}</small></label>`).join('')}</div></div>
-    <div class="field"><span class="lbl">الأيقونة</span><div class="chips">${icons.map((s, i) => `<label class="tl-pick tl-ico" style="--c:${esc(tlCss(color))}"><input type="radio" name="tl-icon" value="${i}" ${s === curIcon ? 'checked' : ''}>${s}</label>`).join('')}</div></div>`,
-    buttons: [{ label: item ? 'حفظ' : 'أضف الخبرة', value: 'ok', cls: 'primary' }, { label: 'إلغاء', value: 'cancel' }] });
+    <div class="field"><span class="lbl">الأيقونة</span><div class="chips" id="tl-icons">${icons.map((s, i) => tlIconRadio(s, i, s === curIcon, color)).join('')}</div>
+      <details class="tl-more"><summary>+ أيقونة جديدة (من النت، أو كود SVG، أو صورة)</summary>
+        <div class="tl-more-body">
+          <label for="tl-q">دوّر في مكتبة Lucide (مجانية، أكتر من 1500 أيقونة)</label>
+          <div class="tl-row"><input id="tl-q" dir="auto" placeholder="مثلاً: شغل، برمجة، تعليم، car، book"><button type="button" class="btn small" id="tl-q-go">دوّر</button></div>
+          <div class="chips tl-results" id="tl-results" aria-live="polite"></div>
+          <label for="tl-svg">أو الصق كود SVG (من أي موقع أيقونات زي lucide.dev أو tabler-icons.io)</label>
+          <textarea id="tl-svg" rows="2" dir="ltr" placeholder="<svg ...>...</svg>"></textarea>
+          <div class="tl-row"><button type="button" class="btn small" id="tl-svg-go">استخدم الكود ده</button>
+            <label class="btn small" for="tl-file">ارفع ملف (SVG / PNG)</label><input type="file" id="tl-file" accept=".svg,image/svg+xml,image/png,image/webp,image/jpeg" hidden></div>
+        </div></details></div>`,
+    buttons: [{ label: item ? 'حفظ' : 'أضف الخبرة', value: 'ok', cls: 'primary' }, { label: 'إلغاء', value: 'cancel' }],
+    onOpen: (dlg) => tlIconImporter(dlg, icons) });
   if (r !== 'ok') return null;
   const v = (id) => (($('#' + id) || {}).value || '').trim();
   const pick = (n) => { const x = $(`#dlg input[name="${n}"]:checked`); return x ? x.value : ''; };
@@ -1663,7 +1768,32 @@ function tlPanel(tl, el) {
     ${ctl('الخط', opt('line', ['منقّط', 'متصل', 'من غير خط']))}
     ${ctl('النقط', opt('dots', ['دواير بأيقونات', 'نقط صغيرة']))}
     ${ctl('الكروت', opt('cards', ['بظل', 'بإطار بس', 'من غير خلفية']))}
-    ${ctl('الكلمات المفتاحية', opt('tags', ['ظاهرة', 'مخفية']))}`;
+    ${ctl('الكلمات المفتاحية', opt('tags', ['ظاهرة', 'مخفية']))}
+    <h4 class="tl-h">ألوان ومقاسات السلسلة كلها</h4>
+    <p class="hint">أي اختيار هنا بيتطبق على كل الخبرات مرة واحدة (والخبرات الجديدة كمان)، على الكمبيوتر والموبايل.</p>
+    ${tlVarCtl(tl, '--tl-card-bg', 'خلفية الكروت', [['', 'الأصلية'], ['#ffffff', 'أبيض'], ['var(--cream)', 'كريمي'], ['#e3f1ef', 'أخضر فاتح'], ['#fef3ef', 'برتقالي فاتح'], ['#eef2f7', 'أزرق فاتح']], true)}
+    ${tlVarCtl(tl, '--tl-card-border', 'إطار الكروت', [['', 'الأصلي'], ['transparent', 'من غير'], ['var(--coral)', 'برتقالي'], ['var(--navy)', 'كحلي'], ['var(--teal)', 'أخضر']], true)}
+    ${tlVarCtl(tl, '--tl-radius', 'استدارة الكروت', [['0px', 'حادة'], ['8px', 'خفيفة'], ['', 'الأصلية'], ['28px', 'كبيرة']])}
+    ${tlVarCtl(tl, '--tl-line', 'لون الخط', [['', 'الأصلي'], ['var(--coral)', 'برتقالي'], ['var(--navy)', 'كحلي'], ['var(--teal)', 'أخضر']], true)}
+    ${tlVarCtl(tl, '--tl-line-w', 'سُمك الخط', [['1px', 'رفيع'], ['', 'عادي'], ['4px', 'تقيل']])}
+    ${tlVarCtl(tl, '--tl-dot', 'حجم الدواير (كمبيوتر)', [['44px', 'صغيرة'], ['', 'عادية'], ['72px', 'كبيرة']])}
+    ${tlVarCtl(tl, '--tl-title', 'لون العناوين', [['', 'الأصلي'], ['var(--coral)', 'برتقالي'], ['var(--teal)', 'أخضر'], ['var(--text)', 'رمادي غامق']], true)}
+    ${tlVarCtl(tl, '--tl-title-size', 'حجم العناوين', [['1rem', 'صغير'], ['', 'عادي'], ['1.35rem', 'كبير'], ['1.6rem', 'أكبر']])}
+    ${tlVarCtl(tl, '--tl-font', 'خط العناوين', [['', 'الأصلي']].concat(FONTS.map((f) => [`'${f[0]}', sans-serif`, f[1]])))}
+    ${tlVarCtl(tl, '--tl-text', 'لون الوصف', [['', 'الأصلي'], ['var(--muted)', 'رمادي فاتح'], ['var(--navy)', 'كحلي']], true)}
+    ${tlVarCtl(tl, '--tl-text-size', 'حجم الوصف', [['.85rem', 'صغير'], ['', 'عادي'], ['1.05rem', 'كبير']])}
+    ${tlVarCtl(tl, '--tl-tag-bg', 'خلفية الكلمات المفتاحية', [['', 'الأصلية'], ['#ffffff', 'أبيض'], ['#e3f1ef', 'أخضر فاتح'], ['#fef3ef', 'برتقالي فاتح']], true)}
+    ${tlVarCtl(tl, '--tl-gap', 'المسافة بين الخبرات', [['10px', 'قريبة'], ['', 'عادية'], ['36px', 'واسعة'], ['56px', 'واسعة جدًا']])}
+    ${tlVarCtl(tl, '--tl-w', 'عرض السلسلة', [['640px', 'ضيق'], ['', 'عادي'], ['1000px', 'عريض'], ['100%', 'كامل']])}
+    <h4 class="tl-h">القسم نفسه</h4>
+    ${tlSecOf(tl) ? ctl('خلفية القسم', `<div class="chips">${BGS.map(([v, l]) => `<button type="button" class="swatch ${v ? '' : 'none'} ${norm2(tlSecOf(tl).style.background) === norm2(v) ? 'on' : ''}" title="${l}" aria-label="${l}" data-tlsec="${esc(v)}" style="${v ? `background:${esc(tlCss(v))}` : ''}"></button>`).join('')}<input type="color" data-tlsecc="1" aria-label="لون مخصص لخلفية القسم" title="لون مخصص"></div>`) : ''}
+    <div class="chips"><button type="button" data-tl="pick-title">نسّق عنوان القسم</button><button type="button" data-tl="pick-sec">كل أدوات القسم (مسافات، صورة خلفية...)</button><button type="button" data-tl="reset" class="danger">رجّع الشكل الأصلي للسلسلة</button></div>`;
+}
+const norm2 = (v) => String(v || '').replace(/\s+/g, ' ').replace(/"/g, "'").trim();
+function tlSecOf(tl) { return tl.closest('[data-sid]') || tl.closest('section'); }
+function tlVarCtl(tl, name, label, list, color = false) {
+  const cur = tl.style.getPropertyValue(name).trim();
+  return `<div class="ctl"><span>${label}</span><div class="chips">${list.map(([v, l]) => `<button type="button" data-tlv="${name}" data-v="${esc(v)}" class="${norm2(cur) === norm2(v) ? 'on' : ''}"${color && v && v !== 'transparent' ? ` style="border-inline-start:14px solid ${esc(tlCss(v))}"` : ''}${name === '--tl-font' && v ? ` style="font-family:${esc(v)}"` : ''}>${l}</button>`).join('')}${color ? `<input type="color" data-tlvc="${name}" aria-label="${label}: لون مخصص" title="لون مخصص" style="width:36px;height:36px;border:none;background:none;padding:0;cursor:pointer">` : ''}</div></div>`;
 }
 async function tlAction(a, el) {
   const tl = tlOf(el); if (!tl) return;
@@ -1674,6 +1804,9 @@ async function tlAction(a, el) {
     const r = await dialog({ title: 'حذف الخبرة؟', html: `<p>هتتحذف «${esc((item.querySelector('h3') || item).textContent.trim())}». تقدر ترجعها بـ «تراجع».</p>`, buttons: [{ label: 'احذف', value: 'ok', cls: 'danger' }, { label: 'إلغاء', value: 'cancel' }] });
     if (r !== 'ok') return; select(tl); item.remove(); changed(); return;
   }
+  if (a === 'pick-title') { const sec = tlSecOf(tl), h = sec && sec.querySelector('h2,h1'); if (h) { select(h); h.scrollIntoView({ block: 'center' }); } return; }
+  if (a === 'pick-sec') { const sec = tlSecOf(tl); if (sec) { openGroups.tl = false; select(sec); toast('اخترت القسم كله. استخدم «الخلفية» و«المسافات» تحت.'); } return; }
+  if (a === 'reset') { [...tl.style].filter((p) => p.startsWith('--tl-')).forEach((p) => tl.style.removeProperty(p)); Object.values(TL_GROUPS).flat().forEach((c) => c && tl.classList.remove(c)); if (!tl.getAttribute('style')) tl.removeAttribute('style'); changed(); renderStylePanel(); toast('رجعت السلسلة لشكلها الأصلي (الترتيب زي ما هو).', 'good'); return; }
   if (a === 'desc' || a === 'asc') { sortTimeline(tl, a); changed(); renderStylePanel(); toast(a === 'desc' ? 'اترتبت: الأحدث فوق.' : 'اترتبت: الأقدم فوق.', 'good'); }
 }
 
@@ -1791,6 +1924,12 @@ $('#side-style').addEventListener('toggle', (e) => { const d = e.target.closest(
 $('#side-style').addEventListener('click', async (e) => {
   const el = selected; const b = e.target.closest('button'); if (!el || !b) return;
   if (b.dataset.tl) return tlAction(b.dataset.tl, el);
+  if (b.dataset.tlv || b.dataset.tlsec != null) {
+    const tl = tlOf(el); if (!tl) return;
+    if (b.dataset.tlv) { if (b.dataset.v) tl.style.setProperty(b.dataset.tlv, b.dataset.v); else tl.style.removeProperty(b.dataset.tlv); if (!tl.getAttribute('style')) tl.removeAttribute('style'); }
+    else { const sec = tlSecOf(tl); sec.style.background = b.dataset.tlsec; if (!sec.getAttribute('style')) sec.removeAttribute('style'); }
+    changed(); renderStylePanel(); return;
+  }
   if (b.dataset.tlc) {
     const tl = tlOf(el); if (!tl) return; const [g, c] = b.dataset.tlc.split(':');
     TL_GROUPS[g].forEach((x) => x && tl.classList.remove(x)); if (c) tl.classList.add(c);
@@ -1822,6 +1961,11 @@ $('#side-style').addEventListener('click', async (e) => {
 });
 $('#side-style').addEventListener('change', (e) => {
   if (!selected) return;
+  if (e.target.dataset.tlvc || e.target.dataset.tlsecc) {
+    const tl = tlOf(selected); if (!tl) return;
+    if (e.target.dataset.tlvc) tl.style.setProperty(e.target.dataset.tlvc, e.target.value); else tlSecOf(tl).style.background = e.target.value;
+    changed(); renderStylePanel(); return;
+  }
   if (e.target.dataset.num) { const n = parseInt(e.target.value); setProp(selected, e.target.dataset.num, Number.isFinite(n) ? n + 'px' : ''); changed(); renderStylePanel(); return; }
   if (e.target.type === 'color') { setProp(selected, e.target.dataset.p, e.target.value); changed(); renderStylePanel(); }
 });
