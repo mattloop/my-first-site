@@ -111,6 +111,15 @@
     .chips button.on { border-color: var(--ink); background: var(--ink); color: var(--white); }
     .chips button.swatch { width: 36px; height: 36px; border-radius: 50%; padding: 0; border: 2px solid var(--line); }
     .chips button.swatch.on { outline: 3px solid var(--ink); outline-offset: 2px; background-clip: padding-box; }
+    .tl-pick { position: relative; display: inline-flex; flex-direction: column; align-items: center; gap: 2px; cursor: pointer; font-weight: 400; }
+    .tl-pick input { position: absolute; opacity: 0; pointer-events: none; }
+    .tl-pick .swatch { width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--line); display: block; }
+    .tl-pick small { font-size: .75rem; color: var(--muted); }
+    .tl-pick.tl-ico { width: 44px; height: 44px; border-radius: 50%; border: 2px solid var(--line); justify-content: center; color: var(--c, var(--ink)); }
+    .tl-pick.tl-ico svg { width: 22px; height: 22px; }
+    .tl-pick:has(input:checked) .swatch, .tl-pick.tl-ico:has(input:checked) { outline: 3px solid var(--ink); outline-offset: 2px; }
+    .tl-pick:has(input:focus-visible) { outline: 3px solid var(--teal); outline-offset: 2px; border-radius: 8px; }
+    .field .lbl { display: block; font-weight: 600; margin-bottom: 6px; }
     .chips button.swatch.none { background: repeating-linear-gradient(45deg, #fff 0 6px, #f1d4cc 6px 8px); }
     .sgroup { border: 1px solid var(--line); border-radius: 12px; margin-bottom: 8px; background: var(--white); }
     .sgroup > summary { cursor: pointer; padding: 10px 12px; font-weight: 700; font-size: .92rem; list-style: none; display: flex; justify-content: space-between; }
@@ -549,6 +558,26 @@ nav ul a.active,nav ul a[aria-current=page]{background:var(--coral);color:#fff!i
 /* «كلّمني على واتساب» زرار برتقالي بدل لينك متسطّر */
 @media(min-width:901px){.link-coral{display:inline-flex;align-items:center;gap:8px;background:var(--coral);color:#fff;border:none;border-radius:999px;padding:12px 26px;box-shadow:0 8px 20px rgba(194,70,31,.3)}}
 @media(prefers-reduced-motion:reduce){nav ul a{transition:none}}
+/* ===== أشكال الخط الزمني (رحلتي): كلاسات على .timeline بتتغير من الداشبورد ===== */
+.timeline.tl-line-solid::before{border-right-style:solid}
+.timeline.tl-line-none::before{display:none}
+.tl-dots-small .tl-dot{width:18px;height:18px;margin:20px auto 0;background:var(--c);border-width:4px;border-color:#fff;box-shadow:0 0 0 2px var(--c)}
+.tl-dots-small .tl-dot>span{display:none}
+.tl-cards-flat .tl-card{box-shadow:none}
+.tl-cards-plain .tl-card{background:transparent;border-color:transparent;box-shadow:none;padding-top:10px}
+.tl-compact .tl-item{margin-bottom:12px}
+.tl-compact .tl-card{padding:12px 18px}
+.tl-compact .tl-card>p{display:none}
+.tl-no-tags .tl-tags{display:none}
+@media(min-width:901px){
+.timeline.tl-zigzag{max-width:1040px}
+.timeline.tl-zigzag::before{right:50%;margin-right:-1px}
+.tl-zigzag .tl-item{grid-template-columns:1fr 56px 1fr}
+.tl-zigzag .tl-dot{grid-column:2;grid-row:1}
+.tl-zigzag .tl-item:nth-child(odd) .tl-card{grid-column:1;grid-row:1}
+.tl-zigzag .tl-item:nth-child(even) .tl-card{grid-column:3;grid-row:1}
+.tl-zigzag .tl-item:nth-child(even) .tl-card:hover{transform:translateX(4px)}
+}
 `;
 const card = (title, text, btn = 'التفاصيل') => `<div class="b-card"><img class="b-card-img" src="${PH(640, 400)}" alt=""><div class="b-card-body"><h3>${title}</h3><p>${text}</p><a class="b-btn alt" href="#">${btn}</a></div></div>`;
 const SECTIONS = [
@@ -1102,7 +1131,7 @@ const TB_ICON = {
   done: TI('<path d="M20 6 9 17l-5-5"/>'),
 };
 const elName = (el) => ({ H1: 'عنوان رئيسي', H2: 'عنوان', H3: 'عنوان صغير', H4: 'عنوان صغير', P: 'فقرة', A: 'زرار / لينك', IMG: 'صورة', LI: 'نقطة', UL: 'قايمة', BLOCKQUOTE: 'اقتباس', SPAN: 'كلام', BUTTON: 'زرار', NAV: 'القايمة', HEADER: 'الهيدر', FOOTER: 'الفوتر' }[el.tagName] ||
-  (el.classList.contains('b-card') ? 'كارت' : el.hasAttribute('data-sid') ? 'قسم' : el.classList.contains('b-video') ? 'فيديو' : 'مجموعة'));
+  (el.classList.contains('tl-card') ? 'كارت خبرة' : el.classList.contains('tl-item') ? 'خبرة' : el.classList.contains('timeline') ? 'الخط الزمني' : el.classList.contains('b-card') ? 'كارت' : el.hasAttribute('data-sid') ? 'قسم' : el.classList.contains('b-video') ? 'فيديو' : 'مجموعة'));
 function tbBtn(a, label, cls = '', attr = 'data-a') { return `<button type="button" ${attr}="${a}" class="${cls}" title="${label}">${TB_ICON[a] || ''}<span>${label}</span></button>`; }
 function updateOverlays() {
   if (!cdoc || !cdoc.body) return;
@@ -1143,6 +1172,7 @@ function renderFloatBar() {
     if (!isTop) h += tbBtn('dup', 'نسخة') + tbBtn('prev', 'قبل', 'ic-only') + tbBtn('next', 'بعد', 'ic-only');
     h += tbBtn('style', 'تنسيق');
     if (!sel.hasAttribute('data-global') && !isTop) h += tbBtn('delete', 'حذف', 'fb-danger');
+    if (tlOf(sel)) h += '<span class="fb-sep"></span>' + (tlItemOf(sel) ? tbBtn('tledit', 'عدّل الخبرة') : '') + tbBtn('tladd', '+ خبرة', 'fb-ok');
   }
   if (sec && !editing) {
     const g = sec.getAttribute('data-global');
@@ -1202,6 +1232,8 @@ async function act(a) {
     case 'image': return changeImage(el);
     case 'crop': return cropImage(el);
     case 'video': return changeVideo(videoTarget(el));
+    case 'tladd': return tlAction('add', el);
+    case 'tledit': return tlAction('edit', el);
     case 'dup': { const c = el.cloneNode(true); c.removeAttribute('id'); c.querySelectorAll('[id]').forEach((x) => x.removeAttribute('id')); c.classList.remove('__sel'); el.after(c); select(c); break; }
     case 'prev': { const u = unitOf(el), p = u.previousElementSibling; if (!p) return; u.parentNode.insertBefore(u, p); break; }
     case 'next': { const u = unitOf(el), n = u.nextElementSibling; if (!n || n.matches('[data-global],.__ed,#__addbtn,#__drop')) return; u.parentNode.insertBefore(n, u); break; }
@@ -1524,7 +1556,128 @@ function insertElement(html) {
 }
 
 /* ---------- لوحة "تنسيق": كل خصائص العنصر، ولكل جهاز لوحده ---------- */
-const COLORS = [['', 'تلقائي'], ['var(--navy)', 'كحلي'], ['var(--text)', 'رمادي غامق'], ['var(--teal)', 'أخضر'], ['var(--coral)', 'برتقالي'], ['var(--yellow)', 'أصفر'], ['#ffffff', 'أبيض'], ['var(--muted)', 'رمادي']];
+/* ---------- الخط الزمني (رحلتي): ترتيب، إضافة خبرة، تعديلها، وتغيير شكل السلسلة ----------
+   كل خبرة = .tl-item جوه .timeline. سنة الترتيب = data-year لو موجودة، وإلا أول سنة مكتوبة في الفترة.
+   data-sort="desc|asc" على .timeline بيفتكر اتجاه الترتيب، والخبرة الجديدة بتتحط في مكانها لوحدها. */
+const TL_COLORS = [['var(--navy)', 'كحلي'], ['#4f6d8f', 'أزرق رمادي'], ['var(--teal)', 'أخضر'], ['var(--yellow)', 'أصفر'], ['var(--coral)', 'برتقالي'], ['#c4302b', 'أحمر']];
+const TL_ICON = (d) => `<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
+const TL_DEFAULT_ICONS = [
+  TL_ICON('<path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect width="20" height="14" x="2" y="6" rx="2"/>'), // شنطة شغل
+  TL_ICON('<path d="m16 18 6-6-6-6"/><path d="m8 6-6 6 6 6"/>'), // برمجة
+  TL_ICON('<path d="M12 2 15 8.5 22 9.3 17 14 18.2 21 12 17.8 5.8 21 7 14 2 9.3 9 8.5z"/>'), // نجمة
+];
+const TL_GROUPS = { layout: ['', 'tl-zigzag', 'tl-compact'], line: ['', 'tl-line-solid', 'tl-line-none'], dots: ['', 'tl-dots-small'], cards: ['', 'tl-cards-flat', 'tl-cards-plain'], tags: ['', 'tl-no-tags'] };
+// ألوان var(--navy) وأخواتها متعرّفة جوه الصفحة بس، فبنجيب قيمتها الحقيقية عشان تظهر في نافذة الداشبورد
+const tlCss = (v) => { const m = /^var\((--[\w-]+)\)$/.exec(v); return m && cdoc ? (cdoc.defaultView.getComputedStyle(cdoc.documentElement).getPropertyValue(m[1]).trim() || v) : v; };
+const toLatinDigits =(s) => String(s || '').replace(/[٠-٩]/g, (d) => '٠١٢٣٤٥٦٧٨٩'.indexOf(d));
+function tlOf(el) { if (!el || !el.closest) return null; return el.closest('.timeline') || (el.querySelector && el.querySelector('.timeline')) || null; }
+function tlItemOf(el) { return el && el.closest ? el.closest('.tl-item') : null; }
+const tlItems = (tl) => [...tl.children].filter((x) => x.classList.contains('tl-item'));
+function tlYear(it) {
+  const y = toLatinDigits(it.getAttribute('data-year')).trim(); if (/^\d{4}$/.test(y)) return +y;
+  const m = toLatinDigits((it.querySelector('.tl-stage') || it).textContent).match(/\d{4}/); return m ? +m[0] : 0;
+}
+function sortTimeline(tl, dir) {
+  let items = tlItems(tl);
+  // لو بنقلب الاتجاه، نعكس الأول عشان الخبرات اللي في نفس السنة تتقلب هي كمان (الأحدث فوق)
+  if ((tl.getAttribute('data-sort') || 'asc') !== dir) items.reverse();
+  const idx = new Map(items.map((x, i) => [x, i]));
+  items.sort((a, b) => (dir === 'desc' ? tlYear(b) - tlYear(a) : tlYear(a) - tlYear(b)) || idx.get(a) - idx.get(b));
+  items.forEach((x) => tl.appendChild(x));
+  tl.setAttribute('data-sort', dir);
+}
+function tlIconChoices(tl) {
+  const seen = new Set(), out = [];
+  tlItems(tl).forEach((it) => { const s = it.querySelector('.tl-dot svg'); if (s && !seen.has(s.outerHTML)) { seen.add(s.outerHTML); out.push(s.outerHTML); } });
+  TL_DEFAULT_ICONS.forEach((s) => { if (!seen.has(s)) out.push(s); });
+  return out;
+}
+async function tlDialog(tl, item) {
+  const g = (sel) => (item && item.querySelector(sel) ? item.querySelector(sel).textContent.trim() : '');
+  const color = item ? ((item.querySelector('.tl-dot') || item).style.getPropertyValue('--c').trim() || TL_COLORS[0][0]) : TL_COLORS[4][0];
+  const icons = tlIconChoices(tl), curIcon = item && item.querySelector('.tl-dot svg') ? item.querySelector('.tl-dot svg').outerHTML : icons[0];
+  const tags = item ? [...item.querySelectorAll('.tl-tags span')].map((s) => s.textContent.trim()).join('، ') : '';
+  const r = await dialog({ title: item ? 'تعديل الخبرة' : 'خبرة جديدة', html: `
+    <div class="field"><label for="tl-period">الفترة (بتظهر في الشارة الملوّنة)</label><input id="tl-period" required value="${esc(g('.tl-stage'))}" placeholder="مثلاً: 2024 أو 2020 – 2023 أو منذ 2024"></div>
+    <div class="field"><label for="tl-label">كلمة جنب الفترة</label><input id="tl-label" value="${esc(g('.tl-meta small'))}" placeholder="مثلاً: مؤسس، عامان، مستمر"></div>
+    <div class="field"><label for="tl-title">العنوان</label><input id="tl-title" required value="${esc(g('h3'))}"></div>
+    <div class="field"><label for="tl-desc">الوصف</label><textarea id="tl-desc" rows="3">${esc(g('.tl-card > p'))}</textarea></div>
+    <div class="field"><label for="tl-tags">الكلمات المفتاحية (افصل بينها بفاصلة)</label><input id="tl-tags" value="${esc(tags)}" placeholder="مثلاً: برمجيات، تطبيقات"></div>
+    <div class="field"><label for="tl-year">سنة الترتيب (اختياري)</label><input id="tl-year" type="number" min="1950" max="2100" dir="ltr" value="${esc(item ? item.getAttribute('data-year') || '' : '')}" placeholder="${(item && tlYear(item)) || ''}">
+      <p class="hint">لو سبتها فاضية، الترتيب بيعتمد على أول سنة مكتوبة في «الفترة».</p></div>
+    <div class="field"><span class="lbl">اللون</span><div class="chips">${TL_COLORS.map(([v, l]) => `<label class="tl-pick" title="${l}"><input type="radio" name="tl-color" value="${esc(v)}" ${v === color ? 'checked' : ''}><span class="swatch" style="background:${esc(tlCss(v))}"></span><small>${l}</small></label>`).join('')}</div></div>
+    <div class="field"><span class="lbl">الأيقونة</span><div class="chips">${icons.map((s, i) => `<label class="tl-pick tl-ico" style="--c:${esc(tlCss(color))}"><input type="radio" name="tl-icon" value="${i}" ${s === curIcon ? 'checked' : ''}>${s}</label>`).join('')}</div></div>`,
+    buttons: [{ label: item ? 'حفظ' : 'أضف الخبرة', value: 'ok', cls: 'primary' }, { label: 'إلغاء', value: 'cancel' }] });
+  if (r !== 'ok') return null;
+  const v = (id) => (($('#' + id) || {}).value || '').trim();
+  const pick = (n) => { const x = $(`#dlg input[name="${n}"]:checked`); return x ? x.value : ''; };
+  const d = { period: v('tl-period'), label: v('tl-label'), title: v('tl-title'), desc: v('tl-desc'), year: toLatinDigits(v('tl-year')),
+    tags: v('tl-tags').split(/[,،]/).map((t) => t.trim()).filter(Boolean), color: pick('tl-color') || TL_COLORS[0][0], icon: icons[+pick('tl-icon') || 0] };
+  if (!d.period || !d.title) { toast('اكتب الفترة والعنوان على الأقل.', 'bad'); return null; }
+  return d;
+}
+function tlApply(item, d) {
+  const q = (sel, make) => item.querySelector(sel) || make();
+  const dot = q('.tl-dot', () => { const x = cdoc.createElement('div'); x.className = 'tl-dot'; item.prepend(x); return x; });
+  dot.style.setProperty('--c', d.color); dot.innerHTML = `<span>${d.icon}</span>`;
+  const card = q('.tl-card', () => { const x = cdoc.createElement('div'); x.className = 'tl-card'; item.appendChild(x); return x; });
+  const meta = q('.tl-meta', () => { const x = cdoc.createElement('div'); x.className = 'tl-meta'; card.prepend(x); return x; });
+  const stage = meta.querySelector('.tl-stage') || meta.appendChild(cdoc.createElement('span'));
+  stage.classList.add('tl-stage'); stage.classList.toggle('on-light', d.color === 'var(--yellow)'); stage.style.setProperty('--c', d.color); stage.textContent = d.period;
+  let small = meta.querySelector('small');
+  if (d.label) { if (!small) small = meta.appendChild(cdoc.createElement('small')); small.textContent = d.label; } else if (small) small.remove();
+  let h3 = card.querySelector('h3'); if (!h3) { h3 = cdoc.createElement('h3'); meta.after(h3); } h3.textContent = d.title;
+  let p = card.querySelector(':scope > p');
+  if (d.desc) { if (!p) { p = cdoc.createElement('p'); h3.after(p); } p.textContent = d.desc; } else if (p) p.remove();
+  let tags = card.querySelector('.tl-tags');
+  if (d.tags.length) { if (!tags) { tags = cdoc.createElement('div'); tags.className = 'tl-tags'; card.appendChild(tags); } tags.innerHTML = d.tags.map((t) => `<span>${esc(t)}</span>`).join(''); } else if (tags) tags.remove();
+  if (/^\d{4}$/.test(d.year)) item.setAttribute('data-year', d.year); else item.removeAttribute('data-year');
+}
+async function tlAdd(tl) {
+  if (!tl) return;
+  stopEditing(); const d = await tlDialog(tl, null); if (!d) return;
+  const item = cdoc.createElement('div'); item.className = 'tl-item';
+  const dir = tl.getAttribute('data-sort') || 'desc';
+  tl.insertBefore(item, dir === 'desc' ? tlItems(tl)[0] || null : null);
+  tlApply(item, d); sortTimeline(tl, dir);
+  select(item.querySelector('.tl-card') || item); changed(); item.scrollIntoView({ block: 'center', behavior: 'smooth' });
+  toast(dir === 'desc' ? 'اتضافت الخبرة في مكانها (الأحدث فوق). متنساش تحفظ.' : 'اتضافت الخبرة في مكانها. متنساش تحفظ.', 'good');
+}
+async function tlEdit(item) {
+  const tl = item && item.parentElement; if (!tl || !tl.classList.contains('timeline')) return;
+  stopEditing(); const d = await tlDialog(tl, item); if (!d) return;
+  tlApply(item, d); if (tl.hasAttribute('data-sort')) sortTimeline(tl, tl.getAttribute('data-sort'));
+  select(item.querySelector('.tl-card') || item); changed(); toast('اتعدّلت الخبرة.', 'good');
+}
+function tlPanel(tl, el) {
+  const item = tlItemOf(el), dir = tl.getAttribute('data-sort') || '';
+  const on = (g) => TL_GROUPS[g].find((c) => c && tl.classList.contains(c)) || '';
+  const opt = (g, labels) => `<div class="chips">${TL_GROUPS[g].map((c, i) => `<button type="button" data-tlc="${g}:${c}" class="${on(g) === c ? 'on' : ''}">${labels[i]}</button>`).join('')}</div>`;
+  const ctl = (label, inner, hint = '') => `<div class="ctl"><span>${label}</span>${inner}${hint ? `<p class="hint">${hint}</p>` : ''}</div>`;
+  return `
+    ${ctl('الخبرات', `<div class="chips"><button type="button" data-tl="add" class="on">+ أضف خبرة</button>${item ? '<button type="button" data-tl="edit">عدّل الخبرة دي</button><button type="button" data-tl="del">احذف الخبرة دي</button>' : ''}</div>`,
+      `عندك ${tlItems(tl).length} خبرات. الخبرة الجديدة بتاخد نفس الشكل وبتتحط في مكانها حسب السنة.`)}
+    ${ctl('الترتيب', `<div class="chips"><button type="button" data-tl="desc" class="${dir === 'desc' ? 'on' : ''}">الأحدث فوق</button><button type="button" data-tl="asc" class="${dir === 'asc' ? 'on' : ''}">الأقدم فوق</button></div>`,
+      dir ? '' : 'الخبرات دلوقتي بترتيبها اليدوي. اختار ترتيب عشان يتظبط بالسنين.')}
+    ${ctl('شكل السلسلة', opt('layout', ['عمود جنب الخط', 'متبادل يمين وشمال', 'مختصر (من غير وصف)']), '«متبادل» بيظهر على الكمبيوتر بس، والموبايل بيفضل عمود واحد.')}
+    ${ctl('الخط', opt('line', ['منقّط', 'متصل', 'من غير خط']))}
+    ${ctl('النقط', opt('dots', ['دواير بأيقونات', 'نقط صغيرة']))}
+    ${ctl('الكروت', opt('cards', ['بظل', 'بإطار بس', 'من غير خلفية']))}
+    ${ctl('الكلمات المفتاحية', opt('tags', ['ظاهرة', 'مخفية']))}`;
+}
+async function tlAction(a, el) {
+  const tl = tlOf(el); if (!tl) return;
+  const item = tlItemOf(el);
+  if (a === 'add') return tlAdd(tl);
+  if (a === 'edit' && item) return tlEdit(item);
+  if (a === 'del' && item) {
+    const r = await dialog({ title: 'حذف الخبرة؟', html: `<p>هتتحذف «${esc((item.querySelector('h3') || item).textContent.trim())}». تقدر ترجعها بـ «تراجع».</p>`, buttons: [{ label: 'احذف', value: 'ok', cls: 'danger' }, { label: 'إلغاء', value: 'cancel' }] });
+    if (r !== 'ok') return; select(tl); item.remove(); changed(); return;
+  }
+  if (a === 'desc' || a === 'asc') { sortTimeline(tl, a); changed(); renderStylePanel(); toast(a === 'desc' ? 'اترتبت: الأحدث فوق.' : 'اترتبت: الأقدم فوق.', 'good'); }
+}
+
+const COLORS = [['', 'تلقائي'],['var(--navy)', 'كحلي'], ['var(--text)', 'رمادي غامق'], ['var(--teal)', 'أخضر'], ['var(--coral)', 'برتقالي'], ['var(--yellow)', 'أصفر'], ['#ffffff', 'أبيض'], ['var(--muted)', 'رمادي']];
 const BGS = [['', 'من غير'], ['#ffffff', 'أبيض'], ['var(--cream)', 'كريمي'], ['#e3f1ef', 'أخضر فاتح'], ['#fef3ef', 'برتقالي فاتح'], ['var(--navy)', 'كحلي'], ['var(--teal)', 'أخضر'], ['linear-gradient(135deg, #c44a22, #a03615)', 'برتقالي متدرّج']];
 const kebab = (p) => p.replace(/[A-Z]/g, (m) => '-' + m.toLowerCase());
 const camel = (p) => p.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
@@ -1562,7 +1715,7 @@ function refreshMobileCss() {
   const css = mobileCssFrom(cdoc.body); t.textContent = css ? `@media(max-width:900px){${css}}` : '';
 }
 
-let openGroups = { text: true, box: false, space: false, size: false, layout: true, place: false, nudge: true, show: false };
+let openGroups = { tl: true, text: true, box: false, space: false, size: false, layout: true, place: false, nudge: true, show: false };
 function renderStylePanel() {
   const box = $('#side-style'); if (!box) return;
   const el = selected;
@@ -1588,6 +1741,7 @@ function renderStylePanel() {
   box.innerHTML = `
     <div class="sel-info device-note ${isMobileMode() ? 'm' : ''}">${isMobileMode() ? '📱 بتعدّل <b>للموبايل بس</b> — الكمبيوتر مش هيتأثر' : '🖥️ التعديل بيطبق على <b>الكمبيوتر والموبايل</b>. اختار «موبايل» فوق عشان تعدّل للموبايل لوحده'}</div>
     <div class="crumbs" aria-label="مكان العنصر">${chain.map((x, i) => `<button type="button" data-crumb="${i}" class="${x === el ? 'on' : ''}">${elName(x)}</button>`).join('<span>‹</span>')}</div>
+    ${tlOf(el) ? group('tl', 'الخط الزمني (رحلتي)', tlPanel(tlOf(el), el)) : ''}
     ${group('text', 'الكلام', hasText ? `
       ${ctl('نوع الخط', `<div class="chips">${[['', 'تلقائي']].concat(FONTS.map((f) => [`'${f[0]}', sans-serif`, f[1]])).map(([v, l]) => `<button type="button" data-p="fontFamily" data-v="${esc(v)}" class="${norm(s.fontFamily) === norm(v) ? 'on' : ''}" style="${v ? `font-family:${esc(v)};` : ''}font-size:15px">${l}</button>`).join('')}</div>`)}
       ${ctl('حجم الخط', chips('fontSize', [['', 'تلقائي'], ['14px', '14'], ['16px', '16'], ['18px', '18'], ['22px', '22'], ['28px', '28'], ['36px', '36'], ['48px', '48']], s.fontSize) + `<div style="margin-top:6px">مخصص: ${num('fontSize', Math.round(parseFloat(cs.fontSize)))} بكسل</div>`)}
@@ -1636,6 +1790,12 @@ function renderStylePanel() {
 $('#side-style').addEventListener('toggle', (e) => { const d = e.target.closest('details[data-g]'); if (d) openGroups[d.dataset.g] = d.open; }, true);
 $('#side-style').addEventListener('click', async (e) => {
   const el = selected; const b = e.target.closest('button'); if (!el || !b) return;
+  if (b.dataset.tl) return tlAction(b.dataset.tl, el);
+  if (b.dataset.tlc) {
+    const tl = tlOf(el); if (!tl) return; const [g, c] = b.dataset.tlc.split(':');
+    TL_GROUPS[g].forEach((x) => x && tl.classList.remove(x)); if (c) tl.classList.add(c);
+    changed(); renderStylePanel(); return;
+  }
   if (b.dataset.n) { const [dx, dy] = b.dataset.n.split(',').map(Number), m = window.__nstep || 1; nudge(el, dx * m, dy * m); return; }
   if (b.dataset.step) { window.__nstep = +b.dataset.step; renderStylePanel(); return; }
   if (b.dataset.x === 'nreset') { ['position', 'left', 'top'].forEach((p) => setProp(el, p, '')); changed(); renderStylePanel(); return; }
