@@ -33,6 +33,14 @@
     .btn.danger { color: var(--danger); }
     .btn.danger:hover { border-color: var(--danger); }
     .btn.small { min-height: 38px; padding: 6px 12px; font-size: .9rem; }
+    /* معاينة جوه الصفحة: بتظهر لو المتصفح منع فتح تاب جديد */
+    #pv { position: fixed; inset: 0; z-index: 2000; background: rgba(18,48,74,.85); display: flex; flex-direction: column; }
+    #pv .pv-bar { display: flex; gap: 8px; align-items: center; padding: 8px 12px; background: var(--white); flex-wrap: wrap; }
+    #pv .pv-bar b { margin-inline-end: auto; }
+    #pv .pv-wrap { flex: 1; display: flex; justify-content: center; overflow: auto; padding: 12px; }
+    #pv iframe { width: 100%; height: 100%; border: 0; background: var(--white); border-radius: 10px; transition: width .2s; }
+    #pv.phone iframe { width: 390px; max-width: 100%; }
+    #pv .btn[aria-pressed="true"] { background: var(--ink); color: var(--white); border-color: var(--ink); }
     .btn.block { width: 100%; }
 
     /* ================= الدخول ================= */
@@ -261,6 +269,15 @@
 
 <dialog id="dlg"><form method="dialog"><div class="dlg-body" id="dlg-body"></div><div class="dlg-actions" id="dlg-actions"></div></form></dialog>
 <div id="toast" role="status" aria-live="polite"></div>
+<div id="pv" hidden role="dialog" aria-modal="true" aria-label="معاينة الصفحة">
+  <div class="pv-bar">
+    <b>معاينة</b>
+    <button class="btn small" type="button" id="pv-desk" aria-pressed="true">كمبيوتر</button>
+    <button class="btn small" type="button" id="pv-phone" aria-pressed="false">موبايل</button>
+    <button class="btn small primary" type="button" id="pv-close">قفل المعاينة ✕</button>
+  </div>
+  <div class="pv-wrap"><iframe id="pv-frame" title="معاينة الصفحة" sandbox="allow-scripts allow-popups allow-popups-to-escape-sandbox"></iframe></div>
+</div>
 
 <script>
 /* =====================================================================
@@ -1023,7 +1040,7 @@ function onKey(e) {
   const arrows = { arrowup: [0, -1], arrowdown: [0, 1], arrowleft: [-1, 0], arrowright: [1, 0] };
   if (arrows[k] && !selected.hasAttribute('data-sid') && !selected.hasAttribute('data-global')) { e.preventDefault(); const m = e.shiftKey ? 10 : 1; nudge(selected, arrows[k][0] * m, arrows[k][1] * m); }
 }
-document.addEventListener('keydown', (e) => { if (!$('#editor').hidden && !$('#dlg').open && !e.target.closest('input,textarea,select')) onKey(e); });
+document.addEventListener('keydown', (e) => { if (!$('#editor').hidden && !$('#dlg').open && $('#pv').hidden &&!e.target.closest('input,textarea,select')) onKey(e); });
 
 function select(el) {
   if (selected) selected.classList.remove('__sel');
@@ -1775,10 +1792,29 @@ $('#back-btn').addEventListener('click', async () => {
 $('#save-btn').addEventListener('click', () => savePage());
 $('#preview-btn').addEventListener('click', () => {
   stopEditing(); syncFromDom();
-  const url = URL.createObjectURL(new Blob([renderDocument(current, st)], { type: 'text/html' }));
-  const w = window.open(url, '_blank'); if (!w) toast('المتصفح منع فتح تاب جديد. اسمح بالنوافذ المنبثقة للموقع ده.', 'bad');
+  const html = renderDocument(current, st);
+  const url = URL.createObjectURL(new Blob([html], { type: 'text/html' }));
+  let w = null; try { w = window.open(url, '_blank'); } catch (e) { w = null; }
   setTimeout(() => URL.revokeObjectURL(url), 60000);
+  // لو المتصفح منع التاب الجديد (popup blocker أو متصفح جوه تطبيق)، نعرض المعاينة جوه الصفحة نفسها
+  if (!w) openInlinePreview(html);
 });
+function openInlinePreview(html) {
+  $('#pv-frame').srcdoc = html;
+  setPreviewDevice(false);
+  $('#pv').hidden = false;
+  $('#pv-close').focus();
+}
+function closeInlinePreview() { $('#pv').hidden = true; $('#pv-frame').srcdoc = ''; $('#preview-btn').focus(); }
+function setPreviewDevice(phone) {
+  $('#pv').classList.toggle('phone', phone);
+  $('#pv-desk').setAttribute('aria-pressed', String(!phone));
+  $('#pv-phone').setAttribute('aria-pressed', String(phone));
+}
+$('#pv-close').addEventListener('click', closeInlinePreview);
+$('#pv-desk').addEventListener('click', () => setPreviewDevice(false));
+$('#pv-phone').addEventListener('click', () => setPreviewDevice(true));
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !$('#pv').hidden) { e.preventDefault(); closeInlinePreview(); } });
 /* ---------- النشر: بنبني ملف HTML كامل لكل صفحة ونبعته لـ Supabase، وهو يحطه على GitHub ---------- */
 const pagePath = (p) => (p.slug === 'index' ? 'index.html' : p.slug + '.html');
 function publishError(e) {
