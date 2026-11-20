@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>عمار المهدي | أفكار تُبنى بدقّة وشغف</title>
+  <meta name="description" content="عمار المهدي — مهندس مدني ومؤسس شركة مطلوب. استشارات هندسية، تطبيقات ومواقع، ومحتوى مرئي ومسموع ومكتوب.">
+  <meta property="og:title" content="عمار المهدي | أفكار تُبنى بدقّة وشغف">
+  <meta property="og:description" content="عمار المهدي — مهندس مدني ومؤسس شركة مطلوب. استشارات هندسية، تطبيقات ومواقع، ومحتوى مرئي ومسموع ومكتوب.">
+  <link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300;400;500;600;700&family=Aref+Ruqaa:wght@400;700&family=El+Messiri:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ================================================================
+       ألوان النسق الجديد: كريمي + كحلي + أخضر الفرشاة + أصفر + مرجاني
+       ================================================================ */
+    :root {
+      --cream: #f7f5f0;
+      --white: #ffffff;
+      --navy: #12304a;        /* لون العناوين */
+      --text: #2d3b48;
+      --muted: #5f6b76;
+      --teal: #2a6f68;        /* لون ضربة الفرشاة */
+      --yellow: #f0b43c;
+      --coral: #c2461f;
+      --line: #ece8df;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    #about-me { scroll-margin-top: 16px; } /* مسافة صغيرة فوق الصورة لما الصفحة تنزل لها */
+    body { font-family: 'Readex Pro', sans-serif; color: var(--text); background: var(--white); line-height: 1.9; }
+    a { color: inherit; text-decoration: none; }
+    .container { max-width: 1140px; margin: 0 auto; padding: 0 20px; }
+    h2 { color: var(--navy); font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 600; line-height: 1.4; }
+
+    /* ================= الهيدر ================= */
+    .top { background: var(--cream); overflow: hidden; }
+    nav { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 26px 0; }
+    /* اللوجو بخط رقعة — بيدّي إحساس التوقيع زي "Binjan" */
+    .logo { font-family: 'Aref Ruqaa', serif; font-size: 1.7rem; color: var(--navy); line-height: 1; }
+    nav ul { list-style: none; display: flex; gap: 34px; font-size: 0.92rem; font-weight: 500; color: var(--navy); }
+    /* الدايرة البيضاوي حوالين اللينك النشط */
+    nav ul a.active { color: var(--teal); font-weight: 700; border: 1.5px solid var(--teal); border-radius: 999px; padding: 3px 14px; }
+    .contact { display: flex; align-items: center; gap: 14px; font-size: 0.92rem; font-weight: 500; color: var(--navy); direction: ltr; }
+    .round { width: 46px; height: 46px; border-radius: 50%; background: var(--white); display: grid; place-items: center; box-shadow: 0 6px 18px rgba(0,0,0,0.08); color: var(--teal); }
+
+    /* ================= القسم الأول (Hero) ================= */
+    .hero { display: grid; grid-template-columns: 1fr 1.1fr 1fr; align-items: end; min-height: 600px; position: relative; }
+    .hero .col-right { align-self: stretch; display: flex; flex-direction: column; justify-content: space-between; padding: 40px 0 70px; }
+    .hero h1 { color: var(--navy); font-size: clamp(2.2rem, 4vw, 3.2rem); font-weight: 700; line-height: 1.35; }
+    .h-sub { color: var(--text); font-size: 1.15rem; line-height: 1.9; margin-top: -10px; }
+    .link-coral { color: var(--coral); font-weight: 600; border-bottom: 2px solid var(--coral); padding-bottom: 2px; align-self: flex-start; }
+    .stat-big { display: flex; align-items: center; gap: 12px; color: var(--navy); }
+    .stat-big b { font-size: 3.2rem; font-weight: 700; line-height: 1; }
+    .stat-big span { font-size: 0.95rem; line-height: 1.5; }
+
+    /* الصورة في النص وورا منها ضربة فرشاة خضرا */
+    .hero .center { position: relative; height: 560px; display: flex; justify-content: center; align-items: flex-end; }
+    .me {
+      position: relative; z-index: 1; width: 100%; max-width: 380px; aspect-ratio: 4 / 5;
+      background: url('https://errbgvoashdwhpknvkwo.supabase.co/storage/v1/object/public/site-images/2026-11-13/site-photo-ohu96.webp') center bottom / contain no-repeat;
+    }
+
+    .hero .col-left { align-self: stretch; display: flex; flex-direction: column; justify-content: space-between; padding: 54px 0 70px; }
+    .hero .col-left p { color: var(--navy); font-size: 1.05rem; line-height: 2; max-width: 260px; }
+    .badge-wrap { text-align: center; color: var(--navy); font-weight: 500; line-height: 1.6; }
+    .seal { width: 96px; height: 96px; border-radius: 50%; border: 2px solid var(--navy); margin: 0 auto 14px; display: grid; place-items: center; font-size: 2.2rem; position: relative; }
+    .seal::after { content: ""; position: absolute; inset: 5px; border-radius: 50%; border: 1px dashed var(--navy); }
+
+    /* ================= كيف أساعدك ================= */
+    section { padding: 100px 0; }
+    .help { display: grid; grid-template-columns: 1fr 1.1fr; gap: 70px; align-items: center; }
+    .svc { display: flex; align-items: center; gap: 22px; background: var(--white); border: 1px solid var(--line); border-radius: 16px; padding: 22px 26px; margin-bottom: 14px; box-shadow: 0 10px 30px rgba(18,48,74,0.05); transition: transform 0.2s; }
+    .svc:hover { transform: translateX(-6px); }
+    .dot { flex: none; width: 60px; height: 60px; border-radius: 50%; display: grid; place-items: center; color: var(--white); font-size: 1.4rem; }
+    .svc b { display: block; color: var(--navy); font-size: 1.15rem; font-weight: 600; }
+    .svc small { color: var(--muted); font-size: 0.9rem; }
+    .help p { color: var(--text); margin: 18px 0; }
+    /* عنوان قسم الخدمات: أبيض بإطار مرجاني منقّط — مختلف عن الكروت الملوّنة */
+    .skills-box {
+      position: relative; text-align: center; margin: 34px 0 26px; padding: 26px 20px 30px;
+      background: var(--white); border: 2px dashed var(--coral); border-radius: 22px;
+      box-shadow: 0 14px 34px rgba(232,97,60,0.12);
+    }
+    .sb-eyebrow { display: inline-block; background: #fef3ef; color: var(--coral); font-weight: 700; font-size: 0.85rem; padding: 3px 14px; border-radius: 999px; margin-bottom: 10px; }
+    .skills-box b { display: block; color: var(--navy); font-size: 1.6rem; font-weight: 800; line-height: 1.5; }
+    .sb-dots { display: flex; justify-content: center; gap: 8px; margin-top: 14px; }
+    .sb-dots i { width: 28px; height: 6px; border-radius: 999px; }
+    .sb-arrow {
+      position: absolute; bottom: -20px; right: 50%; transform: translateX(50%);
+      width: 40px; height: 40px; border-radius: 50%; background: var(--coral); color: var(--white);
+      display: grid; place-items: center; font-weight: 700; box-shadow: 0 8px 18px rgba(232,97,60,0.35);
+      animation: bob 1.6s ease-in-out infinite;
+    }
+    @keyframes bob { 0%,100% { transform: translate(50%, 0); } 50% { transform: translate(50%, 5px); } }
+    /* ===== كروت الخدمات: خلفية متدرّجة بلون الخدمة + كلام أبيض ===== */
+    .svc { position: relative; overflow: hidden; border: none; color: var(--white); background: var(--g); box-shadow: 0 14px 30px var(--sh); }
+    .svc::after { content: ""; position: absolute; width: 180px; height: 180px; border-radius: 50%; background: rgba(255,255,255,0.10); left: -60px; top: -70px; }
+    .svc b { color: inherit !important; }
+    .svc small { color: inherit !important; opacity: 0.85; }
+    .svc .dot { background: rgba(255,255,255,0.18); border: 2px solid rgba(255,255,255,0.35); position: relative; z-index: 1; }
+    .svc .see { display: inline-block; margin-top: 8px; font-style: normal; font-size: 0.85rem; font-weight: 600; background: rgba(255,255,255,0.2); padding: 3px 12px; border-radius: 999px; }
+    .svc > span { position: relative; z-index: 1; }
+    .g-eng   { --g: linear-gradient(135deg, #2a6f68, #1b4c47); --sh: rgba(42,111,104,0.30); }
+    .g-apps  { --g: linear-gradient(135deg, #f5c25a, #e9a623); --sh: rgba(240,180,60,0.35); color: var(--navy) !important; }
+    .g-apps .dot { background: rgba(255,255,255,0.45); border-color: rgba(255,255,255,0.7); }
+    .g-apps .see { background: rgba(18,48,74,0.12); }
+    .g-ops   { --g: linear-gradient(135deg, #c44a22, #a03615); --sh: rgba(232,97,60,0.32); }
+    .g-media { --g: linear-gradient(135deg, #1d4566, #0e2438); --sh: rgba(18,48,74,0.30); }
+
+    /* ===== صفحات نماذج الأعمال: مخفية، وبتظهر لما الرابط يشاور عليها (#svc-...) ===== */
+    section.page { display: none; position: fixed; inset: 0; z-index: 200; overflow-y: auto; background: var(--cream); padding: 0; }
+    section.page:target { display: block; }
+    .page:target { display: block; }
+    .page-hero { background: var(--g); color: var(--white); padding: 22px 0 40px; }
+    .page-hero.light { color: var(--navy); }
+    .back { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; font-size: 0.92rem; background: rgba(255,255,255,0.2); padding: 6px 16px; border-radius: 999px; }
+    .page-hero .big-ic { display: grid; place-items: center; width: 70px; height: 70px; border-radius: 20px; background: rgba(255,255,255,0.2); font-size: 2rem; margin: 26px 0 14px; }
+    .page-hero h1 { font-size: clamp(1.7rem, 5vw, 2.4rem); font-weight: 700; line-height: 1.4; }
+    .page-hero p { opacity: 0.9; max-width: 620px; margin-top: 8px; }
+    .incl { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+    .incl span { border: 1px solid currentColor; border-radius: 999px; padding: 2px 12px; font-size: 0.85rem; opacity: 0.9; }
+    .page-body { padding: 40px 0 60px; }
+    .page-body h2 { font-size: 1.5rem; margin-bottom: 18px; }
+    .samples { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+    .sample { background: var(--white); border-radius: 18px; overflow: hidden; border: 1px solid var(--line); display: flex; flex-direction: column; }
+    .sample .thumb { height: 140px; display: grid; place-items: center; font-size: 3rem; background: var(--g); }
+    .sample .body { padding: 16px 18px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+    .sample .body small { color: var(--teal); font-weight: 600; }
+    .sample .body b { color: var(--navy); font-size: 1.05rem; }
+    .sample .body p { color: var(--text); font-size: 0.88rem; line-height: 1.8; flex: 1; }
+    .sample .body a { color: var(--coral); font-weight: 600; font-size: 0.88rem; }
+    .sample.soon { border: 2px dashed #d5cfc2; background: transparent; }
+    .sample.soon .thumb { background: #ece8df; filter: grayscale(1); opacity: 0.6; }
+    .grp { color: var(--navy); font-size: 1.15rem; font-weight: 700; margin: 26px 0 12px; }
+    .page-body h2 + .grp { margin-top: 4px; }
+    .page-cta { margin-top: 34px; background: var(--white); border-radius: 20px; padding: 24px; text-align: center; box-shadow: 0 12px 30px rgba(18,48,74,0.06); }
+    .page-cta b { display: block; color: var(--navy); font-size: 1.15rem; margin-bottom: 12px; }
+    .page-cta a { display: inline-block; background: var(--coral); color: var(--white); padding: 12px 28px; border-radius: 999px; font-weight: 600; box-shadow: 0 8px 20px rgba(232,97,60,0.3); }
+    .cases { list-style: none; margin: 4px 0 14px; display: grid; gap: 10px; }
+    .cases li { display: flex; gap: 12px; align-items: baseline; color: var(--text); }
+    .cases li i { flex: none; width: 10px; height: 10px; border-radius: 50%; transform: translateY(-2px); }
+    .help strong { color: var(--navy); font-weight: 600; }
+    .nums { display: flex; gap: 70px; margin-top: 30px; }
+    .nums b { display: block; color: var(--navy); font-size: 2.8rem; font-weight: 600; line-height: 1.1; }
+    .nums span { color: var(--text); }
+
+    /* ================= الخبرة (خط زمني) ================= */
+    .exp { background: var(--cream); }
+    .exp h2 { text-align: center; margin-bottom: 50px; }
+    .exp-sub { text-align: center; color: var(--text); max-width: 560px; margin: -30px auto 44px; }
+    .timeline { position: relative; max-width: 820px; margin: 0 auto; }
+    /* الخط المنقّط اللي بيربط المراحل */
+    .timeline::before { content: ""; position: absolute; top: 20px; bottom: 40px; right: 27px; border-right: 2px dashed #c9c3b6; }
+    .tl-item { display: grid; grid-template-columns: 56px 1fr; gap: 18px; margin-bottom: 22px; position: relative; }
+    .tl-dot { width: 56px; height: 56px; border-radius: 50%; background: var(--white); border: 3px solid var(--c); display: grid; place-items: center; font-size: 1.4rem; position: relative; z-index: 1; box-shadow: 0 6px 16px rgba(18,48,74,0.08); }
+    .tl-card { background: var(--white); border-radius: 18px; padding: 18px 22px; border: 1px solid var(--line); box-shadow: 0 10px 26px rgba(18,48,74,0.05); transition: transform 0.2s; }
+    .tl-card:hover { transform: translateX(-4px); }
+    .tl-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 4px; }
+    .tl-stage { background: var(--c); color: var(--white); border-radius: 999px; padding: 2px 14px; font-size: 0.85rem; font-weight: 700; unicode-bidi: plaintext; }
+    .tl-meta small { color: var(--muted); font-size: 0.85rem; }
+    .tl-card h3 { color: var(--navy); font-size: 1.15rem; font-weight: 700; }
+    .tl-card p { color: var(--text); font-size: 0.92rem; line-height: 1.9; margin: 4px 0 10px; }
+    .tl-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .tl-tags span { background: var(--cream); color: var(--navy); border-radius: 8px; padding: 0 8px; font-size: 0.85rem; }
+
+    /* ================= أحدث أعمالي (كروت ملوّنة بتتسحب) ================= */
+    .works-head { display: flex; justify-content: space-between; align-items: end; gap: 20px; margin-bottom: 34px; }
+    .works-head small { color: var(--muted); }
+    .scroller { display: flex; gap: 22px; overflow-x: auto; padding-bottom: 14px; scroll-snap-type: x mandatory; }
+    .scroller::-webkit-scrollbar { height: 6px; } .scroller::-webkit-scrollbar-thumb { background: #ddd; border-radius: 9px; }
+    .wcard {
+      flex: 0 0 340px; min-height: 340px; border-radius: 22px; padding: 22px; color: var(--white);
+      background: var(--c); position: relative; overflow: hidden; scroll-snap-align: start;
+      display: flex; flex-direction: column; gap: 10px; transition: transform 0.2s;
+    }
+    .wcard:hover { transform: translateY(-4px); }
+    .wtop { display: flex; justify-content: space-between; align-items: center; gap: 8px; position: relative; z-index: 1; }
+    .tag { background: rgba(255,255,255,0.22); border-radius: 999px; padding: 2px 12px; font-size: 0.85rem; }
+    .status { background: var(--white); border-radius: 999px; padding: 2px 10px; font-size: 0.85rem; font-weight: 600; }
+    .status.live { color: #16803c; } .status.beta { color: #a16207; } .status.wip { color: var(--coral); }
+    .wcard h3 { font-size: 1.4rem; font-weight: 700; position: relative; z-index: 1; }
+    .wcard p { font-size: 0.9rem; line-height: 1.85; opacity: 0.95; position: relative; z-index: 1; }
+    .did { list-style: none; display: flex; flex-wrap: wrap; gap: 6px; position: relative; z-index: 1; }
+    .did li { border: 1px solid rgba(255,255,255,0.5); border-radius: 8px; padding: 0 8px; font-size: 0.85rem; }
+    .wcard .big { position: absolute; left: -14px; bottom: -26px; font-size: 7.5rem; opacity: 0.25; transform: rotate(-12deg); }
+    .wcard .go { margin-top: auto; position: relative; z-index: 1; background: var(--white); color: var(--navy); align-self: flex-start; padding: 6px 16px; border-radius: 999px; font-size: 0.85rem; font-weight: 600; }
+    /* الكارت الأصفر: الكلام كحلي بدل الأبيض عشان يتقري بوضوح */
+    .wcard.light { color: var(--navy); }
+    .wcard.light .tag { background: rgba(18,48,74,0.12); }
+    .wcard.light .did li { border-color: rgba(18,48,74,0.35); }
+    .works-title { margin-top: 0; }
+    .works-title .wt-sub { color: var(--muted); margin-top: 6px; }
+    .filters { display: flex; gap: 8px; overflow-x: auto; padding: 4px 2px 6px; margin-bottom: 6px; }
+    .filters button { flex: none; font-family: inherit; font-size: 0.9rem; font-weight: 600; cursor: pointer;
+      border: 1.5px solid var(--line); background: var(--white); color: var(--navy); border-radius: 999px; padding: 6px 18px; }
+    .filters button.on { background: var(--navy); border-color: var(--navy); color: var(--white); }
+    .wcard.hide { display: none; }
+    .swipe-hint { color: var(--coral); font-size: 0.85rem; font-weight: 600; }
+
+    /* ================= المحتوى (بنفس شكل كروت الآراء) ================= */
+    .talk { background: var(--cream); text-align: center; }
+    .talk > .container > p { color: var(--text); max-width: 520px; margin: 10px auto 50px; }
+    .tcards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; text-align: center; }
+    .tcard { background: var(--white); border-radius: 18px; padding: 44px 24px 26px; position: relative; margin-top: 30px; }
+    .tcard .av { position: absolute; top: -30px; right: 50%; transform: translateX(50%); width: 60px; height: 60px; border-radius: 50%; display: grid; place-items: center; font-size: 1.6rem; border: 4px solid var(--white); }
+    .tcard p { color: var(--text); font-size: 0.95rem; }
+    .tcard hr { border: none; border-top: 1px solid var(--line); margin: 18px 0 12px; }
+    .tcard b { color: var(--navy); }
+    .tcard small { display: block; color: var(--muted); }
+    .tcard.mid { transform: translateY(-14px); box-shadow: 0 20px 40px rgba(18,48,74,0.08); }
+
+    /* ================= قسم المحتوى ================= */
+    .channel { display: flex; align-items: center; gap: 14px; background: var(--white); border-radius: 18px; padding: 14px 18px; max-width: 560px; margin: 0 auto 34px; text-align: start; box-shadow: 0 10px 28px rgba(18,48,74,0.06); }
+    .channel .yt { flex: none; width: 48px; height: 48px; border-radius: 14px; background: #ff0033; color: #fff; display: grid; place-items: center; font-size: 1.2rem; }
+    .channel b { display: block; color: var(--navy); }
+    .channel small { color: var(--muted); direction: ltr; display: inline-block; }
+    .sub-btn { margin-inline-start: auto; background: var(--coral); color: var(--white); padding: 8px 18px; border-radius: 999px; font-weight: 600; font-size: 0.88rem; white-space: nowrap; box-shadow: 0 8px 20px rgba(232,97,60,0.3); }
+    /* كارت المحتوى: شريط ملوّن فوق + أيقونة بنفس اللون + زرار "شاهد" بخلفية */
+    .ccard { position: relative; overflow: hidden; padding-top: 28px !important; }
+    .ccard::before { content: ""; position: absolute; top: 0; inset-inline: 0; height: 6px; background: var(--c); }
+    .ccard .cic { box-shadow: 0 8px 18px rgba(18,48,74,0.12); }
+    .ccard .cgo { align-self: flex-start; background: var(--c); color: var(--white); padding: 5px 16px; border-radius: 999px; }
+    .ccard.on-light .cgo { color: var(--navy); }
+    .channel { border: 2px solid #ffd6d6; }
+    .talk .skills-box { text-align: center; }
+    .ccards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; text-align: start; }
+    .ccard { background: var(--white); border-radius: 18px; padding: 22px; display: flex; flex-direction: column; gap: 10px; border: 1px solid var(--line); transition: transform 0.2s, box-shadow 0.2s; }
+    .ccard:hover { transform: translateY(-4px); box-shadow: 0 16px 34px rgba(18,48,74,0.08); }
+    .cic { width: 50px; height: 50px; border-radius: 14px; display: grid; place-items: center; font-size: 1.4rem; }
+    .ccard h3 { color: var(--navy); font-size: 1.1rem; font-weight: 700; }
+    .ccard p { color: var(--text); font-size: 0.9rem; line-height: 1.85; }
+    .ctags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .ctags span { background: var(--cream); color: var(--navy); border-radius: 8px; padding: 0 8px; font-size: 0.85rem; }
+    .cgo { margin-top: auto; color: var(--coral); font-weight: 600; font-size: 0.88rem; }
+
+    /* ================= الفوتر ================= */
+    .site-foot { background: var(--cream); border-top: 1px solid var(--line); }
+    .end { display: grid; grid-template-columns: 1.4fr 1fr; gap: 30px; align-items: end; padding: 80px 0 50px; border-bottom: 1px solid var(--line); }
+    .end h2 { font-size: clamp(1.8rem, 3.6vw, 2.4rem); }
+    .end .start { margin-top: 24px; color: var(--navy); font-size: 1.6rem; font-weight: 600; }
+    .end .start a { color: var(--coral); border-bottom: 3px solid var(--coral); }
+    .end-actions { display: flex; gap: 12px; flex-wrap: wrap; justify-content: flex-end; }
+    .btn-coral, .btn-line { padding: 12px 24px; border-radius: 999px; font-weight: 600; }
+    .btn-coral { background: var(--coral); color: var(--white); box-shadow: 0 8px 20px rgba(232,97,60,0.3); }
+    .btn-line { border: 2px solid var(--navy); color: var(--navy); }
+    .cols { display: grid; grid-template-columns: 1.5fr 1fr 1.3fr 1fr 1fr; gap: 28px; padding: 44px 0 30px; }
+    .about-mini { color: var(--muted); font-size: 0.9rem; line-height: 1.9; margin-top: 10px; max-width: 300px; }
+    .cols h4 { color: var(--navy); font-weight: 600; margin-bottom: 8px; }
+    .cols ul { list-style: none; font-size: 0.9rem; line-height: 2.3; }
+    .cols ul a { color: var(--text); } .cols ul a:hover { color: var(--coral); }
+    .bottom { border-top: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 18px 0 30px; font-size: 0.85rem; color: var(--muted); flex-wrap: wrap; }
+    .to-top { color: var(--coral); font-weight: 600; }
+
+    /* ===== الفوتر: خلفية كحلي غامق عشان يقفل الصفحة بشكل واضح ===== */
+    .site-foot { background: linear-gradient(180deg, var(--cream) 0, var(--cream) 90px, #12304a 90px, #0b1f31 100%); color: rgba(255,255,255,0.8); border-top: none; }
+    .site-foot .logo { color: var(--white); }
+    /* بوكس الدعوة: كارت مرجاني بارز فوق الفوتر */
+    .site-foot .end {
+      background: linear-gradient(135deg, #c44a22, #a03615); border-radius: 26px; padding: 34px 30px;
+      margin-top: 0; border-bottom: none; box-shadow: 0 20px 40px rgba(217,76,42,0.35); color: var(--white);
+    }
+    .site-foot .end h2 { color: var(--white); }
+    .site-foot .end .start { color: var(--white); }
+    .site-foot .end .start a { color: var(--yellow); border-color: var(--yellow); }
+    .foot-eyebrow { background: rgba(255,255,255,0.2) !important; color: var(--white) !important; margin-bottom: 10px; }
+    .site-foot .btn-coral { background: var(--white); color: var(--coral); box-shadow: none; }
+    .site-foot .btn-line { border-color: var(--white); color: var(--white); }
+    .site-foot .about-mini { color: rgba(255,255,255,0.65); }
+    .site-foot .cols h4 { color: var(--white); position: relative; padding-bottom: 8px; margin-bottom: 10px; }
+    .site-foot .cols h4::after { content: ""; position: absolute; bottom: 0; right: 0; width: 28px; height: 3px; border-radius: 3px; background: var(--coral); }
+    .site-foot .cols ul a { color: rgba(255,255,255,0.75); }
+    .site-foot .cols ul a:hover { color: var(--yellow); }
+    .socials { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; max-width: 320px; }
+    .socials a { width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.1); display: grid; place-items: center; color: var(--white); transition: background 0.2s; }
+    /* كل أيقونة بلون المنصة بتاعتها عشان تتعرف بسرعة */
+    .socials a { background: var(--b) !important; color: #fff; font-weight: 700; font-size: 1rem; font-family: Arial, sans-serif; transition: transform 0.15s; }
+    .socials a:hover { transform: translateY(-3px) scale(1.06); }
+    .site-foot .end h2.one-line { white-space: nowrap; font-size: clamp(1.25rem, 6.2vw, 2.4rem); }
+    .site-foot .bottom { border-top-color: rgba(255,255,255,0.12); color: rgba(255,255,255,0.55); }
+    .site-foot .to-top { background: var(--coral); color: var(--white); padding: 6px 16px; border-radius: 999px; }
+    /* مسافة فوق الفوتر عشان كارت الدعوة الطالع لفوق ما يغطيش على القسم اللي قبله */
+    #content { padding-bottom: 20px; }
+
+    /* بوكس التعريف بيك */
+    .h-about { background: var(--white); border-radius: 20px; padding: 22px; box-shadow: 0 14px 34px rgba(18,48,74,0.08); border-top: 4px solid var(--coral); }
+    .h-about-head { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+    .h-about-ic { flex: none; width: 48px; height: 48px; border-radius: 50%; background: #fdece6; display: grid; place-items: center; font-size: 1.4rem; }
+    .h-about-head b { display: block; color: var(--navy); font-size: 1.08rem; font-weight: 700; line-height: 1.5; }
+    .pill { display: inline-block; background: var(--coral); color: var(--white); border-radius: 999px; padding: 1px 12px; font-size: 0.85rem; font-weight: 600; }
+    .h-about p { color: var(--text); font-size: 0.93rem; line-height: 2; }
+    .h-about strong { color: var(--navy); font-weight: 600; }
+    .h-about .co { color: var(--teal); }
+    .hero .col-left { justify-content: center; }
+    /* "اقرأ المزيد": النص بيظهر منه 4 سطور بس، ولما تدوس الزرار يظهر كله */
+    .h-about p.clamp { display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+    .more-btn { margin-top: 8px; background: none; border: none; padding: 0; cursor: pointer;
+      font-family: inherit; font-size: 0.92rem; font-weight: 600; color: var(--coral);
+      border-bottom: 2px solid var(--coral); }
+
+    /* زرار القايمة: نفس شكل زرار الواتساب (خلفية برتقالي + كلام أبيض + ظل) بس دايري */
+    .menu-btn { display: none; border: none; cursor: pointer; font-size: 1.4rem; font-weight: 700;
+      background: var(--coral); color: var(--white); box-shadow: 0 8px 20px rgba(232,97,60,0.3); transition: transform 0.15s; }
+    .menu-btn:active { transform: scale(0.94); }
+
+    /* ================= الموبايل =================
+       على الشاشات الصغيرة بنعيد ترتيب القسم الأول:
+       العنوان ← الجملة ← زرار واتساب ← الصورة ← كارتين المعلومات */
+    @media (max-width: 900px) {
+      .container { padding: 0 18px; }
+      nav { padding: 18px 0; border-bottom: 1px solid var(--line); position: relative; }
+      .contact { display: none; }
+      .menu-btn { display: grid; }
+      /* القايمة بتنزل لتحت لما تدوس الزرار */
+      nav ul {
+        display: none; position: absolute; top: 100%; inset-inline: 0; z-index: 20;
+        flex-direction: column; gap: 4px; background: var(--white); border-radius: 16px;
+        padding: 12px; box-shadow: 0 16px 40px rgba(18,48,74,0.15);
+      }
+      nav ul a { display: block; padding: 10px 14px; border-radius: 10px; }
+      body.menu-open nav ul { display: flex; }
+
+      .hero { display: grid; grid-template-columns: 1fr 1fr; gap: 0 12px; min-height: auto; padding-top: 30px; align-items: stretch; }
+      .hero .col-right, .hero .col-left { display: contents; }
+      /* العنوان في سطر واحد، وحجمه بيتظبط حسب عرض الشاشة */
+      .d-br { display: none; } /* على الموبايل العنوان سطر واحد */
+      .hero .h-title { grid-column: 1 / -1; order: 1; font-size: clamp(1.5rem, 8.6vw, 2.6rem); text-wrap: balance; line-height: 1.4; }
+      .hero .h-sub { grid-column: 1 / -1; order: 2; margin: 8px 0 22px; font-size: 1.05rem; }
+      .h-link {
+        grid-column: 1 / -1; order: 3; justify-self: start;
+        background: var(--coral); color: var(--white); border: none; border-radius: 999px; padding: 10px 24px;
+        box-shadow: 0 8px 20px rgba(232,97,60,0.3);
+      }
+      .hero .center { grid-column: 1 / -1; order: 4; height: 400px; margin-top: 20px; overflow: hidden; }
+      .me { max-width: 300px; }
+      /* بوكس التعريف تحت الصورة بعرض الشاشة */
+      .h-about { grid-column: 1 / -1; order: 5; margin: 0 0 30px; }
+      /* نماذج الأعمال على الموبايل: الأيقونة جنب الكلام بدل فوقه عشان الصفحة تبقى أقصر */
+      .samples { gap: 12px; }
+      .sample { flex-direction: row; }
+      .sample .thumb { flex: none; width: 84px; height: auto; font-size: 2rem; }
+      .sample .body { padding: 14px; }
+
+      section { padding: 64px 0; }
+      h2 { font-size: 1.9rem; }
+      .help { grid-template-columns: 1fr; gap: 26px; }
+      .help .list { order: 2; }
+      .svc { padding: 16px 18px; gap: 16px; }
+      .dot { width: 50px; height: 50px; font-size: 1.2rem; }
+      .svc b { font-size: 1.02rem; }
+      .nums { gap: 40px; }
+      .nums b { font-size: 2.3rem; }
+
+      .exp-sub { margin: -20px auto 30px; }
+      .timeline::before { right: 21px; }
+      .tl-item { grid-template-columns: 44px 1fr; gap: 12px; }
+      .tl-dot { width: 44px; height: 44px; font-size: 1.1rem; }
+      .tl-card { padding: 16px; }
+
+      .works-head { flex-direction: column; align-items: flex-start; gap: 10px; }
+      .wcard { flex-basis: 82vw; min-height: 330px; }
+
+      .ccards { grid-template-columns: 1fr; gap: 12px; }
+      .ccard { padding: 16px; }
+      .ccard p { font-size: 0.85rem; }
+      .channel { flex-wrap: wrap; }
+      .sub-btn { width: 100%; text-align: center; margin: 4px 0 0; }
+      .tcard.mid { transform: none; }
+
+      .end { grid-template-columns: 1fr; padding: 56px 0 34px; gap: 22px; }
+      .end .start { font-size: 1.4rem; }
+      .end-actions { justify-content: stretch; }
+      .end-actions a { flex: 1; text-align: center; }
+      .cols { grid-template-columns: 1fr 1fr; gap: 24px; padding: 34px 0 20px; }
+      .cols > div:first-child { grid-column: 1 / -1; }
+    }
+  
+    /* ================= تصليحات المراجعة (ui-ux-pro-max) ================= */
+    /* أيقونات SVG بدل الإيموجي: بتاخد لون وحجم الكلام اللي حواليها */
+    .ic { width: 1em; height: 1em; display: inline-block; vertical-align: -0.14em; flex: none; }
+    .round .ic, .menu-btn .ic { width: 22px; height: 22px; }
+    .wcard .big .ic { stroke-width: 1.4; }
+    .socials a .ic { width: 20px; height: 20px; }
+    .socials a.snap { color: #111 !important; }
+    .btn-coral .ic, .btn-line .ic, .page-cta a .ic { margin-inline-end: 6px; }
+    .grp .ic { color: var(--teal); margin-inline-end: 4px; }
+    .yt .ic { width: 24px; height: 24px; }
+    /* تباين الألوان: أصفر = كلام كحلي، والرمادي أغمق */
+    .tl-stage.on-light { color: var(--navy); }
+    /* مساحة اللمس: كل زرار/لينك 44 بكسل على الأقل */
+    .more-btn { border-bottom: none; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 6px; padding: 12px 0; min-height: 44px; }
+    .filters button { min-height: 44px; padding: 8px 18px; }
+    .socials a { width: 44px; height: 44px; }
+    .cols ul a { display: inline-block; padding: 4px 0; }
+    .sample .body a { display: inline-block; padding: 10px 0; }
+    .site-foot .to-top { padding: 10px 18px; }
+    .round { width: 48px; height: 48px; }
+    @media (min-width: 901px) { .link-coral { padding: 10px 0 4px; } }
+    .end-actions a { display: inline-flex; align-items: center; justify-content: center; gap: 6px; white-space: nowrap; }
+    .sample .thumb { color: rgba(255,255,255,0.9); }
+    .sample.soon .thumb { color: var(--navy); }
+    .page-hero.light ~ * .sample .thumb, .g-apps .sample .thumb { color: var(--navy); }
+    .tl-dot { color: var(--c); }
+    .h-about-ic { color: var(--coral); }
+
+    @media (min-width: 901px) { nav ul a { display: inline-block; padding: 10px 0; } nav ul a.active { padding: 6px 14px; } }
+    /* لوحة المفاتيح: إطار واضح على العنصر المختار */
+    :focus-visible { outline: 3px solid var(--navy); outline-offset: 3px; border-radius: 8px; }
+    /* احترام إعداد "تقليل الحركة" في الموبايل */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+    }
+  
+
+.b-sec{padding:80px 0}
+.b-sec.pad-s{padding:40px 0}
+.b-head{max-width:680px;margin:0 auto 36px;text-align:center}
+.b-head p{color:var(--muted);margin-top:8px}
+.b-grid{display:grid;gap:22px}
+.b-cols-1{grid-template-columns:minmax(0,1fr)}
+.b-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.b-cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.b-cols-4{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media(max-width:900px){.b-cols-3,.b-cols-4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.b-grid{grid-template-columns:1fr!important}}
+.b-card{background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden;display:flex;flex-direction:column;color:inherit;text-decoration:none}
+a.b-card:hover{box-shadow:0 14px 30px rgba(18,48,74,.08)}
+.b-card-img{width:100%;aspect-ratio:16/10;object-fit:cover;display:block;background:#ece8df}
+.b-card-body{padding:20px;display:flex;flex-direction:column;gap:8px;flex:1}
+.b-card h3{color:var(--navy);font-size:1.15rem;line-height:1.5}
+.b-card p{color:var(--text);font-size:.95rem;line-height:1.85}
+.b-card .b-btn{margin-top:auto;align-self:flex-start}
+.b-price{color:var(--teal);font-weight:700;font-size:1.15rem}
+.b-meta{color:var(--muted);font-size:.85rem}
+.b-more{color:var(--coral);font-weight:600;margin-top:auto}
+.b-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:10px 24px;border-radius:999px;background:var(--coral);color:#fff;font-weight:600;text-decoration:none;border:2px solid transparent}
+.b-btn.alt{background:transparent;border-color:currentColor;color:var(--navy)}
+.b-btns{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
+.b-split{display:grid;grid-template-columns:1.1fr 1fr;gap:48px;align-items:center}
+.b-media{width:100%;border-radius:22px;aspect-ratio:4/3;object-fit:cover;display:block}
+@media(max-width:900px){.b-split{grid-template-columns:1fr;gap:28px}}
+.b-hero h1{font-size:clamp(2rem,5vw,3.2rem);color:var(--navy);line-height:1.3}
+.b-hero p{font-size:1.15rem;margin-top:14px;color:var(--text)}
+.b-center{text-align:center}
+.b-center .b-btns{justify-content:center}
+.b-center p{margin-inline:auto;max-width:640px}
+.b-feature{display:flex;gap:14px;align-items:flex-start}
+.b-icon{flex:none;width:52px;height:52px;border-radius:14px;display:grid;place-items:center;background:#e3f1ef;color:var(--teal)}
+.b-feature h3{color:var(--navy);font-size:1.05rem}
+.b-feature p{color:var(--text);font-size:.93rem;line-height:1.8}
+.b-rich{max-width:760px;margin:0 auto}
+.b-rich h2{margin:28px 0 10px;font-size:1.6rem}
+.b-rich h3{margin:22px 0 8px;color:var(--navy)}
+.b-rich p{margin-bottom:14px;font-size:1.05rem;line-height:2}
+.b-rich ul,.b-rich ol{padding-inline-start:22px;margin-bottom:14px;line-height:2}
+.b-rich blockquote{border-inline-start:4px solid var(--coral);padding:10px 18px;margin:22px 0;color:var(--navy);font-weight:500;background:#fff;border-radius:12px}
+.b-rich img{max-width:100%;border-radius:18px;margin:12px 0}
+.b-gallery img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:14px;display:block}
+.b-video{position:relative;aspect-ratio:16/9;border-radius:18px;overflow:hidden;background:#12304a;display:grid;place-items:center;color:#fff;text-align:center;padding:16px}
+.b-video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.b-stat{text-align:center}
+.b-stat b{display:block;font-size:2.6rem;color:var(--navy);line-height:1.2}
+.b-stat span{color:var(--muted)}
+.b-faq{max-width:760px;margin:0 auto}
+.b-faq details{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 20px;margin-bottom:10px}
+.b-faq summary{cursor:pointer;font-weight:600;color:var(--navy);list-style:none;display:flex;justify-content:space-between;gap:12px}
+.b-faq summary::-webkit-details-marker{display:none}
+.b-faq summary::after{content:"+";font-weight:700;color:var(--coral)}
+.b-faq details[open] summary::after{content:"−"}
+.b-faq details p{margin-top:10px;color:var(--text);line-height:1.9}
+.b-cta{border-radius:26px;padding:48px 28px;text-align:center;background:var(--navy);color:#fff}
+.b-cta h2{color:#fff}
+.b-cta p{opacity:.9;margin:10px auto 0;max-width:560px}
+.b-cta .b-btns{justify-content:center}
+.b-cta .b-btn.alt{color:#fff}
+.b-header{background:var(--cream)}
+.b-header nav{padding:20px 0}
+.b-header .b-btn{min-height:42px;padding:8px 18px}
+.b-article h1{font-size:clamp(1.9rem,4.5vw,2.8rem);color:var(--navy);line-height:1.35;margin-top:8px}
+.b-cover{width:100%;max-height:480px;aspect-ratio:16/8;object-fit:cover;border-radius:22px;margin-top:26px;display:block}
+.b-product{display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:start}
+.b-product>img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:22px}
+.b-product h1{font-size:clamp(1.8rem,4vw,2.6rem);color:var(--navy);line-height:1.35}
+.b-product .b-price{font-size:1.6rem;margin:10px 0}
+.b-product ul{padding-inline-start:20px;line-height:2;margin:14px 0}
+@media(max-width:900px){.b-product{grid-template-columns:1fr}}
+.b-contact{display:flex;gap:14px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px 20px;color:inherit;text-decoration:none}
+.b-contact b{display:block;color:var(--navy)}
+.b-contact span{color:var(--muted)}
+.b-ltr{direction:ltr;unicode-bidi:isolate}
+.b-spacer{height:56px}
+.b-divider{border:none;border-top:1px solid var(--line);margin:24px 0}
+.b-empty{color:var(--muted);text-align:center;padding:28px;border:2px dashed var(--line);border-radius:16px;grid-column:1/-1}
+@media(max-width:900px){.hide-mobile{display:none!important}}
+@media(min-width:901px){.hide-desktop{display:none!important}}
+/* بداية الصفحة: الأعمدة التلاتة (العنوان، الصورة، النبذة) بتبدأ من نفس الخط فوق،
+   ولما «اقرأ المزيد» يفتح محدش بيتحرك من مكانه */
+@media(min-width:901px){
+  .hero{align-items:start;min-height:0}
+  .hero .col-right,.hero .col-left{align-self:start;justify-content:flex-start;gap:26px;padding-top:48px;padding-bottom:48px}
+  .hero .center{height:auto;align-self:start;padding-top:48px}
+  .hero .col-right .h-sub{margin-top:0}
+}
+/* تحكم في سطور الفقرات */
+@media(min-width:901px){.b-nowrap-desk{white-space:nowrap}}
+.b-nowrap{white-space:nowrap}
+.b-balance{text-wrap:balance}
+/* ===== تصميم القايمة: الزرار اللي واقف عليه بيبقى برتقالي والكلام أبيض ===== */
+nav ul{gap:6px}
+nav ul a{display:inline-block;padding:8px 16px;border-radius:999px;border:1.5px solid transparent;transition:background .15s,color .15s}
+nav ul a:hover{background:#fef3ef;color:var(--coral)}
+nav ul a.active,nav ul a[aria-current=page]{background:var(--coral);color:#fff!important;border-color:var(--coral);font-weight:600;box-shadow:0 6px 16px rgba(194,70,31,.28)}
+@media(max-width:900px){nav ul a{display:block;padding:10px 14px;border-radius:10px}}
+/* أيقونة التليفون بنفس شكل الأزرار البرتقالي */
+.contact .round{background:var(--coral);color:#fff;box-shadow:0 8px 20px rgba(194,70,31,.3)}
+/* «كلّمني على واتساب» زرار برتقالي بدل لينك متسطّر */
+@media(min-width:901px){.link-coral{display:inline-flex;align-items:center;gap:8px;background:var(--coral);color:#fff;border:none;border-radius:999px;padding:12px 26px;box-shadow:0 8px 20px rgba(194,70,31,.3)}}
+@media(prefers-reduced-motion:reduce){nav ul a{transition:none}}
+/* ===== أشكال الخط الزمني (رحلتي): كلاسات على .timeline بتتغير من الداشبورد ===== */
+/* متغيرات (--tl-...) بتتحط على .timeline من «تنسيق السلسلة كلها»، والقيمة الاحتياطية = الشكل الأصلي */
+.timeline{max-width:var(--tl-w,820px)}
+.timeline::before{border-right-color:var(--tl-line,#c9c3b6);border-right-width:var(--tl-line-w,2px)}
+.timeline .tl-item{margin-bottom:var(--tl-gap,22px)}
+.timeline .tl-card{background:var(--tl-card-bg,var(--white));border-radius:var(--tl-radius,18px);border-color:var(--tl-card-border,var(--line))}
+.timeline .tl-card h3{color:var(--tl-title,var(--navy));font-size:var(--tl-title-size,1.15rem)}
+.timeline .tl-card>p{color:var(--tl-text,var(--text));font-size:var(--tl-text-size,.92rem)}
+.timeline .tl-tags span{background:var(--tl-tag-bg,var(--cream))}
+.timeline[style*="--tl-font"] .tl-card h3{font-family:var(--tl-font)}
+.tl-dot img{width:55%;height:55%;object-fit:contain}
+@media(min-width:901px){
+.timeline[style*="--tl-dot"] .tl-item{grid-template-columns:var(--tl-dot) 1fr}
+.timeline[style*="--tl-dot"] .tl-dot{width:var(--tl-dot);height:var(--tl-dot);font-size:calc(var(--tl-dot) * .42)}
+.timeline[style*="--tl-dot"]::before{right:calc(var(--tl-dot) / 2 - 1px)}
+.timeline.tl-zigzag[style*="--tl-dot"] .tl-item{grid-template-columns:1fr var(--tl-dot) 1fr}
+.timeline.tl-dots-small:not(.tl-zigzag)[style*="--tl-dot"] .tl-item{grid-template-columns:56px 1fr}
+.timeline.tl-dots-small:not(.tl-zigzag)[style*="--tl-dot"]::before{right:27px}
+}
+.timeline.tl-line-solid::before{border-right-style:solid}
+.timeline.tl-line-none::before{display:none}
+.tl-dots-small .tl-dot{width:18px;height:18px;margin:20px auto 0;background:var(--c);border-width:4px;border-color:#fff;box-shadow:0 0 0 2px var(--c)}
+.tl-dots-small .tl-dot>span{display:none}
+.timeline.tl-dots-small[style*="--tl-dot"] .tl-dot{width:18px;height:18px}
+.tl-cards-flat .tl-card{box-shadow:none}
+.tl-cards-plain .tl-card{background:transparent;border-color:transparent;box-shadow:none;padding-top:10px}
+.tl-compact .tl-item{margin-bottom:12px}
+.tl-compact .tl-card{padding:12px 18px}
+.tl-compact .tl-card>p{display:none}
+.tl-no-tags .tl-tags{display:none}
+/* --- هيكل «شريط أفقي»: الخبرات جنب بعض وبتتسحب بالعرض --- */
+.timeline.tl-horizontal{max-width:var(--tl-w,100%);display:flex;gap:var(--tl-gap,18px);overflow-x:auto;padding:6px 4px 18px;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch}
+.timeline.tl-horizontal::before{display:none}
+.tl-horizontal .tl-item{flex:0 0 270px;display:flex;flex-direction:column;gap:14px;margin:0;scroll-snap-align:start}
+.tl-horizontal .tl-item::before{content:"";position:absolute;top:calc(var(--tl-dot,56px) / 2 - 1px);right:0;left:calc(-1 * var(--tl-gap,18px));border-top:var(--tl-line-w,2px) dashed var(--tl-line,#c9c3b6)}
+.tl-horizontal .tl-item:last-child::before{left:0}
+.tl-horizontal.tl-line-solid .tl-item::before{border-top-style:solid}
+.tl-horizontal.tl-line-none .tl-item::before{display:none}
+.tl-horizontal .tl-dot{align-self:flex-start;width:var(--tl-dot,56px);height:var(--tl-dot,56px)}
+.tl-horizontal.tl-dots-small .tl-item::before{top:28px}
+.tl-horizontal .tl-card{flex:1}
+.tl-horizontal .tl-card:hover{transform:translateY(-4px)}
+@media(max-width:900px){.tl-horizontal .tl-item{flex-basis:78vw}.tl-horizontal .tl-dot{width:44px;height:44px}.tl-horizontal .tl-item::before{top:21px}}
+/* --- هيكل «شبكة كروت»: من غير خط، والأيقونة في ركن الكارت --- */
+.timeline.tl-grid{max-width:var(--tl-w,1100px);display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:var(--tl-gap,22px)}
+.timeline.tl-grid::before{display:none}
+.timeline.tl-grid .tl-item{display:block;margin:0}
+.tl-grid .tl-dot{position:absolute;top:14px;left:14px;width:42px;height:42px;font-size:1.05rem;z-index:2;box-shadow:none}
+.tl-grid.tl-dots-small .tl-dot{top:20px;left:20px;margin:0;width:16px;height:16px}
+.tl-grid .tl-card{height:100%}
+.tl-grid .tl-meta{padding-left:48px}
+.tl-grid .tl-card:hover{transform:translateY(-4px)}
+/* --- هيكل «جدول زمني / سيرة ذاتية»: عمود السنين على اليمين --- */
+.timeline.tl-table::before{display:none}
+.timeline.tl-table .tl-item{display:block;margin:0}
+.tl-table .tl-dot{display:none}
+.timeline.tl-table .tl-card{display:grid;grid-template-columns:170px 1fr;column-gap:28px;background:var(--tl-card-bg,transparent);border:0;border-bottom:1px solid var(--tl-card-border,var(--line));border-radius:0;box-shadow:none;padding:20px 4px}
+.tl-table .tl-card:hover{transform:none}
+.tl-table .tl-meta{grid-column:1;grid-row:1 / span 4;flex-direction:column;align-items:flex-start;gap:6px;margin:0}
+.tl-table .tl-card>:not(.tl-meta){grid-column:2}
+.tl-table .tl-stage{font-size:1rem;padding:4px 16px}
+@media(max-width:900px){.timeline.tl-table .tl-card{grid-template-columns:1fr}.tl-table .tl-meta{grid-row:auto;flex-direction:row;align-items:center}.tl-table .tl-card>:not(.tl-meta){grid-column:1}}
+/* --- هيكل «خطوات مرقّمة»: رقم كبير مكان الأيقونة (--tl-n = عدد الخبرات + 1، بيتحدّث لوحده) --- */
+.timeline.tl-steps{counter-reset:tlstep var(--tl-n,0)}
+.tl-steps .tl-item{counter-increment:tlstep -1}
+.timeline.tl-steps:not([data-sort="desc"]){counter-reset:tlstep 0}
+.tl-steps:not([data-sort="desc"]) .tl-item{counter-increment:tlstep 1}
+.tl-steps .tl-dot{background:var(--c);color:#fff}
+.tl-steps .tl-dot>span{display:none}
+.tl-steps .tl-dot::after{content:counter(tlstep);font-weight:800;font-size:1.35em;line-height:1}
+.tl-steps.tl-dots-small .tl-dot::after{content:none}
+@media(min-width:901px){
+.timeline.tl-zigzag{max-width:1040px}
+.timeline.tl-zigzag::before{right:50%;margin-right:-1px}
+.tl-zigzag .tl-item{grid-template-columns:1fr 56px 1fr}
+.tl-zigzag .tl-dot{grid-column:2;grid-row:1}
+.tl-zigzag .tl-item:nth-child(odd) .tl-card{grid-column:1;grid-row:1}
+.tl-zigzag .tl-item:nth-child(even) .tl-card{grid-column:3;grid-row:1}
+.tl-zigzag .tl-item:nth-child(even) .tl-card:hover{transform:translateX(4px)}
+}
+
+section:not(.page),.b-sec{padding-top:64px;padding-bottom:64px}@media(max-width:900px){section:not(.page),.b-sec{padding-top:40px;padding-bottom:40px}}
+@media(max-width:900px){[data-mid="mszrhe2"]{margin-top:0px !important}
+[data-mid="mbplzct"]{position:relative !important;top:-32px !important}
+[data-mid="mgqhtzt"]{margin-inline:auto !important;margin-bottom:0px !important;margin-top:24px !important}}</style>
+</head>
+<body>
+<div class="top">
+    <div class="container">
+      <nav>
+        <a class="logo" href="#" style="font-weight: 700; font-family: &quot;El Messiri&quot;, sans-serif;">عمار المهدي</a>
+        <ul>
+          <li><a href="#about-me">نبذة عني</a></li>
+          <li><a class="active" href="#help">الخدمات</a></li>
+          <li><a href="#exp">رحلتي</a></li><li><a href="#works">أعمالي</a></li>
+          <li><a href="#content">المحتوى</a></li>
+          
+        </ul>
+        <a class="contact" href="https://wa.me/201000649748" target="_blank" rel="noopener">
+          <span class="round"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"></path></svg></span><span>+20 100 064 9748</span>
+        </a>
+        <!-- زرار القايمة — بيظهر على الموبايل بس -->
+        <button class="round menu-btn" aria-label="القائمة"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16"></path> <path d="M4 12h16"></path> <path d="M4 19h16"></path></svg></button>
+      </nav>
+
+      <div class="hero">
+        <!-- العمود اليمين: العنوان + الجملة + زرار واتساب -->
+        <div class="col-right">
+          
+          <h1 class="h-title" style="position: relative; top: 8px;">أفكارٌ تُبنى <br class="d-br">بدقّةٍ وشغف</h1>
+          <p class="h-sub" style="margin-top: 9px;">لنحوّل التحديات إلى حلول هندسية وتقنية مبتكرة.</p><a class="link-coral h-link" href="https://wa.me/201000649748" target="_blank" rel="noopener" style="margin-top: 30px;" data-mstyle="margin-top:0px" data-mid="mszrhe2">كلّمني على واتساب ←</a>
+        </div><div class="h-about" data-mstyle="position:relative;top:-32px" data-mid="mbplzct" style="position: relative; top: 43px;">
+            <div class="h-about-head">
+              <span class="h-about-ic"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 10V5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v5"></path> <path d="M14 6a6 6 0 0 1 6 6v3"></path> <path d="M4 15v-3a6 6 0 0 1 6-6"></path> <rect x="2" y="15" width="20" height="4" rx="1"></rect></svg></span>
+              <div><b>مهندس مدني إنشائي ومبرمج محترف</b><span class="pill">خبرة 10 سنوات</span></div>
+            </div>
+            <p id="about-text" class="clamp">
+              خبرة في <strong>تصميم المنشآت الخرسانية وتنفيذها، وترميم المنشآت وتدعيمها، ومجال التشطيبات</strong>.
+              وأمتلك شغفًا بتعلّم البرمجيات والذكاء الاصطناعي وأتمتة العمليات، وتحويل الأفكار إلى تطبيقات، وحلّ المشكلات التشغيلية للجهات والمؤسسات، ومن هذا المنطلق أسّست شركتي الخاصة
+              <strong class="co">«مطلوب للتجارة والخدمات»</strong>
+              لبناء التطبيقات والأنظمة التي تسهّل حياة الناس في مجال التجارة والهندسة والخدمات والتعليم.
+            </p>
+            <button class="more-btn" id="more-btn" type="button" aria-expanded="false" aria-controls="about-text">اقرأ المزيد ↓</button>
+          </div><div class="center" id="about-me" style="display: flex; flex-direction: column;">
+          
+        <div class="me" role="img" aria-label="صورة عمار المهدي" data-mstyle="margin-inline:auto;margin-bottom:0px;margin-top:24px" data-mid="mgqhtzt" style="position: relative; top: -32px;"></div></div>
+
+        <!-- النص: صورتك (هنا بيوصل لينك "نبذة عني") -->
+        
+
+        <!-- العمود الشمال: بوكس التعريف بيك -->
+        <div class="col-left">
+          
+        </div>
+      </div>
+    </div>
+  </div>
+<section id="help">
+    <div class="container help">
+      <div class="list">
+        <!-- كل كارت بيفتح صفحة نماذج الأعمال الخاصة بالخدمة دي -->
+        <a class="svc g-eng" href="#svc-eng"><span class="dot"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 10V5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v5"></path> <path d="M14 6a6 6 0 0 1 6 6v3"></path> <path d="M4 15v-3a6 6 0 0 1 6-6"></path> <rect x="2" y="15" width="20" height="4" rx="1"></rect></svg></span><span><b>استشارات وخدمات هندسية</b><small>تصميم إنشائي • تراخيص • إشراف • ترميم وتدعيم • تشطيبات</small><em class="see">عرض نماذج الأعمال ←</em></span></a>
+        <a class="svc g-apps" href="#svc-apps"><span class="dot"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"></rect> <path d="M12 18h.01"></path></svg></span><span><b>تطبيقات ومواقع وأنظمة</b><small>من الفكرة إلى تطبيق موبايل أو موقع أو نظام يعمل</small><em class="see">عرض نماذج الأعمال ←</em></span></a>
+        <a class="svc g-ops" href="#svc-ops"><span class="dot"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 17H5"></path> <path d="M19 7h-9"></path> <circle cx="17" cy="17" r="3"></circle> <circle cx="7" cy="7" r="3"></circle></svg></span><span><b>تنظيم العمليات وأتمتتها</b><small>أنظمة إدارة • أتمتة المهام • حلول بالذكاء الاصطناعي</small><em class="see">عرض نماذج الأعمال ←</em></span></a>
+        <a class="svc g-media" href="#svc-media"><span class="dot"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12.296 3.464 3.02 3.956"></path> <path d="M20.2 6 3 11l-.9-2.4c-.3-1.1.3-2.2 1.3-2.5l13.5-4c1.1-.3 2.2.3 2.5 1.3z"></path> <path d="M3 11h18v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path> <path d="m6.18 5.276 3.1 3.899"></path></svg></span><span><b>محتوى مرئي ومسموع ومكتوب</b><small>نشارك ما نتعلّمه ونوثّق رحلتنا • مؤلفات وكورسات ومنتجات رقمية</small><em class="see">عرض نماذج الأعمال ←</em></span></a>
+      </div>
+      <div>
+        <div class="skills-box">
+          <span class="sb-eyebrow">✦ خدماتنا</span>
+          <b>مهارات نمتلكها<br>وخدمات نقدّمها</b>
+          <!-- 4 نقط بألوان الكروت اللي تحت -->
+          <div class="sb-dots"><i style="background:var(--teal)"></i><i style="background:var(--yellow)"></i><i style="background:var(--coral)"></i><i style="background:var(--navy)"></i></div>
+          <span class="sb-arrow" aria-hidden="true">↓</span>
+        </div><h2>كيف أساعدك؟</h2>
+        <p>أساعدك على إيجاد الحل المناسب لمشكلتك، سواء كان لديك:</p>
+        <!-- الحالات التلاتة في قايمة، كل واحدة بلون من ألوان الكروت -->
+        <ul class="cases">
+          <li><i style="background:var(--teal)"></i>مبنى يحتاج إلى استشارة أو ترخيص أو تشطيب.</li>
+          <li><i style="background:var(--yellow)"></i>أو فكرة تحتاج إلى تطبيق يحوّلها إلى واقع.</li>
+          <li><i style="background:var(--coral)"></i>أو مجموعة من العمليات والأفراد مطلوب تنظيمها أو إدارتها بالوسائل التقنية المناسبة لبيئتك ومجال عملك.</li>
+        </ul>
+        <p>فنحن المكان المناسب لك؛ حيث إننا نمتلك من الأدوات والإمكانيات والخبرات ما يمنحك <strong>حلولًا دقيقة توفّر وقتك وجهدك ومالك</strong>.</p>
+        <!-- بوكس مميز بيقدّم الكروت اللي تحته -->
+        
+      </div>
+    </div>
+  </section>
+<section id="exp" class="exp">
+    <div class="container">
+      <h2>رحلتي العملية</h2>
+      <p class="exp-sub b-nowrap-desk" style="max-width: 720px;">خبرةٌ تراكمت على مدار السنين مرحلةً بعد مرحلة، لنقدّم لك أفضل الحلول بدقّةٍ وسرعة&nbsp;</p>
+      <!-- خط زمني: كل مرحلة دايرة على الخط + كارت جنبها -->
+      <div class="timeline" data-sort="desc">
+        
+        
+        
+        
+        
+        
+      <div class="tl-item">
+          <div class="tl-dot" style="--c:#c4302b"><span><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 17V7"></path> <path d="M16 8h-6a2 2 0 0 0 0 4h4a2 2 0 0 1 0 4H8"></path> <path d="M4 3a1 1 0 0 1 1-1 1.3 1.3 0 0 1 .7.2l.933.6a1.3 1.3 0 0 0 1.4 0l.934-.6a1.3 1.3 0 0 1 1.4 0l.933.6a1.3 1.3 0 0 0 1.4 0l.933-.6a1.3 1.3 0 0 1 1.4 0l.934.6a1.3 1.3 0 0 0 1.4 0l.933-.6A1.3 1.3 0 0 1 19 2a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1 1.3 1.3 0 0 1-.7-.2l-.933-.6a1.3 1.3 0 0 0-1.4 0l-.934.6a1.3 1.3 0 0 1-1.4 0l-.933-.6a1.3 1.3 0 0 0-1.4 0l-.933.6a1.3 1.3 0 0 1-1.4 0l-.934-.6a1.3 1.3 0 0 0-1.4 0l-.933.6a1.3 1.3 0 0 1-.7.2 1 1 0 0 1-1-1z"></path></svg></span></div>
+          <div class="tl-card">
+            <div class="tl-meta"><span class="tl-stage" style="--c:#c4302b">2026</span><small>مؤسس</small></div>
+            <h3>مؤسس برنامج «براق كاشير»</h3>
+            <p>برنامج شامل لإدارة المحال والمخازن ونقاط البيع.</p>
+            <div class="tl-tags"><span>نقاط البيع</span><span>إدارة المخازن</span><span>إدارة المحال</span></div>
+          </div>
+        </div><div class="tl-item">
+          <div class="tl-dot" style="--c:var(--coral)"><span><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 4h-3.5l2 11.05"></path> <path d="M6.95 17h5.142c.523 0 .95-.406 1.063-.916a6.5 6.5 0 0 1 5.345-5.009"></path> <circle cx="19.5" cy="17.5" r="2.5"></circle> <circle cx="4.5" cy="17.5" r="2.5"></circle></svg></span></div>
+          <div class="tl-card">
+            <div class="tl-meta"><span class="tl-stage" style="--c:var(--coral)">2026</span><small>مؤسس</small></div>
+            <h3>مؤسس مشروع «براق»</h3>
+            <p>تطبيق لتوصيل طلبات واحتياجات المنزل: بقالة، وخضروات وفاكهة، ومخبوزات، ولحوم ودواجن، ومستحضرات تجميل، وعناية منزلية وشخصية، وصيدلية، ومطاعم ومشروبات.</p>
+            <div class="tl-tags"><span>تطبيق توصيل</span><span>6 أكتوبر</span></div>
+          </div>
+        </div><div class="tl-item">
+          <div class="tl-dot" style="--c:var(--yellow)"><span><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 10h.01"></path> <path d="M12 14h.01"></path> <path d="M12 6h.01"></path> <path d="M16 10h.01"></path> <path d="M16 14h.01"></path> <path d="M16 6h.01"></path> <path d="M8 10h.01"></path> <path d="M8 14h.01"></path> <path d="M8 6h.01"></path> <path d="M9 22v-3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3"></path> <rect x="4" y="2" width="16" height="20" rx="2"></rect></svg></span></div>
+          <div class="tl-card">
+            <div class="tl-meta"><span class="tl-stage on-light" style="--c:var(--yellow)">منذ 2022</span><small>مؤسس ومدير</small></div>
+            <h3>مؤسس شركة مطلوب للتجارة والخدمات</h3>
+            <p>شركة لتقديم الخدمات الهندسية وبناء البرمجيات والتطبيقات.</p>
+            <div class="tl-tags"><span>خدمات هندسية</span><span>برمجيات</span><span>تطبيقات</span></div>
+          </div>
+        </div><div class="tl-item">
+          <div class="tl-dot" style="--c:var(--teal)"><span><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 18v-7"></path> <path d="M11.119 2.205a2 2 0 0 1 1.762 0l7.84 3.846A.5.5 0 0 1 20.5 7h-17a.5.5 0 0 1-.22-.949z"></path> <path d="M14 18v-7"></path> <path d="M18 18v-7"></path> <path d="M3 22h18"></path> <path d="M6 18v-7"></path></svg></span></div>
+          <div class="tl-card">
+            <div class="tl-meta"><span class="tl-stage" style="--c:var(--teal)">منذ 2020</span><small>مستمر</small></div>
+            <h3>عضو لجان التصالح وتقييم السلامة الإنشائية</h3>
+            <p>لجان التصالح على مخالفات البناء وتقييم السلامة الإنشائية في أجهزة مدن 6 أكتوبر والشيخ زايد وسفنكس.</p>
+            <div class="tl-tags"><span>السلامة الإنشائية</span><span>التصالح</span><span>6 أكتوبر</span><span>الشيخ زايد</span><span>سفنكس</span></div>
+          </div>
+        </div><div class="tl-item">
+          <div class="tl-dot" style="--c:#4f6d8f"><span><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 3h20"></path> <path d="M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3"></path> <path d="m7 21 5-5 5 5"></path></svg></span></div>
+          <div class="tl-card">
+            <div class="tl-meta"><span class="tl-stage" style="--c:#4f6d8f">2018 – 2021</span><small>3 أعوام</small></div>
+            <h3>محاضر بقسم الهندسة المدنية</h3>
+            <p>المعهد العالي للهندسة والتكنولوجيا بالمنوفية، حيث درّستُ مواد:</p>
+            <div class="tl-tags"><span>تصميم المنشآت الخرسانية</span><span>ترميم وتدعيم المنشآت</span><span>تصميم المنشآت المعدنية</span></div>
+          </div>
+        </div><div class="tl-item">
+          <div class="tl-dot" style="--c:var(--navy)"><span><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"></path> <path d="M22 10v6"></path> <path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"></path></svg></span></div>
+          <div class="tl-card">
+            <div class="tl-meta"><span class="tl-stage" style="--c:var(--navy)">2016</span><small>التخرّج</small></div>
+            <h3>بكالوريوس الهندسة المدنية</h3>
+            <p>جامعة المنوفية — بداية الطريق في عالم الهندسة والإنشاءات.</p>
+            <div class="tl-tags"><span>هندسة مدنية</span><span>جامعة المنوفية</span></div>
+          </div>
+        </div></div>
+    </div>
+  </section>
+<section id="works">
+    <div class="container">
+      <div class="skills-box works-title">
+        <span class="sb-eyebrow">✦ أعمالنا</span>
+        <b>أحدث أعمالي</b>
+        <p class="wt-sub">منتجات حقيقية نبنيها ونديرها في شركة مطلوب</p>
+      </div>
+      <!-- أزرار فلترة: بتعرض كروت مجال واحد بس -->
+      <div class="filters" role="tablist">
+        <button class="on" data-f="all">الكل</button>
+        <button data-f="apps">تطبيقات</button>
+        <button data-f="ops">أنظمة</button>
+        <button data-f="eng">هندسة</button>
+        <button data-f="media">محتوى</button>
+      </div>
+      <p class="swipe-hint">اسحب لرؤية المزيد ←</p>
+      <!-- كل كارت: تصنيف + حالة + عنوان + وصف + إيه اللي عملناه + زرار -->
+      <div class="scroller">
+        <a class="wcard light" data-cat="apps" style="--c:var(--yellow)" href="https://bourraq.com" target="_blank" rel="noopener">
+          <div class="wtop"><span class="tag">تطبيق توصيل</span><span class="status live">● متاح الآن</span></div>
+          <h3>براق</h3>
+          <p>طلبات البيت لحد بابك: بقالة، مخبوزات، لحوم ودواجن، منظفات، عناية شخصية، وصيدلية. متاح في 6 أكتوبر، وقريبًا الشيخ زايد.</p>
+          <ul class="did"><li>تطبيق أندرويد</li><li>لوحة للمتاجر</li><li>الدفع عند الاستلام</li></ul>
+          <span class="go">زيارة الموقع ←</span><span class="big"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 4h-3.5l2 11.05"></path> <path d="M6.95 17h5.142c.523 0 .95-.406 1.063-.916a6.5 6.5 0 0 1 5.345-5.009"></path> <circle cx="19.5" cy="17.5" r="2.5"></circle> <circle cx="4.5" cy="17.5" r="2.5"></circle></svg></span>
+        </a>
+        <a class="wcard" data-cat="apps ops" style="--c:var(--teal)" href="https://cashier.bourraq.com" target="_blank" rel="noopener">
+          <div class="wtop"><span class="tag">نظام للمحلات</span><span class="status beta">● تجريبي</span></div>
+          <h3>براق كاشير</h3>
+          <p>نظام كاشير مرتبط بمنظومة براق، يساعد المحلات على إدارة المبيعات واستقبال الطلبات من مكان واحد.</p>
+          <ul class="did"><li>نقطة بيع</li><li>إدارة الطلبات</li><li>يعمل من المتصفح</li></ul>
+          <span class="go">زيارة الموقع ←</span><span class="big"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 17V7"></path> <path d="M16 8h-6a2 2 0 0 0 0 4h4a2 2 0 0 1 0 4H8"></path> <path d="M4 3a1 1 0 0 1 1-1 1.3 1.3 0 0 1 .7.2l.933.6a1.3 1.3 0 0 0 1.4 0l.934-.6a1.3 1.3 0 0 1 1.4 0l.933.6a1.3 1.3 0 0 0 1.4 0l.933-.6a1.3 1.3 0 0 1 1.4 0l.934.6a1.3 1.3 0 0 0 1.4 0l.933-.6A1.3 1.3 0 0 1 19 2a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1 1.3 1.3 0 0 1-.7-.2l-.933-.6a1.3 1.3 0 0 0-1.4 0l-.934.6a1.3 1.3 0 0 1-1.4 0l-.933-.6a1.3 1.3 0 0 0-1.4 0l-.933.6a1.3 1.3 0 0 1-1.4 0l-.934-.6a1.3 1.3 0 0 0-1.4 0l-.933.6a1.3 1.3 0 0 1-.7.2 1 1 0 0 1-1-1z"></path></svg></span>
+        </a>
+        <a class="wcard" data-cat="eng apps ops" style="--c:var(--teal)" href="#help">
+          <div class="wtop"><span class="tag">شركتي</span><span class="status live">● تعمل</span></div>
+          <h3>مطلوب للتجارة والخدمات</h3>
+          <p>نبني التطبيقات والأنظمة التي تسهّل حياة الناس في التجارة والهندسة والخدمات والتعليم، إلى جانب الخدمات الهندسية.</p>
+          <ul class="did"><li>هندسة</li><li>برمجيات</li><li>أتمتة</li></ul>
+          <span class="go">الخدمات ←</span><span class="big"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 10h.01"></path> <path d="M12 14h.01"></path> <path d="M12 6h.01"></path> <path d="M16 10h.01"></path> <path d="M16 14h.01"></path> <path d="M16 6h.01"></path> <path d="M8 10h.01"></path> <path d="M8 14h.01"></path> <path d="M8 6h.01"></path> <path d="M9 22v-3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3"></path> <rect x="4" y="2" width="16" height="20" rx="2"></rect></svg></span>
+        </a>
+        <a class="wcard" data-cat="eng" style="--c:var(--navy)" href="#svc-eng">
+          <div class="wtop"><span class="tag">هندسة إنشائية</span><span class="status wip">● قريبًا</span></div>
+          <h3>مشاريع هندسية</h3>
+          <p>10 سنوات في تصميم المنشآت الخرسانية وتنفيذها، وترميمها وتدعيمها، والتشطيبات — صور المشاريع قريبًا.</p>
+          <ul class="did"><li>تصميم</li><li>تنفيذ</li><li>ترميم</li><li>تشطيبات</li></ul>
+          <span class="go">التفاصيل ←</span><span class="big"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 10V5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v5"></path> <path d="M14 6a6 6 0 0 1 6 6v3"></path> <path d="M4 15v-3a6 6 0 0 1 6-6"></path> <rect x="2" y="15" width="20" height="4" rx="1"></rect></svg></span>
+        </a>
+        <a class="wcard" data-cat="media" style="--c:#c4302b" href="https://www.youtube.com/@Ammar.Al-mahdy" target="_blank" rel="noopener">
+          <div class="wtop"><span class="tag">يوتيوب</span><span class="status live">● مستمر</span></div>
+          <h3>قناة عمار المهدي</h3>
+          <p>نشارك فيها ما نتعلّمه من مهارات، ونوثّق رحلتنا في بناء الأنظمة والتطبيقات، وتجاربنا ودروس الناجحين، إلى جانب القرآن الكريم والأناشيد.</p>
+          <ul class="did"><li>مهارات ودروس</li><li>توثيق الرحلة</li><li>تجارب الناجحين</li><li>قرآن وأناشيد</li></ul>
+          <span class="go">زيارة القناة ←</span><span class="big"><svg class="ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"></path></svg></span>
+        </a>
+      </div>
+    </div>
+  </section>
+<section id="content" class="talk">
+    <div class="container">
+      <div class="skills-box works-title">
+        <span class="sb-eyebrow">✦ محتوانا</span>
+        <b>أشارك ما أتعلّمه</b>
+        <p class="wt-sub">نشارك ما نتعلّمه، ونوثّق رحلتنا في بناء الأنظمة والتطبيقات، وننقل تجاربنا ودروس الناجحين — في فيديوهات ومقالات وكورسات ومنتجات رقمية.</p>
+      </div>
+
+      <!-- شريط القناة: أيقونة + اسم القناة + زرار اشتراك -->
+      <div class="channel">
+        <span class="yt"><svg class="ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"></path></svg></span>
+        <div><b>عمار المهدي</b><small>@Ammar.Al-mahdy</small></div>
+        <a class="sub-btn" href="https://www.youtube.com/@Ammar.Al-mahdy?sub_confirmation=1" target="_blank" rel="noopener">اشترك في القناة</a>
+      </div>
+
+    </div>
+  </section>
+<section class="page g-eng" id="svc-eng" aria-label="استشارات وخدمات هندسية">
+    <div class="page-hero">
+      <div class="container">
+        <a class="back" href="#help">→ رجوع للخدمات</a>
+        <div class="big-ic"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 10V5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v5"></path> <path d="M14 6a6 6 0 0 1 6 6v3"></path> <path d="M4 15v-3a6 6 0 0 1 6-6"></path> <rect x="2" y="15" width="20" height="4" rx="1"></rect></svg></div>
+        <h1>استشارات وخدمات هندسية</h1>
+        <p>خبرة 10 سنوات في تصميم المنشآت الخرسانية وتنفيذها، وترميم المنشآت وتدعيمها، ومجال التشطيبات.</p>
+        <div class="incl"><span>تصميم إنشائي</span><span>استخراج تراخيص</span><span>إشراف على التنفيذ</span><span>ترميم وتدعيم</span><span>تشطيبات</span><span>استشارات</span></div>
+      </div>
+    </div>
+    <div class="page-body">
+      <div class="container">
+        <h2>نماذج من أعمالي</h2>
+        <div class="samples">
+          <div class="sample" style="flex-direction:column"><div class="thumb" style="display:block;width:100%;height:220px;padding:0;overflow:hidden;background:#ece8df"><img src="https://errbgvoashdwhpknvkwo.supabase.co/storage/v1/object/public/site-images/2026-11-20/ammar-site-slab-rebar-89zsv.webp" alt="م. عمار المهدي فوق حديد تسليح سقف فيلا سكنية في 6 أكتوبر قبل صب الخرسانة" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:62% 35%;display:block"></div><div class="body"><small>تصميم وحساب كميات وإشراف على التنفيذ</small><b>التصميم الإنشائي وحساب كميات حديد التسليح والإشراف على تنفيذ الحديد بالمواصفات الهندسية الصحيحة قبل صب الخرسانة</b><p>فيلا سكنية – 6 أكتوبر: تصميم إنشائي وإشراف على التنفيذ، مع مراجعة كاملة لحديد التسليح قبل الصب.</p></div></div>
+          <div class="sample soon"><div class="thumb"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"></rect> <path d="M12 9v6"></path> <path d="M16 15v6"></path> <path d="M16 3v6"></path> <path d="M3 15h18"></path> <path d="M3 9h18"></path> <path d="M8 15v6"></path> <path d="M8 3v6"></path></svg></div><div class="body"><small>ترميم وتدعيم</small><b>ترميم المنشآت وتدعيمها</b><p>قريبًا: سأضيف هنا صور المشروع وتفاصيله.</p></div></div>
+          <div class="sample soon"><div class="thumb"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z"></path> <circle cx="13.5" cy="6.5" r=".5" fill="currentColor"></circle> <circle cx="17.5" cy="10.5" r=".5" fill="currentColor"></circle> <circle cx="6.5" cy="12.5" r=".5" fill="currentColor"></circle> <circle cx="8.5" cy="7.5" r=".5" fill="currentColor"></circle></svg></div><div class="body"><small>تشطيبات</small><b>الإشراف على التشطيبات</b><p>قريبًا: سأضيف هنا صور المشروع وتفاصيله.</p></div></div>
+        </div>
+        <div class="page-cta"><b>عندك مشروع في هذا المجال؟</b><a href="https://wa.me/201000649748?text=%D8%A3%D9%87%D9%84%D9%8B%D8%A7%20%D9%85.%20%D8%B9%D9%85%D8%A7%D8%B1%D8%8C%20%D9%85%D8%AD%D8%AA%D8%A7%D8%AC%20%D8%A7%D8%B3%D8%AA%D8%B4%D8%A7%D8%B1%D8%A9%20%D9%87%D9%86%D8%AF%D8%B3%D9%8A%D8%A9%20%D8%A8%D8%AE%D8%B5%D9%88%D8%B5%20%D9%85%D8%A8%D9%86%D9%89" target="_blank" rel="noopener"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"></path></svg> كلّمني على واتساب</a></div>
+      </div>
+    </div>
+  </section>
+<section class="page g-apps" id="svc-apps" aria-label="تطبيقات ومواقع وأنظمة">
+    <div class="page-hero light">
+      <div class="container">
+        <a class="back" href="#help">→ رجوع للخدمات</a>
+        <div class="big-ic"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"></rect> <path d="M12 18h.01"></path></svg></div>
+        <h1>تطبيقات ومواقع وأنظمة</h1>
+        <p>نحوّل فكرتك إلى تطبيق موبايل أو موقع أو نظام يعمل فعلًا — من التخطيط والتصميم إلى الإطلاق.</p>
+        <div class="incl"><span>تطبيقات موبايل</span><span>مواقع</span><span>أنظمة ويب</span><span>لوحات تحكم</span></div>
+      </div>
+    </div>
+    <div class="page-body">
+      <div class="container">
+        <h2>نماذج من أعمالي</h2>
+        <div class="samples">
+          <div class="sample"><div class="thumb"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 4h-3.5l2 11.05"></path> <path d="M6.95 17h5.142c.523 0 .95-.406 1.063-.916a6.5 6.5 0 0 1 5.345-5.009"></path> <circle cx="19.5" cy="17.5" r="2.5"></circle> <circle cx="4.5" cy="17.5" r="2.5"></circle></svg></div><div class="body"><small>تطبيق توصيل</small><b>براق</b><p>تطبيق لتوصيل احتياجات المنزل: بقالة، مخبوزات، لحوم، منظفات، وصيدلية — متاح في 6 أكتوبر.</p><a href="https://bourraq.com" target="_blank" rel="noopener">زيارة الموقع ←</a></div></div>
+          <div class="sample"><div class="thumb"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 17V7"></path> <path d="M16 8h-6a2 2 0 0 0 0 4h4a2 2 0 0 1 0 4H8"></path> <path d="M4 3a1 1 0 0 1 1-1 1.3 1.3 0 0 1 .7.2l.933.6a1.3 1.3 0 0 0 1.4 0l.934-.6a1.3 1.3 0 0 1 1.4 0l.933.6a1.3 1.3 0 0 0 1.4 0l.933-.6a1.3 1.3 0 0 1 1.4 0l.934.6a1.3 1.3 0 0 0 1.4 0l.933-.6A1.3 1.3 0 0 1 19 2a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1 1.3 1.3 0 0 1-.7-.2l-.933-.6a1.3 1.3 0 0 0-1.4 0l-.934.6a1.3 1.3 0 0 1-1.4 0l-.933-.6a1.3 1.3 0 0 0-1.4 0l-.933.6a1.3 1.3 0 0 1-1.4 0l-.934-.6a1.3 1.3 0 0 0-1.4 0l-.933.6a1.3 1.3 0 0 1-.7.2 1 1 0 0 1-1-1z"></path></svg></div><div class="body"><small>نظام للمحلات</small><b>براق كاشير</b><p>نظام كاشير مرتبط بمنظومة براق لإدارة مبيعات المحلات.</p><a href="https://cashier.bourraq.com" target="_blank" rel="noopener">زيارة الموقع ←</a></div></div>
+        </div>
+        <div class="page-cta"><b>عندك مشروع في هذا المجال؟</b><a href="https://wa.me/201000649748?text=%D8%A3%D9%87%D9%84%D9%8B%D8%A7%20%D9%85.%20%D8%B9%D9%85%D8%A7%D8%B1%D8%8C%20%D8%B9%D9%86%D8%AF%D9%8A%20%D9%81%D9%83%D8%B1%D8%A9%20%D8%AA%D8%B7%D8%A8%D9%8A%D9%82%20%D9%88%D8%B9%D8%A7%D9%88%D8%B2%20%D8%A3%D8%AD%D9%88%D9%91%D9%84%D9%87%D8%A7%20%D9%84%D9%88%D8%A7%D9%82%D8%B9" target="_blank" rel="noopener"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"></path></svg> كلّمني على واتساب</a></div>
+      </div>
+    </div>
+  </section>
+<section class="page g-ops" id="svc-ops" aria-label="تنظيم العمليات وأتمتتها">
+    <div class="page-hero">
+      <div class="container">
+        <a class="back" href="#help">→ رجوع للخدمات</a>
+        <div class="big-ic"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 17H5"></path> <path d="M19 7h-9"></path> <circle cx="17" cy="17" r="3"></circle> <circle cx="7" cy="7" r="3"></circle></svg></div>
+        <h1>تنظيم العمليات وأتمتتها</h1>
+        <p>نحلّ المشكلات التشغيلية للجهات والمؤسسات بأنظمة تنظّم العمل، وأدوات ذكية تنجز المهام المتكررة تلقائيًا.</p>
+        <div class="incl"><span>أنظمة إدارة</span><span>أتمتة المهام</span><span>لوحات متابعة</span><span>حلول بالذكاء الاصطناعي</span></div>
+      </div>
+    </div>
+    <div class="page-body">
+      <div class="container">
+        <h2>نماذج من أعمالي</h2>
+        <div class="samples">
+          <div class="sample"><div class="thumb"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 17V7"></path> <path d="M16 8h-6a2 2 0 0 0 0 4h4a2 2 0 0 1 0 4H8"></path> <path d="M4 3a1 1 0 0 1 1-1 1.3 1.3 0 0 1 .7.2l.933.6a1.3 1.3 0 0 0 1.4 0l.934-.6a1.3 1.3 0 0 1 1.4 0l.933.6a1.3 1.3 0 0 0 1.4 0l.933-.6a1.3 1.3 0 0 1 1.4 0l.934.6a1.3 1.3 0 0 0 1.4 0l.933-.6A1.3 1.3 0 0 1 19 2a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1 1.3 1.3 0 0 1-.7-.2l-.933-.6a1.3 1.3 0 0 0-1.4 0l-.934.6a1.3 1.3 0 0 1-1.4 0l-.933-.6a1.3 1.3 0 0 0-1.4 0l-.933.6a1.3 1.3 0 0 1-1.4 0l-.934-.6a1.3 1.3 0 0 0-1.4 0l-.933.6a1.3 1.3 0 0 1-.7.2 1 1 0 0 1-1-1z"></path></svg></div><div class="body"><small>إدارة مبيعات</small><b>براق كاشير</b><p>نظام ينظّم مبيعات المحلات واستقبال الطلبات من مكان واحد.</p><a href="https://cashier.bourraq.com" target="_blank" rel="noopener">زيارة الموقع ←</a></div></div>
+          <div class="sample soon"><div class="thumb"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8V4H8"></path> <rect width="16" height="12" x="4" y="8" rx="2"></rect> <path d="M2 14h2"></path> <path d="M20 14h2"></path> <path d="M15 13v2"></path> <path d="M9 13v2"></path></svg></div><div class="body"><small>أتمتة</small><b>أتمتة المهام المتكررة</b><p>قريبًا: سأضيف هنا صور المشروع وتفاصيله.</p></div></div>
+        </div>
+        <div class="page-cta"><b>عندك مشروع في هذا المجال؟</b><a href="https://wa.me/201000649748?text=%D8%A3%D9%87%D9%84%D9%8B%D8%A7%20%D9%85.%20%D8%B9%D9%85%D8%A7%D8%B1%D8%8C%20%D9%85%D8%AD%D8%AA%D8%A7%D8%AC%20%D8%A3%D9%86%D8%B8%D9%91%D9%85%20%D9%88%D8%A3%D8%AF%D9%8A%D8%B1%20%D8%B4%D8%BA%D9%84%D9%8A%20%D8%A8%D8%AD%D9%84%20%D8%AA%D9%82%D9%86%D9%8A" target="_blank" rel="noopener"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"></path></svg> كلّمني على واتساب</a></div>
+      </div>
+    </div>
+  </section>
+<section class="page g-media" id="svc-media" aria-label="محتوى مرئي ومسموع ومكتوب">
+    <div class="page-hero">
+      <div class="container">
+        <a class="back" href="#help">→ رجوع للخدمات</a>
+        <div class="big-ic"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12.296 3.464 3.02 3.956"></path> <path d="M20.2 6 3 11l-.9-2.4c-.3-1.1.3-2.2 1.3-2.5l13.5-4c1.1-.3 2.2.3 2.5 1.3z"></path> <path d="M3 11h18v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path> <path d="m6.18 5.276 3.1 3.899"></path></svg></div>
+        <h1>محتوى مرئي ومسموع ومكتوب</h1>
+        <p>نشارك ما نتعلّمه من مهارات، ونوثّق رحلتنا في بناء الأنظمة والتطبيقات، إلى جانب تجاربنا في الحياة وما نتعلّمه من تجارب الناجحين. ونقدّم ما نجمعه من معرفة في مؤلفات وكورسات تعليمية ومنتجات رقمية وفيديوهات وصوتيات.</p>
+        <div class="incl"><span>مهارات ودروس</span><span>توثيق بناء التطبيقات</span><span>تجارب ودروس الناجحين</span><span>مقالات ومعلومات</span><span>مؤلفات</span><span>كورسات تعليمية</span><span>منتجات رقمية</span><span>قرآن كريم</span><span>أناشيد</span><span>صوتيات</span></div>
+      </div>
+    </div>
+    <div class="page-body">
+      <div class="container">
+        <h2>ما نقدّمه في هذا المجال</h2>
+        <h3 class="grp"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12.296 3.464 3.02 3.956"></path> <path d="M20.2 6 3 11l-.9-2.4c-.3-1.1.3-2.2 1.3-2.5l13.5-4c1.1-.3 2.2.3 2.5 1.3z"></path> <path d="M3 11h18v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path> <path d="m6.18 5.276 3.1 3.899"></path></svg> محتوى مرئي</h3>
+        <div class="samples">
+          <div class="sample"><div class="thumb"><svg class="ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"></path></svg></div><div class="body"><small>يوتيوب</small><b>قناة عمار المهدي</b><p>المنصة الرئيسية لمحتوانا: نشارك فيها ما نتعلّمه ونوثّق رحلتنا.</p><a href="https://www.youtube.com/@Ammar.Al-mahdy" target="_blank" rel="noopener">زيارة القناة ←</a></div></div>
+          <div class="sample"><div class="thumb"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.106-3.105c.32-.322.863-.22.983.218a6 6 0 0 1-8.259 7.057l-7.91 7.91a1 1 0 0 1-2.999-3l7.91-7.91a6 6 0 0 1 7.057-8.259c.438.12.54.662.219.984z"></path></svg></div><div class="body"><small>توثيق الرحلة</small><b>بناء الأنظمة والتطبيقات</b><p>نوثّق خطوات بناء مشاريعنا الحقيقية، وما نتعلّمه من كل تجربة.</p><a href="https://www.youtube.com/@Ammar.Al-mahdy/search?query=%D8%AA%D8%B7%D8%A8%D9%8A%D9%82" target="_blank" rel="noopener">شاهد الفيديوهات ←</a></div></div>
+          <div class="sample"><div class="thumb"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path> <path d="M9 18h6"></path> <path d="M10 22h4"></path></svg></div><div class="body"><small>مهارات ودروس</small><b>برمجة وذكاء اصطناعي وهندسة</b><p>دروس عملية في المهارات التي نتعلّمها ونستخدمها في عملنا.</p><a href="https://www.youtube.com/@Ammar.Al-mahdy/search?query=%D8%B0%D9%83%D8%A7%D8%A1%20%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A" target="_blank" rel="noopener">شاهد الفيديوهات ←</a></div></div>
+        </div>
+        <h3 class="grp"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3"></path></svg> محتوى مسموع</h3>
+        <div class="samples">
+          <div class="sample"><div class="thumb"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v16"></path> <path d="M20.001 19A2 2 0 0022 17V5a2 2 0 00-1.999-2L16 3.002A5 5 0 0012 5a5 5 0 00-4-2H4a2 2 0 00-2 2v12a2 2 0 001.999 2H8a5 5 0 014 2 5 5 0 014-2z"></path></svg></div><div class="body"><small>قرآن كريم</small><b>تلاوات قرآنية</b><p>مساحة تجمع بين سكينة الروح وطموح العقل.</p><a href="https://www.youtube.com/@Ammar.Al-mahdy/search?query=%D9%82%D8%B1%D8%A2%D9%86" target="_blank" rel="noopener">استمع ←</a></div></div>
+          <div class="sample"><div class="thumb"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 10v3"></path> <path d="M6 6v11"></path> <path d="M10 3v18"></path> <path d="M14 8v7"></path> <path d="M18 5v13"></path> <path d="M22 10v3"></path></svg></div><div class="body"><small>أناشيد</small><b>أناشيد هادفة</b><p>أناشيد مختارة ذات معنى.</p><a href="https://www.youtube.com/@Ammar.Al-mahdy/search?query=%D8%A3%D9%86%D8%A7%D8%B4%D9%8A%D8%AF" target="_blank" rel="noopener">استمع ←</a></div></div>
+          <div class="sample soon"><div class="thumb"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19v3"></path> <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path> <rect x="9" y="2" width="6" height="13" rx="3"></rect></svg></div><div class="body"><small>صوتيات • قريبًا</small><b>تجارب ودروس الناجحين</b><p>حلقات صوتية عن تجاربنا في الحياة والعمل، وما نتعلّمه من تجارب الناجحين.</p></div></div>
+        </div>
+        <h3 class="grp"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 21h8"></path> <path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"></path></svg> محتوى مكتوب ومنتجات رقمية</h3>
+        <div class="samples">
+          <div class="sample soon"><div class="thumb"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.4 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7.4"></path> <path d="M2 6h4"></path> <path d="M2 10h4"></path> <path d="M2 14h4"></path> <path d="M2 18h4"></path> <path d="M21.378 5.626a1 1 0 1 0-3.004-3.004l-5.01 5.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z"></path></svg></div><div class="body"><small>مقالات ومعلومات • قريبًا</small><b>مقالات وتجارب</b><p>نجمع المعلومات المفيدة ونشارك تجاربنا في مقالات مكتوبة.</p></div></div>
+          <div class="sample soon"><div class="thumb"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m16 6 4 14"></path> <path d="M12 6v14"></path> <path d="M8 8v12"></path> <path d="M4 4v16"></path></svg></div><div class="body"><small>مؤلفات • قريبًا</small><b>كتب وأدلّة</b><p>مؤلفات تختصر ما تعلّمناه في كتب وأدلّة عملية.</p></div></div>
+          <div class="sample soon"><div class="thumb"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"></path> <path d="M22 10v6"></path> <path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"></path></svg></div><div class="body"><small>كورسات تعليمية • قريبًا</small><b>كورسات عملية بالعربي</b><p>كورسات تنقل ما تعلّمناه في البرمجة والذكاء الاصطناعي والهندسة خطوة بخطوة.</p></div></div>
+          <div class="sample soon"><div class="thumb"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path> <path d="M12 22V12"></path> <polyline points="3.29 7 12 12 20.71 7"></polyline> <path d="m7.5 4.27 9 5.15"></path></svg></div><div class="body"><small>منتجات رقمية • قريبًا</small><b>قوالب وأدوات جاهزة</b><p>قوالب وملفات وأدوات رقمية جاهزة تختصر عليك الطريق.</p></div></div>
+        </div>
+        <div class="page-cta"><b>عندك سؤال، أو عاوز تتعاون معانا في محتوى؟</b><a href="https://wa.me/201000649748?text=%D8%A3%D9%87%D9%84%D9%8B%D8%A7%20%D9%85.%20%D8%B9%D9%85%D8%A7%D8%B1%D8%8C%20%D8%B9%D9%86%D8%AF%D9%8A%20%D8%B3%D8%A4%D8%A7%D9%84%20%D8%B9%D9%86%20%D8%A7%D9%84%D9%85%D8%AD%D8%AA%D9%88%D9%89%20%D9%88%D8%A7%D9%84%D9%83%D9%88%D8%B1%D8%B3%D8%A7%D8%AA" target="_blank" rel="noopener"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"></path></svg> كلّمني على واتساب</a></div>
+      </div>
+    </div>
+  </section>
+<footer class="site-foot">
+    <div class="container">
+      <!-- الدعوة الأخيرة للتواصل -->
+      <div class="end">
+        <div>
+          <span class="sb-eyebrow foot-eyebrow">✦ لنبدأ</span>
+          <h2 class="one-line">لنصنع شيئًا رائعًا معًا.</h2>
+        </div>
+        <div class="end-actions">
+          <a class="btn-coral" href="https://wa.me/201000649748" target="_blank" rel="noopener"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"></path></svg> واتساب</a>
+          <a class="btn-line" href="tel:+201000649748"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"></path></svg> اتصل الآن</a>
+        </div>
+      </div>
+
+      <!-- أعمدة الروابط -->
+      <div class="cols">
+        <div>
+          <a class="logo" href="#" style="font-family: &quot;El Messiri&quot;, sans-serif; font-weight: 700;">عمار المهدي</a>
+          <p class="about-mini">مهندس مدني إنشائي ومبرمج محترف، ومؤسس شركة «مطلوب للتجارة والخدمات» لبناء الأفكار والمشاريع وتنفيذها بدقّةٍ وشغف.</p>
+          <div class="socials">
+            <a href="https://wa.me/201000649748" target="_blank" rel="noopener" aria-label="واتساب" title="واتساب" style="--b:#25d366"><svg class="ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"></path></svg></a>
+            <a href="tel:+201000649748" aria-label="اتصال" title="اتصال" style="--b:#4f6d8f"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"></path></svg></a>
+            <a href="mailto:mattloop.app@gmail.com" aria-label="البريد الإلكتروني" title="البريد الإلكتروني" style="--b:#ea4335"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"></path> <rect x="2" y="4" width="20" height="16" rx="2"></rect></svg></a>
+            <a href="https://www.facebook.com/share/19SGqAruJS/" target="_blank" rel="noopener" aria-label="فيسبوك" title="فيسبوك" style="--b:#1877f2"><svg class="ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.401 0 .955.042 1.468.103a8.68 8.68 0 0 1 1.141.195v3.325a8.623 8.623 0 0 0-.653-.036 26.805 26.805 0 0 0-.733-.009c-.707 0-1.259.096-1.675.309a1.686 1.686 0 0 0-.679.622c-.258.42-.374.995-.374 1.752v1.297h3.919l-.386 2.103-.287 1.564h-3.246v8.245C19.396 23.238 24 18.179 24 12.044c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.628 3.874 10.35 9.101 11.647Z"></path></svg></a>
+            <a href="https://www.instagram.com/ammar.mahdy93" target="_blank" rel="noopener" aria-label="إنستجرام" title="إنستجرام" style="--b:linear-gradient(45deg,#f9a825,#e1306c,#833ab4)"><svg class="ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7.0301.084c-1.2768.0602-2.1487.264-2.911.5634-.7888.3075-1.4575.72-2.1228 1.3877-.6652.6677-1.075 1.3368-1.3802 2.127-.2954.7638-.4956 1.6365-.552 2.914-.0564 1.2775-.0689 1.6882-.0626 4.947.0062 3.2586.0206 3.6671.0825 4.9473.061 1.2765.264 2.1482.5635 2.9107.308.7889.72 1.4573 1.388 2.1228.6679.6655 1.3365 1.0743 2.1285 1.38.7632.295 1.6361.4961 2.9134.552 1.2773.056 1.6884.069 4.9462.0627 3.2578-.0062 3.668-.0207 4.9478-.0814 1.28-.0607 2.147-.2652 2.9098-.5633.7889-.3086 1.4578-.72 2.1228-1.3881.665-.6682 1.0745-1.3378 1.3795-2.1284.2957-.7632.4966-1.636.552-2.9124.056-1.2809.0692-1.6898.063-4.948-.0063-3.2583-.021-3.6668-.0817-4.9465-.0607-1.2797-.264-2.1487-.5633-2.9117-.3084-.7889-.72-1.4568-1.3876-2.1228C21.2982 1.33 20.628.9208 19.8378.6165 19.074.321 18.2017.1197 16.9244.0645 15.6471.0093 15.236-.005 11.977.0014 8.718.0076 8.31.0215 7.0301.0839m.1402 21.6932c-1.17-.0509-1.8053-.2453-2.2287-.408-.5606-.216-.96-.4771-1.3819-.895-.422-.4178-.6811-.8186-.9-1.378-.1644-.4234-.3624-1.058-.4171-2.228-.0595-1.2645-.072-1.6442-.079-4.848-.007-3.2037.0053-3.583.0607-4.848.05-1.169.2456-1.805.408-2.2282.216-.5613.4762-.96.895-1.3816.4188-.4217.8184-.6814 1.3783-.9003.423-.1651 1.0575-.3614 2.227-.4171 1.2655-.06 1.6447-.072 4.848-.079 3.2033-.007 3.5835.005 4.8495.0608 1.169.0508 1.8053.2445 2.228.408.5608.216.96.4754 1.3816.895.4217.4194.6816.8176.9005 1.3787.1653.4217.3617 1.056.4169 2.2263.0602 1.2655.0739 1.645.0796 4.848.0058 3.203-.0055 3.5834-.061 4.848-.051 1.17-.245 1.8055-.408 2.2294-.216.5604-.4763.96-.8954 1.3814-.419.4215-.8181.6811-1.3783.9-.4224.1649-1.0577.3617-2.2262.4174-1.2656.0595-1.6448.072-4.8493.079-3.2045.007-3.5825-.006-4.848-.0608M16.953 5.5864A1.44 1.44 0 1 0 18.39 4.144a1.44 1.44 0 0 0-1.437 1.4424M5.8385 12.012c.0067 3.4032 2.7706 6.1557 6.173 6.1493 3.4026-.0065 6.157-2.7701 6.1506-6.1733-.0065-3.4032-2.771-6.1565-6.174-6.1498-3.403.0067-6.156 2.771-6.1496 6.1738M8 12.0077a4 4 0 1 1 4.008 3.9921A3.9996 3.9996 0 0 1 8 12.0077"></path></svg></a>
+            <a href="https://www.youtube.com/@ammar.al-mahdy" target="_blank" rel="noopener" aria-label="يوتيوب" title="يوتيوب" style="--b:#ff0000"><svg class="ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"></path></svg></a>
+            <a href="https://www.linkedin.com/in/ammar-mahdy-4bb725109" target="_blank" rel="noopener" aria-label="لينكدإن" title="لينكدإن" style="--b:#0a66c2"><svg class="ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.064 2.064 0 1 1 0-4.128 2.064 2.064 0 0 1 0 4.128zm1.782 13.019H3.555V9h3.564v11.452z"></path></svg></a>
+            <a href="https://t.me/ammar_al_mahdy" target="_blank" rel="noopener" aria-label="تليجرام" title="تليجرام" style="--b:#229ed9"><svg class="ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"></path></svg></a>
+            <a href="https://x.com/AmmarMahdy4" target="_blank" rel="noopener" aria-label="إكس (تويتر)" title="إكس (تويتر)" style="--b:#000000"><svg class="ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14.234 10.162 22.977 0h-2.072l-7.591 8.824L7.251 0H.258l9.168 13.343L.258 24H2.33l8.016-9.318L16.749 24h6.993zm-2.837 3.299-.929-1.329L3.076 1.56h3.182l5.965 8.532.929 1.329 7.754 11.09h-3.182z"></path></svg></a>
+            <a href="https://www.snapchat.com/add/ammar_mahdy93" target="_blank" rel="noopener" aria-label="سناب شات" title="سناب شات" style="--b:#fffc00" class="snap"><svg class="ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.206.793c.99 0 4.347.276 5.93 3.821.529 1.193.403 3.219.299 4.847l-.003.06c-.012.18-.022.345-.03.51.075.045.203.09.401.09.3-.016.659-.12 1.033-.301.165-.088.344-.104.464-.104.182 0 .359.029.509.09.45.149.734.479.734.838.015.449-.39.839-1.213 1.168-.089.029-.209.075-.344.119-.45.135-1.139.36-1.333.81-.09.224-.061.524.12.868l.015.015c.06.136 1.526 3.475 4.791 4.014.255.044.435.27.42.509 0 .075-.015.149-.045.225-.24.569-1.273.988-3.146 1.271-.059.091-.12.375-.164.57-.029.179-.074.36-.134.553-.076.271-.27.405-.555.405h-.03c-.135 0-.313-.031-.538-.074-.36-.075-.765-.135-1.273-.135-.3 0-.599.015-.913.074-.6.104-1.123.464-1.723.884-.853.599-1.826 1.288-3.294 1.288-.06 0-.119-.015-.18-.015h-.149c-1.468 0-2.427-.675-3.279-1.288-.599-.42-1.107-.779-1.707-.884-.314-.045-.629-.074-.928-.074-.54 0-.958.089-1.272.149-.211.043-.391.074-.54.074-.374 0-.523-.224-.583-.42-.061-.192-.09-.389-.135-.567-.046-.181-.105-.494-.166-.57-1.918-.222-2.95-.642-3.189-1.226-.031-.063-.052-.15-.055-.225-.015-.243.165-.465.42-.509 3.264-.54 4.73-3.879 4.791-4.02l.016-.029c.18-.345.224-.645.119-.869-.195-.434-.884-.658-1.332-.809-.121-.029-.24-.074-.346-.119-1.107-.435-1.257-.93-1.197-1.273.09-.479.674-.793 1.168-.793.146 0 .27.029.383.074.42.194.789.3 1.104.3.234 0 .384-.06.465-.105l-.046-.569c-.098-1.626-.225-3.651.307-4.837C7.392 1.077 10.739.807 11.727.807l.419-.015h.06z"></path></svg></a>
+            <a href="https://www.tiktok.com/@ammar.mahdy10" target="_blank" rel="noopener" aria-label="تيك توك" title="تيك توك" style="--b:#111111"><svg class="ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"></path></svg></a>
+          </div>
+        </div>
+        <div>
+          <h4>الموقع</h4>
+          <ul>
+            <li><a href="#about-me">نبذة عني</a></li>
+            <li><a href="#help">الخدمات</a></li>
+            <li><a href="#exp">رحلتي</a></li>
+            <li><a href="#works">أعمالي</a></li>
+            <li><a href="#content">المحتوى</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>خدماتنا</h4>
+          <ul>
+            <li><a href="#svc-eng">استشارات وخدمات هندسية</a></li>
+            <li><a href="#svc-apps">تطبيقات ومواقع وأنظمة</a></li>
+            <li><a href="#svc-ops">تنظيم العمليات وأتمتتها</a></li>
+            <li><a href="#svc-media">محتوى مرئي ومسموع ومكتوب</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>مشاريعي</h4>
+          <ul>
+            <li><a href="#help">مطلوب للتجارة والخدمات</a></li><li><a href="https://bourraq.com" target="_blank" rel="noopener">براق</a></li>
+            <li><a href="https://cashier.bourraq.com" target="_blank" rel="noopener">براق كاشير</a></li>
+            
+          </ul>
+        </div>
+        <div>
+          <h4>تواصل</h4>
+          <ul>
+            <li><a href="https://wa.me/201000649748" target="_blank" rel="noopener">واتساب</a></li>
+            <li></li>
+            <li><a href="https://www.facebook.com/share/19SGqAruJS/" target="_blank" rel="noopener">فيسبوك</a></li><li><a href="https://www.linkedin.com/in/ammar-mahdy-4bb725109" target="_blank" rel="noopener">لينكدإن</a></li><li><a href="mailto:mattloop.app@gmail.com" dir="ltr">البريد الإلكتروني</a></li>
+            
+            
+          </ul>
+        </div>
+      </div>
+
+      <div class="bottom">
+        <span>© <span id="year"></span> عمار المهدي — جميع الحقوق محفوظة</span>
+        <a class="to-top" href="#" aria-label="العودة للأعلى">↑ للأعلى</a>
+      </div>
+    </div>
+  </footer>
+<script>(function(){
+  var b=document.body, y=document.getElementById('year'); if(y) y.textContent=new Date().getFullYear();
+  document.querySelectorAll('.menu-btn').forEach(function(m){ m.addEventListener('click',function(){ b.classList.toggle('menu-open'); }); });
+  document.querySelectorAll('nav ul a').forEach(function(a){ a.addEventListener('click',function(){ b.classList.remove('menu-open'); }); });
+  var fb=document.querySelectorAll('.filters button');
+  fb.forEach(function(btn){ btn.addEventListener('click',function(){
+    fb.forEach(function(x){ x.classList.remove('on'); }); btn.classList.add('on'); var f=btn.getAttribute('data-f');
+    document.querySelectorAll('.wcard').forEach(function(c){ var cats=(c.getAttribute('data-cat')||'').split(' '); c.classList.toggle('hide', f!=='all' && cats.indexOf(f)===-1); });
+    var s=document.querySelector('.scroller'); if(s&&s.scrollTo) s.scrollTo({left:0,behavior:'smooth'});
+  }); });
+  var links=[].slice.call(document.querySelectorAll('nav ul a')), here=(location.pathname.split('/').pop()||'index.html');
+  links.forEach(function(a){ var h=a.getAttribute('href')||''; if(h===here||(here==='index.html'&&(h==='./'||h==='/'))) a.setAttribute('aria-current','page'); });
+  var spy=links.filter(function(a){ var h=a.getAttribute('href')||''; return h.charAt(0)==='#'&&h.length>1&&document.getElementById(h.slice(1)); });
+  if(spy.length&&'IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(!e.isIntersecting) return; spy.forEach(function(a){ a.classList.toggle('active', a.getAttribute('href')==='#'+e.target.id); }); }); },{rootMargin:'-45% 0px -50% 0px'});
+    spy.forEach(function(a){ io.observe(document.getElementById(a.getAttribute('href').slice(1))); });
+  }
+  var mb=document.getElementById('more-btn'), at=document.getElementById('about-text');
+  if(mb&&at){ mb.addEventListener('click',function(){ var closed=at.classList.toggle('clamp'); mb.textContent=closed?'اقرأ المزيد ↓':'اقرأ أقل ↑'; mb.setAttribute('aria-expanded',String(!closed)); }); }
+})();</script>
+</body>
+</html>
